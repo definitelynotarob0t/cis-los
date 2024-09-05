@@ -1,0 +1,139 @@
+import bcrypt from 'bcrypt'
+import express from 'express';
+import UserModel from '../models/user';
+// import PitchModel from '../models/pitch';
+
+const router = express.Router();
+
+
+// Get all users
+router.get('/', async (_req, res, next) => {
+    try {
+        const users = await UserModel.findAll({ 
+            attributes: ['id', 'email', 'name', 'pitchId'],
+            // include: { 
+            //     model: PitchModel, 
+            //     attributes: ['id', 'title'], 
+            //     required: false 
+            // }
+        })
+        res.json(users)
+    }    catch(error) {
+        next(error)
+    }
+}) 
+
+// Get individual user
+router.get('/:id', async (req, res, next) => {
+    try {
+        const user = await UserModel.findOne({
+            where: { id: req.params.id},
+            attributes: ['id', 'email', 'name', 'pitchId'],
+            // include: { 
+            //     model: PitchModel, 
+            //     attributes: ['id', 'title'], 
+            //     required: false 
+            // }
+        })
+
+        if (user) {
+            res.json(user)
+        } else {
+            res.status(404).json({ error: 'User not found' })
+            return
+        }
+    } catch (error) {
+        next(error)
+    }
+})
+
+// Update user password 
+router.put('/:id', async (req, res, next) => {
+    try {
+        const { password: newPassword } = req.body;
+
+        // Validate new password
+        if (!newPassword || newPassword.length < 8) {
+            res.status(400).json({ error: 'Password must be at least 8 characters long. Please try again.' });
+            return;
+        }
+
+        const userToUpdate = await UserModel.findByPk(req.params.id);
+
+        if (!userToUpdate) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+
+        const saltRounds = 10;
+        const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+        await userToUpdate.update({ passwordHash: newPasswordHash });
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        next(error);
+    }
+}); // implement validation - user inputs email and old password before changing? ... email sent to user saying password updated?
+
+// Update user's pitchId
+router.put('/:id/pitch', async (req, res) => {  
+    try {
+      const user = await UserModel.findByPk(req.params.id);
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+  
+      user.pitchId = req.body.pitchId;
+      await user.save();
+  
+      res.json(user);
+    } catch (error) {
+        res.status(400).json({ error: "Failed to update user's pitchId"});
+    }
+  });
+  
+
+// Create new user
+router.post('/', async (req, res, next) => {
+    const { email, name, password } = req.body
+
+    if (!password || password.length < 8) {
+        res.status(400).json({ error: 'Password must be at least 8 characters long. Please try again.' }).end();
+        return;
+    }
+
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    try {
+        const userToAdd = await UserModel.create({
+            email,
+            name,
+            passwordHash
+        })
+        res.status(201).json(userToAdd)
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+// Remove user
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const userToDelete = await UserModel.findByPk(req.params.id)
+        if (userToDelete) {
+            await userToDelete.destroy();
+            res.status(204)
+        } else {
+            res.status(404).json({ error: 'User not found' })
+            return
+        }
+    } catch (error) {
+        next(error)
+    }
+})
+
+export default router
