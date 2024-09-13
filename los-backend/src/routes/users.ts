@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
 import express from 'express';
 import UserModel from '../models/user';
-// import PitchModel from '../models/pitch';
+import PitchModel from '../models/pitch';
+import LosModel from '../models/los';
 
 const router = express.Router();
 
@@ -76,44 +77,69 @@ router.put('/:id', async (req, res, next) => {
     }
 }); // implement validation - user inputs email and old password before changing? ... email sent to user saying password updated?
 
-// Update user's pitchId
-router.put('/:id/pitch', async (req, res) => {  
-    try {
-      const user = await UserModel.findByPk(req.params.id);
-      if (!user) {
-        res.status(404).json({ error: 'User not found' });
-        return;
-      }
-  
-      user.pitchId = req.body.pitchId;
-      await user.save();
-  
-      res.json(user);
-    } catch (error) {
-        res.status(400).json({ error: "Failed to update user's pitchId"});
-    }
-  });
-  
+
 
 // Create new user
 router.post('/', async (req, res, next) => {
     const { email, name, password } = req.body
 
+    // Validate password
     if (!password || password.length < 8) {
         res.status(400).json({ error: 'Password must be at least 8 characters long. Please try again.' }).end();
         return;
     }
 
+    // Check for existing email
+    const existingUser = await UserModel.findOne({ where: { email } });
+    if (existingUser) {
+        res.status(400).json({ error: 'Email is already registered.' });
+        return;
+    }
+
+    // Encrypt password
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
+
+    // Create a blank pitch to associate with new user
+    const blankPitch = await PitchModel.create({
+        title: "",
+        mainActivity: "",
+        challenge: "",
+        outcome: "",
+        userId: null // Will be assigned after user creation
+    });
+
+    // Create a blank LoS to associate with new user
+    const blankLos = await LosModel.create({
+        id: blankPitch.id,
+        inputs: [],
+        activities: [],
+        outputs: [],
+        usages: [],
+        outcomes: [],
+        userId: null // Will be assigned after user creation
+    })
+
+    // Create user 
     try {
         const userToAdd = await UserModel.create({
             email,
             name,
-            passwordHash
+            passwordHash,
+            pitchId: blankPitch.id 
         })
+
+        // Update the pitch with the created user's ID
+        blankPitch.userId = userToAdd.id;
+        await blankPitch.save();
+
+        // Update the LoS with the created user's ID
+        blankLos.userId = userToAdd.id;
+        await blankLos.save()
+
         res.status(201).json(userToAdd)
+
     } catch (error) {
         next(error)
     }

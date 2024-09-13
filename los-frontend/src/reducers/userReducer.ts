@@ -44,7 +44,7 @@ export const setUser = (credentials: { email: string, password: string }) => {
     };
   };
 
-
+// Used to determine component rendering
 export const initialiseUser = () => {
   return (dispatch: AppDispatch) => {
     const loggedUserJSON = sessionStorage.getItem('loggedUser'); 
@@ -55,7 +55,6 @@ export const initialiseUser = () => {
     }
   };
 };
-
 
 export const logout = () => {
   return async (dispatch: AppDispatch) => {

@@ -8,6 +8,14 @@ export interface Pitch {
 } 
 export type Content = Omit<Pitch, "id">;
 
+export interface User {
+    id: number,
+    email: string,
+    name: string,
+    passwordHash: string,
+    pitchId: number,
+    disabled: boolean
+}
 
 interface SimpleUser {
     id: number;      

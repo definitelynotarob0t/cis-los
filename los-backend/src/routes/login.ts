@@ -52,9 +52,9 @@ router.post('/', async (req, res, next) => {
         
           // Send response with JWT and user details
           res.status(200).send({ token, name: user.name, id: user.id, pitchId: user.pitchId })
-    } else {
-        res.status(401).json({ error: 'Incorrect password. Please try again.' });
-        return
+    // } else {
+    //     res.status(401).json({ error: 'Incorrect password. Please try again.' });
+    //     return
     }  
   } catch (error) {
     next(error)

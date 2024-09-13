@@ -1,21 +1,17 @@
 import axios from 'axios'
-import { Pitch } from '../types';
 import { apiBaseUrl } from '../constants'
 
 const userUrl = `${apiBaseUrl}/users`
 
-let token: string | null = null;
+
+// Update user's password
 
 
-// Add pitchId to user upon user saving pitch
-const updateUser = async (pitch: Pitch) => {
-    const config = {
-        headers: { Authorization: token }
-      };
-
-    const response = await axios.put(`${userUrl}/${pitch.userId}/pitch`, { pitchId: pitch.id }, config);
-    return response.data;
+// Create user upon sign-in form submission
+const createUser = async ( credentials: {email: string, password: string, name: string }) => {
+  const response = await axios.post(userUrl, credentials)
+  return response.data
 }
 
 
-export default { updateUser }
+export default { createUser }

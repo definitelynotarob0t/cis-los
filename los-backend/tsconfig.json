@@ -26,7 +26,7 @@
 
     /* Modules */
     "module": "commonjs",                                /* Specify what module code is generated. */
-    // "rootDir": "./",                                  /* Specify the root folder within your source files. */
+    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
     // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
@@ -107,4 +107,16 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": ["node"]
   }
+  ,
+  "exclude": [
+    "node_modules",
+    "build",
+    "eslint.config.mjs",
+    "*.config.js",     // Excludes any JavaScript config files (like webpack.config.js)
+    "*.config.ts",     // Excludes any TypeScript config files
+    "*.config.cjs",    // Excludes CommonJS config files
+    "*.config.mjs",    // Excludes ES Module config files
+    "src/**/*.test.ts", // Exclude test files
+    "src/**/*.test.js"  // Exclude JavaScript test files
+  ]
 }

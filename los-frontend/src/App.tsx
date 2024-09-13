@@ -1,30 +1,33 @@
 import ElevatorPitch from "./components/ElevatorPitch"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
-// import { useAppDispatch } from "./hooks"
-import { AppDispatch } from "./store"
-import { useEffect } from 'react'
-import { Pitch } from "./types"
+import store from "./store"
+import SignupForm from "./components/Signup"
+import LosMapper from "./components/Los"
+import SuccessNotification from "./components/SuccessNotification";
+import ErrorNotification from "./components/ErrorNotification";
+import { Pitch, Los } from "./types"
 import { setPitch } from "./reducers/pitchReducer"
 import pitchService from "./services/pitchService";
 import { useDispatch, useSelector } from 'react-redux';
 import { initialiseUser } from './reducers/userReducer';
-import LoginForm from "./components/Login"
-import store from "./store"
+import { useEffect } from "react"
+import { AppDispatch } from "./store"
+import losService from "./services/losService"
+import { setLos } from "./reducers/losReducer"
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 
 
 function App() {
-
-  const dispatch = useDispatch<AppDispatch>() // ? check relevance of 'useAppDispatch? - when to use?
   const user = useSelector((state: any) => state.user.user); 
-  console.log('user:', user)
+  const dispatch = useDispatch<AppDispatch>() 
 
   console.log(store.getState())
-
 
   useEffect(() => {
     dispatch(initialiseUser());
 
+    // Ensure that pitch and LoS will be rendered upon page refresh
     if (user) {
       const getUserPitch = async () => {
         try {
@@ -33,25 +36,47 @@ function App() {
         } catch (error) {
           console.error("Failed to fetch user's pitch:", error);
         }
-      };
+      }
+
+      const getUserLos = async () => {
+        try { 
+          const los: Los = await losService.getLos(user.pitchId);
+          dispatch(setLos(los))
+        } catch (error) {
+          console.error("Failed to fetch user's los:", error)
+        }
+      }
   
       getUserPitch();
+      getUserLos();
     }
-
 
   }, [dispatch]);
 
+  const appStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh'
+  };
 
-  if (!user) {
-    return <LoginForm />;
-  }
 
   return (
-    <>
+    < Router >
       < Header />
-      < ElevatorPitch />
+      < ErrorNotification />
+      < SuccessNotification />
+
+      <div style={appStyle}>
+        <Routes>
+          <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/elevator-pitch" />} />
+          <Route path="/elevator-pitch" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
+          <Route path="/line-of-sight" element={user ? <LosMapper /> : <Navigate to="/login" />} />
+          <Route path="*" element={<Navigate to={user ? "/elevator-pitch" : "/login"} />} />
+        </Routes>
+      </div>
+
       < Footer />
-    </>
+    </ Router >
   )
 }
 

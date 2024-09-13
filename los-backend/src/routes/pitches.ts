@@ -54,15 +54,10 @@ router.post('/', sessionValidator, async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
     const pitchToUpdate = await PitchModel.findByPk(req.params.id)
     if (pitchToUpdate) {
-        if (pitchToUpdate.userId === req.user?.id) {
             pitchToUpdate.title = req.body.title
             pitchToUpdate.mainActivity = req.body.mainActivity
             pitchToUpdate.challenge = req.body.challenge
             pitchToUpdate.outcome = req.body.outcome
-        } else {
-            res.status(403).json({ error: 'You are not authorized to edit this pitch.' }); // may be redunant if user can only see their pitch?
-            return
-        }
         try {
             await pitchToUpdate.save()
             res.json(pitchToUpdate)

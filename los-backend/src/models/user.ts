@@ -38,7 +38,7 @@ UserModel.init({
   },
   pitchId: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
     references: { model: 'pitches', key: 'id' }
   }
 }, {

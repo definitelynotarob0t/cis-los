@@ -10,6 +10,7 @@ import pitchRouter from './routes/pitches';
 import userRouter from './routes/users';
 import loginRouter from './routes/login';
 import logoutRouter from './routes/logout';
+import losRouter from './routes/loses';
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/pitches', pitchRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/logout', logoutRouter);
+app.use('/api/loses', losRouter);
 
 // Error handling
 app.use(errorHandler)

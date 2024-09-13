@@ -1,21 +1,19 @@
-import { Navbar } from "react-bootstrap"
-
+import React from 'react';
 
 const Footer = () => {
-
-    const navBar = {
+    const footerStyle: React.CSSProperties = {
         padding: '10px',
-        marginBottom: '10px',
-        display: 'flex', 
-        gap: '15px', 
+        marginTop: 'auto',
         backgroundColor: 'rgb(28, 63, 93)', 
-        color: 'white'
-    }
+        color: 'white',
+        textAlign: 'center'
+    };
+    
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={navBar}>
-            <div> Consulting & Implementation Services </div> 
-        </Navbar>
-    )
+        <div style={footerStyle}>
+            Consulting & Implementation Services
+        </div>
+    );
 }
 
-export default Footer
+export default Footer;
