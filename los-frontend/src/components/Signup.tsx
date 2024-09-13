@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { AppDispatch } from '../store';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../reducers/userReducer';
@@ -43,7 +43,7 @@ const SignupForm = () => {
     const handleSignUp = async (event: SyntheticEvent) => {
         event.preventDefault()
 
-        // Password validation -- handle elsewhere? e.g. during typing of password
+        // Password validation
         if (passwordConfirm !== password) {
             dispatch(notifyError("Passwords do not match"))
             return;
@@ -70,25 +70,23 @@ const SignupForm = () => {
 
     }
     return (
-        <div>
-        <  ErrorNotification />
+        <div style={{ backgroundColor: 'white', minHeight: '100vh'}} >
+        < ErrorNotification />
         < SuccessNotification />
-        <Container
+        < Container
             fluid
             className="d-flex vh-100 align-items-center justify-content-center"
+            style={{ minHeight: '100vh' }}
         >
-            <Row>
-                <Col>
-                    <Button variant="link" onClick={() => setIsLogin(!isLogin)}>
-                        {isLogin ? "No account? Sign-up" : "Already have an account? Login"}
-                    </Button>
-                    <h1>{isLogin ? "Login" : "Sign-up"}</h1>
+            <Card className="p-4" style={{ backgroundColor: '#d3d3d3' }}>
+            <Row className="w-200">
+                <Col >
+                    <h1>{isLogin ? "Log in" : "Sign up"}</h1>
                     <Form onSubmit={isLogin ? handleLogin : handleSignUp}>
                     {!isLogin && (
                         <Form.Group>
-                            <Form.Label> Name </Form.Label>
+                            <Form.Label style={{fontSize: '14px'}}> Name </Form.Label>
                             <Form.Control 
-                                data-testid="name"
                                 type="text"
                                 name="name"
                                 value={name}
@@ -97,44 +95,74 @@ const SignupForm = () => {
                         </Form.Group>
                     )}
                     <Form.Group style={{marginTop: '10px'}}>
-                        <Form.Label> Email </Form.Label>
+                        <Form.Label style={{fontSize: '14px'}}> Email </Form.Label>
                         <Form.Control
-                            data-testid="email"
-                            type="text"
+                            type="email"
                             value={email}
                             name="email"
                             onChange={({ target }) => setEmail(target.value)}
                         />
                     </Form.Group>
                     <Form.Group style={{marginTop: '10px'}}>
-                        <Form.Label> Password </Form.Label> 
-                        {/* tell user must be 8 characters at least. Forgot password option? */}
+                        <Form.Label style={{fontSize: '14px'}}> Password </Form.Label> 
                         <Form.Control
-                            data-testid="password"
                             type="password"
                             name="name"
                             value={password}
                             onChange={({ target }) => setPassword(target.value)}
+                            isInvalid={password.length > 0 && password.length < 8}
                         />
+                        <Form.Control.Feedback type="invalid">Password must be 8 characters or longer</Form.Control.Feedback>
                     </Form.Group>
                     {!isLogin && (
                     <Form.Group style={{marginTop: '10px'}}>
-                        <Form.Label> Confirm password </Form.Label>
+                        <Form.Label style={{fontSize: '14px'}}> Confirm password </Form.Label>
                         <Form.Control
-                            data-testid="password-confirm"
                             type="password"
                             name="passwordConfirm"
                             value={passwordConfirm}
                             onChange={({ target }) => setPasswordConfirm(target.value)}
+                            isInvalid={password!=passwordConfirm}
                         />
+                    <Form.Control.Feedback type="invalid">Passwords must match</Form.Control.Feedback>
                     </Form.Group>  
                     )}
-                    <Button variant="primary" type="submit" style={{marginTop: '10px'}}>
-                            {isLogin ? "Login" : "Sign-up"}
-                    </Button>
+                    {isLogin && ( 
+                    <div style={{ marginTop: '10px', fontSize:'12px'}}>
+                        <a href="/forgot-password" style={{ color: 'blue', textDecoration: 'underline' }}>
+                        Forgot password? 
+                        </a>
+                    </div>
+                    )} 
+                                {/* need to add functionality */}
+                    {isLogin ? (
+                        <>
+                        <Button type="submit" style={{marginTop: '24px', marginBottom: '10px', height: '36px', width: '201px', backgroundColor: 'rgb(28, 63, 93)' }}> 
+                        Log in
+                        </Button>
+                        </>
+                    ) : (
+                        <Button type="submit" style={{marginTop: '24px', marginBottom: '10px', height: '36px', width: '249px', backgroundColor: 'rgb(28, 63, 93)'}}> 
+                        Sign-up
+                        </Button>
+                    )}
+                    <div className="d-flex justify-content-center align-items-center">
+                        {isLogin ? (
+                            <>
+                                <p className="mb-0">No account?</p>
+                                <Button variant="link" onClick={() => setIsLogin(!isLogin)}>Sign up</Button>
+                            </>
+                        ) : (
+                            <>
+                                <p className="mb-0">Already have an account?</p>
+                                <Button variant="link" onClick={() => setIsLogin(!isLogin)}>Login</Button>
+                            </>
+                        )}
+                    </div>
                 </Form>
                 </Col>
             </Row>
+        </Card>
         </Container>
         </div>
     )

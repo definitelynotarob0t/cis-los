@@ -8,7 +8,8 @@ import { useAppDispatch } from "../hooks";
 import { notifySuccess } from "../reducers/notificationReducer";
 import { notifyError } from "../reducers/errorReducer";
 import { Los } from "../types";
-import { FullscreenExit } from "@mui/icons-material";
+import Header from "./Header";
+import Footer from "./Footer";
 
 // Reusable component for dynamic input sections
 const InputSection = ({ title, fields, setFields, addField}: 
@@ -34,7 +35,7 @@ const InputSection = ({ title, fields, setFields, addField}:
 
     return (
         <Container>
-            <div>{title}</div>
+            <div style={{backgroundColor: 'rgb(28, 63, 93)', color: 'white', textAlign: 'center', fontSize: '18px'}}>{title}</div>
             <Card style={{ height: '300px' }}>
                 {fields.map((field, index) => (
                     <textarea
@@ -101,24 +102,21 @@ const LosMapper = () => {
         }
     };
 
-    const titleStyle = {
-        textAlign: "center",
-        backgroundColor: 'grey',
-
-    }
-
     return (
         <div>
-            <Card style={titleStyle}>
+            <Header/>
+            <Card style={{backgroundColor: 'rgb(28, 63, 93)', color: 'white', textAlign: 'center', fontSize: '18px'}}>
                 <strong>{pitch?.title}</strong>
             </Card>
-            <Card style={{ display: 'flex' }}>
+            <Card style={{ display: 'flex', padding: '8px', border: 'white' }}>
                 <div style={{ display: 'inline' }}>
                     {pitch?.mainActivity}
                     <span>&nbsp;</span>{pitch?.challenge}
                     <span>&nbsp;</span>{pitch?.outcome}
                 </div>
             </Card>
+            <button onClick={updateLos}> Save </button>
+
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                 <AccordionWidget />
                 <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
@@ -126,8 +124,8 @@ const LosMapper = () => {
                 <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
                 <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
                 <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
-                <button onClick={updateLos}> Save </button>
             </div>
+            <Footer/>
         </div>
     );
 };

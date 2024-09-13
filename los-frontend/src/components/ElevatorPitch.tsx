@@ -1,6 +1,4 @@
 import { SyntheticEvent, useState, useEffect } from "react"
-import {  TextField, Container } from '@mui/material'; // change to Bootstrap?
-// import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import { fetchPitch, editPitch } from "../reducers/pitchReducer"
 import { useAppDispatch } from "../hooks";
 import { Pitch } from "../types";
@@ -8,6 +6,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { notifySuccess } from "../reducers/notificationReducer";
 import { notifyError } from "../reducers/errorReducer";
+import Header from "./Header";
+import Footer from "./Footer";
+import { Form, Button, Card } from "react-bootstrap";
 
 
 const ElevatorPitch = () => {
@@ -66,64 +67,64 @@ const ElevatorPitch = () => {
     }
 
     return (
-        <div style={{ display: 'flex',flexDirection: 'row', height: '71vh', gap: '16px', margin: '10px'}}>
-            <form 
-            style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '50%', overflowY: 'auto'}} 
-            onSubmit={updatePitch}
-            >
-            <TextField
-                label="Project Title"
-                placeholder="e.g. Program Run Fast" 
-                value={title}
-                onChange={({ target }) => setTitle(target.value)}
-                style={{ width: '100%', marginBottom: '16px', marginTop: '5px'}}
-                InputLabelProps={{ shrink: true }}
-                maxRows={1}
-            />
-            <TextField
-                label="In one sentence what is your main activity?"
-                placeholder="e.g. We will design and implement a structured training plan with four weekly runs over varying distances, terrains and speeds."
-                value={mainActivity}
-                onChange={({ target }) => setMainActivity(target.value)}
-                style={{ width: '100%', marginBottom: '16px' }}
-                InputLabelProps={{ shrink: true }}
-                multiline
-                maxRows={3}
-            />
-            <TextField
-                label="In one sentence, what challenge is your program addressing?"
-                placeholder="e.g. This will address the club’s declining performance compared to competitors. "
-                value={challenge}
-                onChange={({ target }) => setChallenge(target.value)}
-                style={{ width: '100%', marginBottom: '16px' }}
-                InputLabelProps={{ shrink: true }}
-                multiline
-                maxRows={3}
-            />  
-            <TextField
-                label="In one sentence, what is the outcome (change) you are trying to achieve?"
-                placeholder="e.g. It will enhance runners’ performance, increasing the likelihood of winning more races and achieving national recognition as the top run club."
-                value={outcome}
-                onChange={({ target }) => setOutcome(target.value)}
-                style={{ width: '100%', marginBottom: '16px' }}
-                InputLabelProps={{ shrink: true }}
-                multiline
-                maxRows={3}
-            />
-            <button type="submit">Save</button>   {/* notify user that it has been saved  */}
-            </form>
-            <Container 
-            style={{fontSize: '25px', display: 'flex', flexDirection: 'column', flex: 1, width: '50%', border: '3px solid', overflowY: 'auto'}}>
-            {/* <FormatQuoteIcon fontSize="large" style={{ transform: 'scaleX(-1)' }} /> */}
-                 <h1 style={{marginTop: '10px'}}>{title}</h1> 
+        <div>
+            <Header />
+            <div style={{ display: 'flex',flexDirection: 'row', height: '85vh', gap: '40px', margin: '20px'}}>
+            <Form style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '50%', overflowY: 'auto', padding: '10px'}} 
+            onSubmit={updatePitch}>
+                <Form.Group>
+                    <Form.Label style={{fontSize: '18px' }}> Project Title </Form.Label>
+                    <Form.Control
+                    type='text'
+                    placeholder="e.g. Program Run Fast" 
+                    value={title}
+                    onChange={({ target }) => setTitle(target.value)}
+                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px', fontFamily: 'Rucksack, sans-serif' }}
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what is your main activity? </Form.Label>
+                    <Form.Control
+                    as="textarea" 
+                    placeholder="e.g. We will design and implement a structured training plan with four weekly runs over varying distances, terrains and speeds."
+                    value={mainActivity}
+                    onChange={({ target }) => setMainActivity(target.value)}
+                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
+                     />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what challenge is your program addressing? </Form.Label>
+                    <Form.Control
+                    as="textarea" 
+                    placeholder="e.g. This will address the club’s declining performance compared to competitors. "
+                    value={challenge}
+                    onChange={({ target }) => setChallenge(target.value)}
+                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
+                     />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what is the outcome (change) you are trying to achieve? </Form.Label>
+                    <Form.Control
+                    as="textarea" 
+                    placeholder="e.g. It will enhance runners’ performance, increasing the likelihood of winning more races and achieving national recognition as the top run club."
+                    value={outcome}
+                    onChange={({ target }) => setOutcome(target.value)}
+                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
+                     />
+                </Form.Group>
+                <Button type="submit" style={{backgroundColor: '#d3d3d3', color: 'black', border: '#d3d3d3'}}>Save</Button> 
+            </Form>
+     
+            <Card 
+            style={{fontSize: '25px', width: '50%', overflowY: 'auto', padding: '20px'}}>
+                 <h1>{title}</h1> 
                 <div style={{ display: 'inline' }}>
                     {mainActivity}<span>&nbsp;</span>{challenge}<span>&nbsp;</span>{outcome}
                 </div>
-                {/* <FormatQuoteIcon fontSize="large"/> */}
-            </Container>
+            </Card>
         </div>
-       
-
+       <Footer />
+        </div>
     )
 }
 

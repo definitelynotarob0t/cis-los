@@ -62,7 +62,6 @@ function App() {
 
   return (
     < Router >
-      < Header />
       < ErrorNotification />
       < SuccessNotification />
 
@@ -75,7 +74,6 @@ function App() {
         </Routes>
       </div>
 
-      < Footer />
     </ Router >
   )
 }
