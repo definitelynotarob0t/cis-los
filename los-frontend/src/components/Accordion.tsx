@@ -32,7 +32,7 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid" }}>
+                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid", paddingLeft: '2px' }}>
                             {answer} 
                         </div>
                     ))}

@@ -1,6 +1,4 @@
 import ElevatorPitch from "./components/ElevatorPitch"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
 import store from "./store"
 import SignupForm from "./components/Signup"
 import LosMapper from "./components/Los"
@@ -70,7 +68,6 @@ function App() {
           <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/elevator-pitch" />} />
           <Route path="/elevator-pitch" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
           <Route path="/line-of-sight" element={user ? <LosMapper /> : <Navigate to="/login" />} />
-          <Route path="*" element={<Navigate to={user ? "/elevator-pitch" : "/login"} />} />
         </Routes>
       </div>
 

@@ -9,14 +9,8 @@ const SuccessNotification = () => {
     return
   }
 
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1,
-    backgroundColor: 'green'
-  }
   return (
-    <div style={style}>
+    <div className="success-notification">
       {notification.notification}
     </div>
   )

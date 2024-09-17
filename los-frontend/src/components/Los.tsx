@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { Card, Container } from "react-bootstrap";
+import { Card, Container, Button } from "react-bootstrap";
 import { RootState } from "../store";
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect, SyntheticEvent, useRef } from "react";
 import AccordionWidget from "./Accordion";
 import { fetchLos, editLos } from "../reducers/losReducer";
 import { useAppDispatch } from "../hooks";
@@ -15,10 +15,16 @@ import Footer from "./Footer";
 const InputSection = ({ title, fields, setFields, addField}: 
     { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void}) => {
 
+    const [highlightedOptions, setHighlightedOptions] = useState<string | null>(null);
+
+    const textAreasRef = useRef<(HTMLTextAreaElement | null)[]>([]);
+
     const handleInputChange = (index: number, value: string) => {
         const updatedFields = [...fields];
         updatedFields[index] = value;
         setFields(updatedFields);
+
+        setTimeout(() => resizeTextArea(index), 0);
     };
 
     const handleDrop = (e: React.DragEvent<HTMLTextAreaElement>, index: number) => {
@@ -26,28 +32,77 @@ const InputSection = ({ title, fields, setFields, addField}:
         const updatedFields = [...fields];
         updatedFields[index] = draggedData;
         setFields(updatedFields);
+
+        e.preventDefault();
+        setHighlightedOptions(null); // Remove highlight after drop
+
+        setTimeout(() => resizeTextArea(index), 0);
+    };
+
+
+
+    const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>, field: string | null) => {
+        setHighlightedOptions(field)
         e.preventDefault();
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>) => {
-        e.preventDefault();
+    const handleDragLeave = () => {
+        setHighlightedOptions(null);
     };
+
+    const handleDeleteField = (index: number) => {
+        const updatedFields = fields.filter((_, i) => i !== index);
+        setFields(updatedFields);
+
+      };
+
+    const resizeTextArea = (index: number) => {
+        const textarea = textAreasRef.current[index];
+        if (textarea) {
+            textarea.style.height = 'auto'; // Reset height to calculate scrollHeight
+            textarea.style.height = `${textarea.scrollHeight}px`; // Set height based on scrollHeight
+        }
+    };
+
+    useEffect(() => {
+        fields.forEach((_, index) => {
+            setTimeout(() => resizeTextArea(index), 0);
+        });
+    }, [fields]);
+
 
     return (
         <Container>
-            <div style={{backgroundColor: 'rgb(28, 63, 93)', color: 'white', textAlign: 'center', fontSize: '18px'}}>{title}</div>
-            <Card style={{ height: '300px' }}>
-                {fields.map((field, index) => (
-                    <textarea
-                        key={index}
+            <div className="input-titles"><strong>{title}</strong></div>
+            <Card >
+                 {fields.map((field, index) => (
+                    <div key={index} className="input-section-container">
+                        <textarea
+                        ref={el => textAreasRef.current[index] = el}
                         value={field}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         onDrop={(e) => handleDrop(e, index)}
-                        onDragOver={handleDragOver}
-                        style={{ display: 'block', marginBottom: '10px', height: 'auto' }}
-                    />
+                        onDragOver={(e) => handleDragOver(e, field)}
+                        onDragLeave={handleDragLeave}    
+                        data-index={index}   
+                        style={{ 
+                            backgroundColor: highlightedOptions ? '#d3f3d3' : 'transparent',// Highlight color
+                        }}                 
+                        />
+                        {field === '' && (
+                            <button
+                                onClick={() => handleDeleteField(index)}
+                                className="delete-input"
+                            >
+                        x
+                        </button>
+                        )}
+                    </div>
                 ))}
-                <button onClick={addField}>+</button>
+                <button 
+                    onClick={addField}
+                >
+                    +</button>
             </Card>
         </Container>
     );
@@ -103,30 +158,40 @@ const LosMapper = () => {
     };
 
     return (
-        <div>
+        <>
             <Header/>
-            <Card style={{backgroundColor: 'rgb(28, 63, 93)', color: 'white', textAlign: 'center', fontSize: '18px'}}>
-                <strong>{pitch?.title}</strong>
-            </Card>
-            <Card style={{ display: 'flex', padding: '8px', border: 'white' }}>
-                <div style={{ display: 'inline' }}>
-                    {pitch?.mainActivity}
-                    <span>&nbsp;</span>{pitch?.challenge}
-                    <span>&nbsp;</span>{pitch?.outcome}
+            <Button className="save-button" onClick={updateLos}> Save </Button>
+            <div className="content-container" style={{display: "flex"}}>
+                {/* Column 1 */}
+                <div className="accordion-container">
+                    <AccordionWidget/>
+                </div> 
+                {/* Column 2 */}
+                <div className="user-content-container">
+                    {/* Column 2 row 1 */}
+                    <Card className="title-card">
+                        <strong>{pitch?.title}</strong>
+                    </Card>
+                    {/* Column 2 row 2 */}
+                    <Card className="details-card">
+                        <div style={{ display: 'inline' }}>
+                            {pitch?.mainActivity}
+                            <span>&nbsp;</span>{pitch?.challenge}
+                            <span>&nbsp;</span>{pitch?.outcome}
+                        </div>
+                    </Card>
+                    {/* Column 2 row 3 */}
+                    <div style={{ display: 'flex', justifyContent: 'space-around'}}>
+                        <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
+                        <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
+                        <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
+                        <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
+                        <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
+                    </div>
                 </div>
-            </Card>
-            <button onClick={updateLos}> Save </button>
-
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <AccordionWidget />
-                <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
-                <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
-                <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
-                <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
-                <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
             </div>
             <Footer/>
-        </div>
+        </>
     );
 };
 

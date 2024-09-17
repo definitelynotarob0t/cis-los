@@ -9,14 +9,8 @@ const ErrorNotification = () => {
     return
   }
 
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1,
-    backgroundColor: 'red'
-  }
   return (
-    <div style={style}>
+    <div className="error-notification">
       {error.error}
     </div>
   )

@@ -79,7 +79,7 @@ const ElevatorPitch = () => {
                     placeholder="e.g. Program Run Fast" 
                     value={title}
                     onChange={({ target }) => setTitle(target.value)}
-                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px', fontFamily: 'Rucksack, sans-serif' }}
+                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
                     />
                 </Form.Group>
                 <Form.Group>
@@ -112,7 +112,7 @@ const ElevatorPitch = () => {
                     style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
                      />
                 </Form.Group>
-                <Button type="submit" style={{backgroundColor: '#d3d3d3', color: 'black', border: '#d3d3d3'}}>Save</Button> 
+                <Button type="submit" className="save-button">Save</Button> 
             </Form>
      
             <Card 

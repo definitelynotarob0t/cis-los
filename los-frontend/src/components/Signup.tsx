@@ -75,7 +75,7 @@ const SignupForm = () => {
         < SuccessNotification />
         < Container
             fluid
-            className="d-flex vh-100 align-items-center justify-content-center"
+            className="d-flex vh-100 flex-start"
             style={{ minHeight: '100vh' }}
         >
             <Card className="p-4" style={{ backgroundColor: '#d3d3d3' }}>

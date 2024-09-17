@@ -1,16 +1,8 @@
-import React from 'react';
-
 const Footer = () => {
-    const footerStyle: React.CSSProperties = {
-        padding: '10px',
-        marginTop: 'auto',
-        backgroundColor: 'rgb(28, 63, 93)', 
-        color: 'white',
-        textAlign: 'center'
-    };
+
     
     return (
-        <div style={footerStyle}>
+        <div className='footer'>
             Consulting & Implementation Services
         </div>
     );

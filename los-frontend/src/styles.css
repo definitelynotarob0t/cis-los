@@ -1,8 +1,226 @@
 /* styles.css */
+
+/* Fonts */
+@font-face {
+    font-family: 'Rucksack Demi';
+    src: url('/fonts/rucksack-book-webfont.woff') format('woff');
+    font-weight: 300; /* Normal weight */
+    font-style: normal;
+}
+
+
+/* General */
+
+body {
+    font-family: 'Rucksack Demi', system-ui;
+    font-weight: 300;
+}
+
+h1 {
+    font-family: 'Rucksack Demi', system-ui;
+    font-weight: 500;
+}
+
+.save-button {
+    /* background-color: '#d3d3d3'; */
+    background-color: rgb(94, 198, 240);
+    color: black;
+    border: '#d3d3d3';
+    border-radius: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Notifications */
+
+.success-notification  {
+    border: solid;
+    padding: 10px;
+    border-width: 1px;
+    background-color: rgb(123, 170, 123);
+  }
+
+.error-notification {
+    border: solid;
+    padding: 10px;
+    border-width: 1px;
+    background-color: rgb(177, 129, 123);
+}
+
+/* HEADER */
+
+.navbar {
+    background-color: rgb(11, 64, 96); 
+    height: 143px;
+    padding: 0px;
+    
+}
+
+.header-contents {
+    margin: 0px 135px;
+    padding: 5px 0px;
+    width: 1170px;
+    height: 143px;
+    display: flex;
+    justify-content: flex-start;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: 14px;
+    align-items: center;
+}
+
+.navbar-nav {
+    padding: 12px 24px;
+}
+
+.navbar-logo {
+    height: 109px;
+    /* width: 109px; */
+    /* padding: 12px 24px; */
+}
+
+a {
+    cursor: pointer;
+}
+
+.navbar-item {
+    color: rgb(255, 255, 255) !important;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8.65px 0px;
+    margin: 0px 14.140px;
+    background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	outline: inherit;
+    text-transform: uppercase;
+
+}
+
+/* FOOTER */
+.footer {
+    padding: 10px;
+    margin-top: auto;
+    background-color: rgb(11, 64, 96); 
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+};
+
+
+
+/* LOS PAGE */
+
+/* Main layout  */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+
+.accordion-container {
+    /* max-width: 240px; */
+    display: flex;
+    flex-basis: 10%
+}
+
+.user-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 10px;
+    flex-basis: 90%;
+    padding-left: 10px;
+    max-height: 60px;
+}
+
+
+
+/* Accordion styling */
 .accordion-button {
-    background-color: rgb(28, 63, 93) !important;
+    background-color: rgb(11, 64, 96) !important;
     color: white !important;
     text-align: center; 
-    font-size: 20px; 
-    width: 124px;
+    font-size: 20px;
+    width: 152px;
 }
+
+.accordion-body {
+    width: 152px;
+    max-height: 430px;
+    overflow-y: auto;
+    padding-right: 10px;
+    padding-left: 4px;
+}
+
+.accordion-header {
+    cursor: pointer;
+}
+
+/* Title and details cards */
+.title-card {
+    background-color:  rgb(11, 64, 96);
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 0;
+}
+
+.details-card {
+    padding: 8px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+
+/* Input sections layout */
+
+.input-sections {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+
+}
+
+.input-section-container {
+    position: relative;
+}
+
+
+.input-titles {
+    background-color:  rgb(11, 64, 96);
+    color: white;
+    text-align: center;
+    font-size: 18px;
+}
+
+.delete-input {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    height: 16px;
+    width: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(197, 140, 140);
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 13px;
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    overflow: hidden; /* Hide scrollbar */
+    box-sizing: border-box;
+    font-family: 'Rucksack Demi', system-ui;
+    font-weight: 250;
+}
+

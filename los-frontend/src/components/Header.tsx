@@ -3,6 +3,7 @@ import { AppDispatch } from "../store"
 import { useDispatch } from "react-redux"
 import { logout } from "../reducers/userReducer"
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import logo from "../images/logo.png"
 
 const Header = () => {
 
@@ -11,18 +12,6 @@ const Header = () => {
     const location = useLocation();
     const currentPath = location.pathname;
 
-    const headerItem = {
-        paddingLeft: '10px'
-    }
-
-    const navBar = {
-        padding: '10px',
-        marginBottom: '10px',
-        display: 'flex', 
-        gap: '15px', 
-        backgroundColor: 'rgb(28, 63, 93)', 
-        color: 'white',
-    }
 
     const handleLogout = () => {
         dispatch(logout())
@@ -30,19 +19,26 @@ const Header = () => {
     }
 
     return (
-        <Navbar style={navBar}>
-            <Navbar.Brand>CIS Logo</Navbar.Brand>
+        <Navbar>
+            < div className= 'header-contents'>
+            {/* <Navbar.Brand className="navbar-logo" src={logo} alt="CIS Logo"></Navbar.Brand> */}
+            <a href="https://consultingis.com.au/"><img 
+                src={logo}
+                alt="CIS Logo" 
+                className="navbar-logo"
+            /></a>
             <Nav>
                 {currentPath !== '/login' && (
                     <>
                     {/* have both 'elevator-pitch' and 'line-of-sight' in header - make the one that isn't current page not-linkable and dark colour */}
-                        {currentPath !== '/elevator-pitch' && <Nav.Link as={Link} to="/elevator-pitch" style={headerItem}>Elevator Pitch</Nav.Link>}
-                        {currentPath !== '/line-of-sight' && <Nav.Link as={Link} to="/line-of-sight" style={headerItem}>Line of Sight</Nav.Link>}
-                        <button onClick={handleLogout} style={headerItem}>Logout</button>
-                        <button > Export as PDF </button>
+                        {currentPath !== '/elevator-pitch' && <Nav.Link as={Link} to="/elevator-pitch" className='navbar-item'>Elevator Pitch</Nav.Link>}
+                        {currentPath !== '/line-of-sight' && <Nav.Link as={Link} to="/line-of-sight"className='navbar-item'>Line of Sight</Nav.Link>}
+                        <button onClick={handleLogout} className='navbar-item'>Logout</button>
+                        <button className='navbar-item'> Export as PDF </button>
                     </>
                 )}
             </Nav>
+            </div>
         </Navbar>
     );
 }
