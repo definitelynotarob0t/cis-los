@@ -17,7 +17,7 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid"}}>
+                        className="answer-box">
                             {answer} 
                         </div>
                     ))}
@@ -32,7 +32,7 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid", paddingLeft: '2px' }}>
+                        className="answer-box">
                             {answer} 
                         </div>
                     ))}
@@ -47,7 +47,8 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid" }}>
+                        className="answer-box"
+                        >
                             {answer} 
                         </div>
                     ))}
@@ -62,7 +63,7 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid" }}>
+                        className="answer-box">
                             {answer} 
                         </div>
                     ))}
@@ -78,7 +79,7 @@ const AccordionWidget = () => {
                         key={index}  
                         draggable
                         onDragStart={(e) => handleDragStart(e, answer)}
-                        style={{ cursor: "grab", marginBottom: "5px", border: "1px solid" }}>
+                        className="answer-box">
                             {answer} 
                         </div>
                     ))}

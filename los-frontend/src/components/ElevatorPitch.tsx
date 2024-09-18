@@ -67,63 +67,62 @@ const ElevatorPitch = () => {
     }
 
     return (
-        <div>
+        <div className="content">
             <Header />
-            <div style={{ display: 'flex',flexDirection: 'row', height: '85vh', gap: '40px', margin: '20px'}}>
-            <Form style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '50%', overflowY: 'auto', padding: '10px'}} 
-            onSubmit={updatePitch}>
-                <Form.Group>
-                    <Form.Label style={{fontSize: '18px' }}> Project Title </Form.Label>
-                    <Form.Control
-                    type='text'
-                    placeholder="e.g. Program Run Fast" 
-                    value={title}
-                    onChange={({ target }) => setTitle(target.value)}
-                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
-                    />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what is your main activity? </Form.Label>
-                    <Form.Control
-                    as="textarea" 
-                    placeholder="e.g. We will design and implement a structured training plan with four weekly runs over varying distances, terrains and speeds."
-                    value={mainActivity}
-                    onChange={({ target }) => setMainActivity(target.value)}
-                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
-                     />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what challenge is your program addressing? </Form.Label>
-                    <Form.Control
-                    as="textarea" 
-                    placeholder="e.g. This will address the club’s declining performance compared to competitors. "
-                    value={challenge}
-                    onChange={({ target }) => setChallenge(target.value)}
-                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
-                     />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label style={{fontSize: '18px' }}> In one sentence, what is the outcome (change) you are trying to achieve? </Form.Label>
-                    <Form.Control
-                    as="textarea" 
-                    placeholder="e.g. It will enhance runners’ performance, increasing the likelihood of winning more races and achieving national recognition as the top run club."
-                    value={outcome}
-                    onChange={({ target }) => setOutcome(target.value)}
-                    style={{ width: '100%', marginBottom: '16px', fontSize: '18px'}}
-                     />
-                </Form.Group>
-                <Button type="submit" className="save-button">Save</Button> 
-            </Form>
+            <div className="pitch-content">
+                <Form className="pitch-form"
+                onSubmit={updatePitch}>
+                    <Form.Group>
+                        <Form.Label style={{fontSize: '18px' }}> Project Title </Form.Label>
+                        <Form.Control
+                        type='text'
+                        placeholder="e.g. Program Run Fast" 
+                        value={title}
+                        onChange={({ target }) => setTitle(target.value)}
+                        className="pitch-input"
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label style={{fontSize: '18px' }}> In one sentence, what is your <strong>main activity?</strong> </Form.Label>
+                        <Form.Control
+                        as="textarea" 
+                        placeholder="e.g. We will design and implement a structured training plan with four weekly runs over varying distances, terrains and speeds."
+                        value={mainActivity}
+                        onChange={({ target }) => setMainActivity(target.value)}
+                        className="pitch-input"
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label style={{fontSize: '18px' }}> In one sentence, what <strong>challenge</strong> is your program addressing? </Form.Label>
+                        <Form.Control
+                        as="textarea" 
+                        placeholder="e.g. This will address the club’s declining performance compared to competitors. "
+                        value={challenge}
+                        onChange={({ target }) => setChallenge(target.value)}
+                        className="pitch-input"
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label style={{fontSize: '18px' }}> In one sentence, what is the <strong>outcome</strong> (change) you are trying to achieve? </Form.Label>
+                        <Form.Control
+                        as="textarea" 
+                        placeholder="e.g. It will enhance runners’ performance, increasing the likelihood of winning more races and achieving national recognition as the top run club."
+                        value={outcome}
+                        onChange={({ target }) => setOutcome(target.value)}
+                        className="pitch-input"
+                        />
+                    </Form.Group>
+                    <Button type="submit" className="save-button">Save</Button> 
+                </Form>
      
-            <Card 
-            style={{fontSize: '25px', width: '50%', overflowY: 'auto', padding: '20px'}}>
-                 <h1>{title}</h1> 
-                <div style={{ display: 'inline' }}>
-                    {mainActivity}<span>&nbsp;</span>{challenge}<span>&nbsp;</span>{outcome}
-                </div>
-            </Card>
-        </div>
-       <Footer />
+                <Card className="pitch-card">
+                    <h1>{title}</h1> 
+                    <div style={{ display: 'inline' }}>
+                        {mainActivity}<span>&nbsp;</span>{challenge}<span>&nbsp;</span>{outcome}
+                    </div>
+                </Card>
+            </div>
+            <Footer />
         </div>
     )
 }

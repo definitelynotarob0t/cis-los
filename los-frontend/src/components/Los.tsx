@@ -15,7 +15,6 @@ import Footer from "./Footer";
 const InputSection = ({ title, fields, setFields, addField}: 
     { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void}) => {
 
-    const [highlightedOptions, setHighlightedOptions] = useState<string | null>(null);
 
     const textAreasRef = useRef<(HTMLTextAreaElement | null)[]>([]);
 
@@ -34,27 +33,20 @@ const InputSection = ({ title, fields, setFields, addField}:
         setFields(updatedFields);
 
         e.preventDefault();
-        setHighlightedOptions(null); // Remove highlight after drop
 
         setTimeout(() => resizeTextArea(index), 0);
     };
 
-
-
     const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>, field: string | null) => {
-        setHighlightedOptions(field)
         e.preventDefault();
     };
 
-    const handleDragLeave = () => {
-        setHighlightedOptions(null);
-    };
 
     const handleDeleteField = (index: number) => {
         const updatedFields = fields.filter((_, i) => i !== index);
         setFields(updatedFields);
 
-      };
+    };
 
     const resizeTextArea = (index: number) => {
         const textarea = textAreasRef.current[index];
@@ -83,11 +75,8 @@ const InputSection = ({ title, fields, setFields, addField}:
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         onDrop={(e) => handleDrop(e, index)}
                         onDragOver={(e) => handleDragOver(e, field)}
-                        onDragLeave={handleDragLeave}    
-                        data-index={index}   
-                        style={{ 
-                            backgroundColor: highlightedOptions ? '#d3f3d3' : 'transparent',// Highlight color
-                        }}                 
+                        data-index={index}  
+                        className="input-textarea"   
                         />
                         {field === '' && (
                             <button
@@ -101,6 +90,7 @@ const InputSection = ({ title, fields, setFields, addField}:
                 ))}
                 <button 
                     onClick={addField}
+                    className="add-input-button"
                 >
                     +</button>
             </Card>
@@ -158,40 +148,40 @@ const LosMapper = () => {
     };
 
     return (
-        <>
-            <Header/>
-            <Button className="save-button" onClick={updateLos}> Save </Button>
-            <div className="content-container" style={{display: "flex"}}>
-                {/* Column 1 */}
-                <div className="accordion-container">
-                    <AccordionWidget/>
-                </div> 
-                {/* Column 2 */}
-                <div className="user-content-container">
-                    {/* Column 2 row 1 */}
-                    <Card className="title-card">
-                        <strong>{pitch?.title}</strong>
-                    </Card>
-                    {/* Column 2 row 2 */}
-                    <Card className="details-card">
-                        <div style={{ display: 'inline' }}>
-                            {pitch?.mainActivity}
-                            <span>&nbsp;</span>{pitch?.challenge}
-                            <span>&nbsp;</span>{pitch?.outcome}
-                        </div>
-                    </Card>
-                    {/* Column 2 row 3 */}
-                    <div style={{ display: 'flex', justifyContent: 'space-around'}}>
-                        <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
-                        <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
-                        <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
-                        <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
-                        <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
+        <div className="content">
+        <Header/>
+        <Button className="save-button" onClick={updateLos}> Save </Button>
+        <div className="los-container" style={{display: "flex"}}>
+            {/* Column 1 */}
+            <div className="accordion-container">
+                <AccordionWidget/>
+            </div> 
+            {/* Column 2 */}
+            <div className="user-los-container">
+                {/* Column 2 row 1 */}
+                <Card className="title-card">
+                    <strong>{pitch?.title}</strong>
+                </Card>
+                {/* Column 2 row 2 */}
+                <Card className="details-card">
+                    <div style={{ display: 'inline' }}>
+                        {pitch?.mainActivity}
+                        <span>&nbsp;</span>{pitch?.challenge}
+                        <span>&nbsp;</span>{pitch?.outcome}
                     </div>
+                </Card>
+                {/* Column 2 row 3 */}
+                <div style={{ display: 'flex', justifyContent: 'space-around'}}>
+                    <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
+                    <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
+                    <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
+                    <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
+                    <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
                 </div>
             </div>
-            <Footer/>
-        </>
+        </div>
+        <Footer/>
+        </div>
     );
 };
 
