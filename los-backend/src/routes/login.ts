@@ -20,7 +20,7 @@ router.post('/', async (req, res, next) => {
       })
     
     if (!user) {
-        res.status(401).json({ error: 'Email not registered. Please try again or create a new account.' });
+        res.status(401).json({ error: 'Email not registered' });
     }
 
     // Check if user exists and password is correct
@@ -53,7 +53,7 @@ router.post('/', async (req, res, next) => {
           // Send response with JWT and user details
           res.status(200).send({ token, name: user.name, id: user.id, pitchId: user.pitchId })
     // } else {
-    //     res.status(401).json({ error: 'Incorrect password. Please try again.' });
+    //     res.status(401).json({ error: 'Incorrect password' });
     //     return
     }  
   } catch (error) {

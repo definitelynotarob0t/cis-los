@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Card, Container, Button } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import { RootState } from "../store";
 import React, { useState, useEffect, SyntheticEvent, useRef } from "react";
 import AccordionWidget from "./Accordion";
@@ -149,8 +149,7 @@ const LosMapper = () => {
 
     return (
         <div className="content">
-        <Header/>
-        <Button className="save-button" onClick={updateLos}> Save </Button>
+        <Header updateLos={updateLos} />
         <div className="los-container" style={{display: "flex"}}>
             {/* Column 1 */}
             <div className="accordion-container">

@@ -55,7 +55,7 @@ router.put('/:id', async (req, res, next) => {
 
         // Validate new password
         if (!newPassword || newPassword.length < 8) {
-            res.status(400).json({ error: 'Password must be at least 8 characters long. Please try again.' });
+            res.status(400).json({ error: 'Password must be at least 8 characters long' });
             return;
         }
 
@@ -85,7 +85,7 @@ router.post('/', async (req, res, next) => {
 
     // Validate password
     if (!password || password.length < 8) {
-        res.status(400).json({ error: 'Password must be at least 8 characters long. Please try again.' }).end();
+        res.status(400).json({ error: 'Password must be at least 8 characters long.' }).end();
         return;
     }
 

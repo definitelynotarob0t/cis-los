@@ -6,10 +6,9 @@ import { setUser } from '../reducers/userReducer';
 import userService from '../services/userService';
 import { notifySuccess } from '../reducers/notificationReducer';
 import { notifyError } from '../reducers/errorReducer';
-import SuccessNotification from './SuccessNotification';
-import ErrorNotification from './ErrorNotification';
 import { useNavigate } from 'react-router-dom'
 import laptop from '../images/laptop.jpeg'
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 const SignupForm = () => {
@@ -18,10 +17,14 @@ const SignupForm = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [isLogin, setIsLogin] = useState(true);
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const dispatch = useDispatch<AppDispatch>(); 
     const navigate = useNavigate();
 
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    }
 
     const handleLogin = async (event: SyntheticEvent) => {
         event.preventDefault();
@@ -50,7 +53,7 @@ const SignupForm = () => {
             return;
         } 
         if (password.length < 8) {
-            dispatch(notifyError("Password must be 8 characters or longer"));
+            dispatch(notifyError("Password must be at least 8 characters"));
             return;
         }
 
@@ -72,8 +75,6 @@ const SignupForm = () => {
     }
     return (
         <div >
-        < ErrorNotification />
-        < SuccessNotification />
         < div className="signup-container">
             <Card className="login-form" style={{ backgroundColor: '#d3d3d3' }}>
                 <Row>
@@ -103,20 +104,30 @@ const SignupForm = () => {
                         <Form.Group style={{marginTop: '10px'}}>
                             <Form.Label style={{fontSize: '14px'}}> Password </Form.Label> 
                             <Form.Control
-                                type="password"
-                                name="name"
+                                type={passwordVisible ? "text" : "password"}
+                                name="password"
                                 value={password}
+                                id="pass"
                                 onChange={({ target }) => setPassword(target.value)}
                                 isInvalid={password.length > 0 && password.length < 8}
                             />
-                            <Form.Control.Feedback type="invalid">Password must be 8 characters or longer</Form.Control.Feedback>
+                            {/* <i 
+                                className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`} 
+                                style={isLogin? { position: 'absolute', left: '-5px', top: '50%'}: { position: 'absolute', left: '-5px', top: '53%'}}
+                                onClick={togglePasswordVisibility}
+                            /> */}
+
+                         {!isLogin && (
+                            <Form.Control.Feedback type="invalid">Password must be at least 8 characters</Form.Control.Feedback>
+                         )}
                         </Form.Group>
                         {!isLogin && (
                         <Form.Group style={{marginTop: '10px'}}>
                             <Form.Label style={{fontSize: '14px'}}> Confirm password </Form.Label>
                             <Form.Control
-                                type="password"
+                                type={passwordVisible ? "text" : "password"}
                                 name="passwordConfirm"
+                                id="pass"
                                 value={passwordConfirm}
                                 onChange={({ target }) => setPasswordConfirm(target.value)}
                                 isInvalid={password!=passwordConfirm}
@@ -139,7 +150,7 @@ const SignupForm = () => {
                             </Button>
                             </>
                         ) : (
-                            <Button type="submit" className="login-button"> 
+                            <Button type="submit" className="login-button" style={isLogin ? {width: '201px'} : { width: '232px'}}> 
                             Sign-up
                             </Button>
                         )}
@@ -152,7 +163,7 @@ const SignupForm = () => {
                             ) : (
                                 <>
                                     <p>Already have an account?</p>
-                                    <Button variant="link" className="signup-link" onClick={() => setIsLogin(!isLogin)}>Login</Button>
+                                    <Button variant="link" className="signup-link" onClick={() => setIsLogin(!isLogin)}>Log in</Button>
                                 </>
                             )}
                         </div>

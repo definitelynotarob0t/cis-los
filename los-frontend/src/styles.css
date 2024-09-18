@@ -1,35 +1,72 @@
 /* styles.css */
 
-/* Fonts */
+/* Fonts  */
 
-/* @font-face {
-    font-family: 'Rucksack Demi';
-    src: url('/fonts/rucksack-book-webfont.woff') format('woff');
+@font-face {
+    font-family: 'RuckSack Book';
+    src: url('fonts/RuckSack/RuckSack-Book.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RuckSack Black';
+    src: url('fonts/RuckSack/RuckSack-Black.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RuckSack Medium';
+    src: url('fonts/RuckSack/RuckSack-Medium.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RuckSack Bold';
+    src: url('fonts/RuckSack/RuckSack-Bold.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RuckSack Demi';
+    src: url('fonts/RuckSack/RuckSack-Demi.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Demi.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RuckSack Light';
+    src: url('fonts/RuckSack/RuckSack-Light.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Light.woff') format('woff');
     font-weight: 300;
     font-style: normal;
-} */
-
+    font-display: swap;
+}
 
 /* General */
 
 body {
-    /* font-family: 'Rucksack Demi', system-ui; */
-    font-family: system-ui;
-    font-weight: 300;
+    font-family: 'Rucksack Light', system-ui;
+    font-weight: 400;
 
 }
 
 h1 {
-    font-family: 'Rucksack Demi', system-ui;
-    font-weight: 500;
-}
-
-.save-button {
-    /* background-color: '#d3d3d3'; */
-    background-color: rgb(94, 198, 240);
-    color: black;
-    border: '#d3d3d3';
-    border-radius: 0;
+    font-family: 'Rucksack Light', system-ui;
+    font-weight: 600;
 }
 
 button {
@@ -41,7 +78,7 @@ a {
 }
 
 strong {
-    font-weight: 500;
+    font-family: 'RuckSack Demi'
 }
 
 html, body {
@@ -55,7 +92,9 @@ html, body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
+
 
 /* HEADER */
 
@@ -70,7 +109,7 @@ html, body {
     margin: 0px 135px;
     padding: 5px 0px;
     width: 1170px;
-    height: 143px;
+    min-height: 143px;
     display: flex;
     justify-content: flex-start;
     flex-basis: auto;
@@ -78,23 +117,23 @@ html, body {
     flex-shrink: 1;
     font-size: 14px;
     align-items: center;
+    font-weight: 250;
 }
 
-.navbar-nav {
-    padding: 12px 24px;
-}
 
 .navbar-logo {
-    height: 109px;
-    /* width: 109px; */
-    /* padding: 12px 24px; */
+    /* height: 109px !important;
+    width: 109px !important; */
+    height: 133px;
+    width: 157px;
+    padding: 12px 24px;
 }
 
 .navbar-item {
     color: rgb(255, 255, 255) !important;
     font-size: 14px;
     cursor: pointer;
-    padding: 8.65px 0px;
+    padding: 5px;
     margin: 0px 14.140px;
     background: none;
 	border: none;
@@ -102,7 +141,14 @@ html, body {
 	font: inherit;
 	outline: inherit;
     text-transform: uppercase;
+}
 
+.save-button {
+    background-color: rgb(94, 198, 240) !important;
+    color: black !important;
+    border: '#d3d3d3' !important;
+    border-radius: 0 !important;
+    padding: 0px 5px !important; 
 }
 
 /* FOOTER */
@@ -161,7 +207,6 @@ html, body {
     margin-top: 24px;
     margin-bottom: 10px;
     height: 36px;
-    width: 201px;
     background-color: rgb(11, 64, 96);
     border: none;
     }
