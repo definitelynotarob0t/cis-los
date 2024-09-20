@@ -17,6 +17,8 @@ const ElevatorPitch = () => {
     const [challenge, setChallenge] = useState('')
     const [outcome, setOutcome] = useState('')
 
+    const dispatch = useAppDispatch()
+
     const pitchId = useSelector((state: RootState) => state.user?.user?.pitchId);
     const userId = useSelector((state: RootState) => state.user?.user?.id);
 
@@ -26,8 +28,6 @@ const ElevatorPitch = () => {
         state.pitch.pitch 
         : null
     });
-
-    const dispatch = useAppDispatch()
 
     // Pre-fill input fields if a pitch exists
     useEffect(() => {
@@ -42,20 +42,21 @@ const ElevatorPitch = () => {
             setChallenge(pitch.challenge || '');
             setOutcome(pitch.outcome || '');
         }
-    }, [pitch, dispatch, pitchId]);
+    }, [pitch, dispatch]);
+
 
     // Update pitch
     const updatePitch = async (event: SyntheticEvent) => {
         event.preventDefault()
 
-        if (userId) {
+        if (userId && pitchId !== undefined) {
             const updatedPitch: Pitch = {
-                id: parseInt(pitchId),
+                id: pitchId,
                 title,
                 mainActivity,
                 challenge,
                 outcome,
-                userId: parseInt(userId)
+                userId
             }
             dispatch(editPitch(updatedPitch))
 

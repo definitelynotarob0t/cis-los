@@ -8,7 +8,8 @@ import { notifySuccess } from '../reducers/notificationReducer';
 import { notifyError } from '../reducers/errorReducer';
 import { useNavigate } from 'react-router-dom'
 import road from '../images/road.jpg'
-import 'bootstrap-icons/font/bootstrap-icons.css';
+// import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 
 const SignupForm = () => {

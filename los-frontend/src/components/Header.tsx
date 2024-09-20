@@ -5,15 +5,40 @@ import { logout } from "../reducers/userReducer"
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../images/logo.png"
 import { SyntheticEvent, useState } from "react";
+import html2pdf from "html2pdf.js";
 
+interface HeaderProps {
+    updateLos?: (event: SyntheticEvent) => void; // Make updateLos optional since it is not required from Elevator
+  }
+  
 
-
-const Header = ({ updateLos } : {updateLos: (event: SyntheticEvent) => void }) => {
+const Header: React.FC<HeaderProps> = ({ updateLos }) => {
 
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate();
     const location = useLocation();
     const currentPath = location.pathname;
+
+    const exportToPDF = () => {
+        let element: HTMLElement | null = null;
+
+        if (currentPath === '/elevator-pitch') {
+            element = document.querySelector('.pitch-content');
+        } else if (currentPath === '/line-of-sight') {
+            element = document.querySelector('.user-los-container');
+        }
+
+        if (element) {
+            const options = {
+                filename: 'line-of-sight.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'landscape' }
+            }
+            html2pdf().set(options).from(element).save()
+        } else {
+            console.error('Element not found for PDF export.');
+        }
+    }
 
     const [showModal, setShowModal] = useState(false);
 
@@ -62,7 +87,7 @@ const Header = ({ updateLos } : {updateLos: (event: SyntheticEvent) => void }) =
                                 <button onClick={handleLogout} className='navbar-item' id="logout-button" data-tooltip="Log out">
                                     <i className="bi bi-box-arrow-right"></i>
                                 </button>
-                                <button className='navbar-item' id="pdf-button" data-tooltip="Export to PDF">
+                                <button className='navbar-item' id="pdf-button" data-tooltip="Export to PDF" onClick={exportToPDF}>
                                     <i className="bi bi-file-pdf"></i>
                                 </button>
                             </div>

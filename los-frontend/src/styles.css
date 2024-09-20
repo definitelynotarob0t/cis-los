@@ -151,13 +151,18 @@ html, body {
     
 }
 
-.navbar-item.primary,
+/* .navbar-item.primary, */
 .save-button {
     background-color:rgb(34, 91, 126);
     padding: 10px;
     box-shadow: 2px 2px 2px black;
     color: white;
     border: none;
+}
+
+.navbar-item.primary {
+    padding: 10px 0px;
+    border-bottom: 3px white solid;
 }
 
 .bi-box-arrow-right, 

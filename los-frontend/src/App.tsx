@@ -22,8 +22,9 @@ function App() {
   const user = useSelector((state: any) => state.user.user); 
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log(store.getState())
+  // console.log(store.getState())
 
+  // Fetch data
   useEffect(() => {
     dispatch(initialiseUser());
 
@@ -49,16 +50,10 @@ function App() {
   
       getUserPitch();
       getUserLos();
+
     }
 
   }, [dispatch]);
-
-  useEffect(() => {
-    // Store the current location in local storage before unmounting
-    return () => {
-      localStorage.setItem('lastVisitedRoute', location.pathname);
-    };
-  }, [location]);
 
 
   return (
@@ -66,7 +61,7 @@ function App() {
       < ErrorNotification />
       < SuccessNotification />
 
-      <div className="content">
+      <div>
         <Routes>
           <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/elevator-pitch" />} />
           <Route path="/elevator-pitch" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />

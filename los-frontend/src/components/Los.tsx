@@ -23,6 +23,21 @@ const InputSection = ({ title, fields, setFields, addField}:
         updatedFields[index] = value;
         setFields(updatedFields);
 
+
+        let fieldTitle = title.toLowerCase()
+        if (title === 'Outcomes and Impacts') {
+            fieldTitle = "outcomes"
+        } 
+
+        // Save the updated field in localStorage with dynamic keys
+        const storedLosData = JSON.parse(localStorage.getItem('losData') || '{}');
+        const losData = {
+            ...storedLosData,
+            [fieldTitle]: updatedFields 
+        };
+        localStorage.setItem('losData', JSON.stringify(losData));
+
+
         setTimeout(() => resizeTextArea(index), 0);
     };
 
@@ -38,7 +53,7 @@ const InputSection = ({ title, fields, setFields, addField}:
     };
 
     const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement> ) => {
-        e.preventDefault();
+        e.preventDefault();  // Allows fields to be valid drop target
     };
 
 
@@ -75,8 +90,7 @@ const InputSection = ({ title, fields, setFields, addField}:
                     onChange={(e) => handleInputChange(0, e.target.value)}
                     onDrop={(e) => handleDrop(e, 0)}
                     onDragOver={(e) => handleDragOver(e)}
-                />
-                                            
+                />                          
                 ) : (
                  fields.map((field, index) => (
                     <div key={index} className="input-section-container" >
@@ -100,11 +114,9 @@ const InputSection = ({ title, fields, setFields, addField}:
                     </div>
                 ))
                 )}
-                <button 
-                    onClick={addField}
-                    className="add-input-button"
-                >
-                    +</button>
+                <button onClick={addField} className="add-input-button" >
+                    +
+                </button>
             </Card>
         </Container>
     );
@@ -124,24 +136,33 @@ const LosMapper = () => {
     const los = useSelector((state: RootState) => state.los?.los?.id === pitchId ? state.los.los : null);
     const pitch = useSelector((state: RootState) => state.pitch?.pitch?.id === pitchId ? state.pitch.pitch : null);
 
+    // Pre-fill fields
     useEffect(() => {
-        if (pitchId && !los) {
+        const localLos = localStorage.getItem('losData');
+        if (localLos) { // If user has made changes, fetch LOS from local storage
+            const storedLos = JSON.parse(localLos);
+            setInputFields(storedLos.inputs || ['']);
+            setActivityFields(storedLos.activities || ['']);
+            setOutcomeFields(storedLos.outcomes || ['']);
+            setUsageFields(storedLos.usages || ['']);
+            setOutputFields(storedLos.outputs || ['']);
+        } else if (pitchId && !los) { // If user hasn't made changes and no LOS is found in redux, fetch LOS from API (initial load)
             dispatch(fetchLos(pitchId));
         }
-        
-        if (los) {
+    
+        if (los && !localLos) { // If user hasn't made changes and LOS is found in redux, fetch LOS from redux
             setInputFields(los.inputs || ['']);
             setActivityFields(los.activities || ['']);
             setOutcomeFields(los.outcomes || ['']);
             setUsageFields(los.usages || ['']);
             setOutputFields(los.outputs || ['']);
         }
-        
-    }, [los, dispatch, pitchId]);
+    }, [los, dispatch]);
 
+    // Save logic
     const updateLos = async (event: SyntheticEvent) => {
         event.preventDefault();
-        if (userId) {
+        if (userId && pitchId !== undefined) {
             const updatedLos: Los = {
                 id: pitchId,
                 inputs: inputFields,
@@ -151,8 +172,11 @@ const LosMapper = () => {
                 outcomes: outcomeFields,
                 userId: userId
             };
+
             dispatch(editLos(updatedLos));
             dispatch(notifySuccess("Saved"));
+
+            localStorage.removeItem('losData');
         } else {
             console.error('User ID is not available');
             dispatch(notifyError("Error updating line-of-sight"));
