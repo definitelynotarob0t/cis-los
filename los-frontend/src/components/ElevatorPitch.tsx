@@ -73,7 +73,7 @@ const ElevatorPitch = () => {
                 <Form className="pitch-form"
                 onSubmit={updatePitch}>
                     <Form.Group>
-                        <Form.Label style={{fontSize: '18px' }}> Project Title </Form.Label>
+                        <Form.Label style={{fontSize: '18px' }}> <strong> Project Title</strong> </Form.Label>
                         <Form.Control
                         type='text'
                         placeholder="e.g. Program Run Fast" 
@@ -112,7 +112,7 @@ const ElevatorPitch = () => {
                         className="pitch-input"
                         />
                     </Form.Group>
-                    <Button type="submit" className="save-button">Save</Button> 
+                    <Button type="submit" className="save-button">SAVE</Button> 
                 </Form>
      
                 <Card className="pitch-card">

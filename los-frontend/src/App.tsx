@@ -14,6 +14,8 @@ import { AppDispatch } from "./store"
 import losService from "./services/losService"
 import { setLos } from "./reducers/losReducer"
 import { Routes, Route, Navigate } from 'react-router-dom'
+import ForgotPasswordForm from "./components/ForgotPassword";
+import PasswordResetForm from './components/PasswordReset'
 
 
 function App() {
@@ -69,6 +71,8 @@ function App() {
           <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/elevator-pitch" />} />
           <Route path="/elevator-pitch" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
           <Route path="/line-of-sight" element={user ? <LosMapper /> : <Navigate to="/login" />} />
+          <Route path="/forgot-password"  element={<ForgotPasswordForm />}/>
+          <Route path="/reset-password" element={<PasswordResetForm />} />
         </Routes>
       </div>
 

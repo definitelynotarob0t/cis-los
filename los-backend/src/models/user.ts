@@ -40,6 +40,14 @@ UserModel.init({
     type: DataTypes.INTEGER,
     allowNull: false,
     references: { model: 'pitches', key: 'id' }
+  },
+  resetToken: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }, 
+  resetTokenExpiry: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 }, {
   sequelize,

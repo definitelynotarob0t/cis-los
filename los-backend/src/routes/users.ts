@@ -3,9 +3,11 @@ import express from 'express';
 import UserModel from '../models/user';
 import PitchModel from '../models/pitch';
 import LosModel from '../models/los';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
+import { Op } from 'sequelize';
 
 const router = express.Router();
-
 
 // Get all users
 router.get('/', async (_req, res, next) => {
@@ -30,11 +32,6 @@ router.get('/:id', async (req, res, next) => {
         const user = await UserModel.findOne({
             where: { id: req.params.id},
             attributes: ['id', 'email', 'name', 'pitchId'],
-            // include: { 
-            //     model: PitchModel, 
-            //     attributes: ['id', 'title'], 
-            //     required: false 
-            // }
         })
 
         if (user) {
@@ -47,36 +44,6 @@ router.get('/:id', async (req, res, next) => {
         next(error)
     }
 })
-
-// Update user password 
-router.put('/:id', async (req, res, next) => {
-    try {
-        const { password: newPassword } = req.body;
-
-        // Validate new password
-        if (!newPassword || newPassword.length < 8) {
-            res.status(400).json({ error: 'Password must be at least 8 characters long' });
-            return;
-        }
-
-        const userToUpdate = await UserModel.findByPk(req.params.id);
-
-        if (!userToUpdate) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
-
-        const saltRounds = 10;
-        const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
-
-        await userToUpdate.update({ passwordHash: newPasswordHash });
-
-        res.status(200).json({ message: 'Password updated successfully' });
-    } catch (error) {
-        next(error);
-    }
-}); // implement validation - user inputs email and old password before changing? ... email sent to user saying password updated?
-
 
 
 // Create new user
@@ -146,13 +113,104 @@ router.post('/', async (req, res, next) => {
 })
 
 
+// Reset user password and email a reset link
+router.post('/forgot-password', async (req, res, next) => {
+    const { email } = req.body;
+    
+    try {
+        const user = await UserModel.findOne({ where: { email } });
+
+        if (!user) {
+            res.status(404).send('User not found');
+            return
+        }
+
+        // Generate reset token and 5 minute expiration
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetTokenExpiry = Date.now() + (5 * 60 * 1000); // 5 minutes
+
+        // Save reset token and expiry to user
+        await user.update({
+            resetToken,
+            resetTokenExpiry
+        });
+
+        // Send email with reset link
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}&email=${email}`;
+
+        const mailOptions = {
+            to: email,
+            subject: 'Password Reset Request',
+            html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 5 minutes.</p>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.send('Reset email sent');
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+// Update user password after reset
+router.put('/reset-password', async (req, res, next) => {
+    try {
+        const { token, newPassword, email } = req.body;
+
+        // Validate new password
+        if (!newPassword || newPassword.length < 8) {
+            res.status(400).json({ error: 'Password must be at least 8 characters long' });
+            return
+        }
+
+        // Find the user by resetToken and check if token is still valid
+        const user = await UserModel.findOne({
+            where: {
+                email,
+                resetToken: token,
+                resetTokenExpiry: { [Op.gt]: Date.now() } 
+            }
+        });
+
+        if (!user) {
+            res.status(404).json({ error: 'Invalid or expired token' });
+            return
+        }
+
+        // Hash the new password
+        const saltRounds = 10;
+        const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+        // Update the password and clear the reset token fields
+        await user.update({
+            passwordHash: newPasswordHash,
+            resetToken: null,
+            resetTokenExpiry: null
+        });
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 // Remove user
 router.delete('/:id', async (req, res, next) => {
     try {
         const userToDelete = await UserModel.findByPk(req.params.id)
         if (userToDelete) {
             await userToDelete.destroy();
-            res.status(204)
+            res.status(204).end();
         } else {
             res.status(404).json({ error: 'User not found' })
             return

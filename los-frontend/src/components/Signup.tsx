@@ -7,7 +7,7 @@ import userService from '../services/userService';
 import { notifySuccess } from '../reducers/notificationReducer';
 import { notifyError } from '../reducers/errorReducer';
 import { useNavigate } from 'react-router-dom'
-import laptop from '../images/laptop.jpeg'
+import road from '../images/road.jpg'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
@@ -100,6 +100,7 @@ const SignupForm = () => {
                                 name="email"
                                 onChange={({ target }) => setEmail(target.value)}
                             />
+
                         </Form.Group>
                         <Form.Group style={{marginTop: '10px'}}>
                             <Form.Label style={{fontSize: '14px'}}> Password </Form.Label> 
@@ -111,11 +112,11 @@ const SignupForm = () => {
                                 onChange={({ target }) => setPassword(target.value)}
                                 isInvalid={password.length > 0 && password.length < 8}
                             />
-                            {/* <i 
+                            <i 
                                 className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`} 
-                                style={isLogin? { position: 'absolute', left: '-5px', top: '50%'}: { position: 'absolute', left: '-5px', top: '53%'}}
+                                style={isLogin? { position: 'absolute', right: '25px', top: '51%', cursor: 'pointer'}: { position: 'absolute', right: '25px', top: '53%', cursor: 'pointer'}}
                                 onClick={togglePasswordVisibility}
-                            /> */}
+                            />
 
                          {!isLogin && (
                             <Form.Control.Feedback type="invalid">Password must be at least 8 characters</Form.Control.Feedback>
@@ -137,12 +138,11 @@ const SignupForm = () => {
                         )}
                         {isLogin && ( 
                         <div style={{ marginTop: '10px', fontSize:'12px'}}>
-                            <a href="/forgot-password" style={{ color: 'blue', textDecoration: 'underline' }}>
+                            <a href="/forgot-password" target="_blank" rel="noopener noreferrer" style={{ color: 'blue' }}>
                             Forgot password? 
                             </a>
                         </div>
                         )} 
-                                    {/* need to add functionality */}
                         {isLogin ? (
                             <>
                             <Button type="submit" className="login-button"> 
@@ -172,9 +172,9 @@ const SignupForm = () => {
                 </Row>
             </Card>
             <img 
-                src={laptop}
-                alt="Person holding pencil near laptop" 
-                className="laptop-image"
+                src={road}
+                alt="Hilly road" 
+                className="road-image"
             />
         </div>
         </div>

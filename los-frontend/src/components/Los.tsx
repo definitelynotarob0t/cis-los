@@ -37,7 +37,7 @@ const InputSection = ({ title, fields, setFields, addField}:
         setTimeout(() => resizeTextArea(index), 0);
     };
 
-    const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement>, field: string | null) => {
+    const handleDragOver = (e: React.DragEvent<HTMLTextAreaElement> ) => {
         e.preventDefault();
     };
 
@@ -65,29 +65,41 @@ const InputSection = ({ title, fields, setFields, addField}:
 
     return (
         <Container>
-            <div className="input-titles"><strong>{title}</strong></div>
+            <div className="input-titles">{title}</div>
             <Card >
-                 {fields.map((field, index) => (
-                    <div key={index} className="input-section-container">
+                {/* Default blank textarea */}
+                {fields.length === 0 ? (
+                    <textarea
+                    className="input-textarea"
+                    value={""}
+                    onChange={(e) => handleInputChange(0, e.target.value)}
+                    onDrop={(e) => handleDrop(e, 0)}
+                    onDragOver={(e) => handleDragOver(e)}
+                />
+                                            
+                ) : (
+                 fields.map((field, index) => (
+                    <div key={index} className="input-section-container" >
                         <textarea
                         ref={el => textAreasRef.current[index] = el}
                         value={field}
                         onChange={(e) => handleInputChange(index, e.target.value)}
                         onDrop={(e) => handleDrop(e, index)}
-                        onDragOver={(e) => handleDragOver(e, field)}
+                        onDragOver={(e) => handleDragOver(e)}
                         data-index={index}  
                         className="input-textarea"   
                         />
-                        {field === '' && (
-                            <button
-                                onClick={() => handleDeleteField(index)}
-                                className="delete-input"
-                            >
-                        x
-                        </button>
-                        )}
+                    {field === '' && (
+                        <button
+                            onClick={() => handleDeleteField(index)}
+                            className="delete-input"
+                        >
+                    x
+                    </button>
+                    )}
                     </div>
-                ))}
+                ))
+                )}
                 <button 
                     onClick={addField}
                     className="add-input-button"
@@ -102,7 +114,7 @@ const LosMapper = () => {
     const dispatch = useAppDispatch();
 
     const [inputFields, setInputFields] = useState<string[]>(['']);
-    const [activityFields, setActivityFields] = useState<string[]>(['']);
+    const [activityFields, setActivityFields] = useState<string[]>(['',]);
     const [outputFields, setOutputFields] = useState<string[]>(['']);
     const [usageFields, setUsageFields] = useState<string[]>(['']);
     const [outcomeFields, setOutcomeFields] = useState<string[]>(['']);
@@ -131,13 +143,13 @@ const LosMapper = () => {
         event.preventDefault();
         if (userId) {
             const updatedLos: Los = {
-                id: parseInt(pitchId),
+                id: pitchId,
                 inputs: inputFields,
                 activities: activityFields,
                 outputs: outputFields,
                 usages: usageFields,
                 outcomes: outcomeFields,
-                userId: parseInt(userId)
+                userId: userId
             };
             dispatch(editLos(updatedLos));
             dispatch(notifySuccess("Saved"));
@@ -159,18 +171,28 @@ const LosMapper = () => {
             <div className="user-los-container">
                 {/* Column 2 row 1 */}
                 <Card className="title-card">
-                    <strong>{pitch?.title}</strong>
+                    {pitch?.title ? (
+                        <div><strong>{pitch?.title}</strong></div>
+                    ) :
+                        <div style={{color: 'gray'}}>Title will apear here </div>
+                    }
                 </Card>
                 {/* Column 2 row 2 */}
                 <Card className="details-card">
                     <div style={{ display: 'inline' }}>
-                        {pitch?.mainActivity}
-                        <span>&nbsp;</span>{pitch?.challenge}
-                        <span>&nbsp;</span>{pitch?.outcome}
+                        {pitch?.mainActivity ? (
+                            <div>
+                                <span>{pitch?.mainActivity}</span>
+                                <span>&nbsp;</span>{pitch?.challenge}
+                                <span>&nbsp;</span>{pitch?.outcome}
+                            </div>
+                        ) :
+                            <div style={{color: 'lightGray'}}>Elevator pitch will appear here.</div>
+                        }
                     </div>
                 </Card>
                 {/* Column 2 row 3 */}
-                <div style={{ display: 'flex', justifyContent: 'space-around'}}>
+                <div className="titles-answers-container">
                     <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
                     <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
                     <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />

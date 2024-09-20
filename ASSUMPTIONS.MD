@@ -1,3 +1,0 @@
-1. Users have one LOS each - no ability to create extra LOSs
-2. No time limit on how long a user will be able to stay logged-in
-3. Draggable 'answers' can be dropped into any input field (e.g. 'pilot studies' is listed in 'activities', but this could be dropped into 'usages')
