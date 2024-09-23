@@ -8,8 +8,7 @@ import { notifySuccess } from '../reducers/notificationReducer';
 import { notifyError } from '../reducers/errorReducer';
 import { useNavigate } from 'react-router-dom'
 import road from '../images/road.jpg'
-// import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import axios from "axios";
 
 
 const SignupForm = () => {
@@ -36,6 +35,13 @@ const SignupForm = () => {
             setEmail("");
             setPassword("");
         } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response && error.response.status === 429) {
+                    const message = error.response.data.message; 
+                    dispatch(notifyError(message));
+                    return
+                }
+            }
             dispatch(notifyError('Error logging in'));
         }
     };
@@ -47,6 +53,14 @@ const SignupForm = () => {
 
     const handleSignUp = async (event: SyntheticEvent) => {
         event.preventDefault()
+
+        // Check if  email is already registered
+        const registeredEmail = await userService.findUserByEmail(email)
+        if (registeredEmail) {
+            dispatch(notifyError("There is already an account registered with this email."))
+            return
+        }
+
 
         // Password validation
         if (passwordConfirm !== password) {
@@ -104,7 +118,15 @@ const SignupForm = () => {
 
                         </Form.Group>
                         <Form.Group style={{marginTop: '10px'}}>
-                            <Form.Label style={{fontSize: '14px'}}> Password </Form.Label> 
+                            <Form.Label style={{fontSize: '14px'}}> 
+                                Password
+                                <i 
+                                className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`} 
+                                style={{position: 'absolute', right: '25px', cursor: 'pointer'}}
+                                //Inside field:  style={isLogin? { position: 'absolute', right: '25px', top: '51%', cursor: 'pointer'}: { position: 'absolute', right: '25px', top: '53%', cursor: 'pointer'}}
+                                onClick={togglePasswordVisibility}
+                            />  
+                            </Form.Label> 
                             <Form.Control
                                 type={passwordVisible ? "text" : "password"}
                                 name="password"
@@ -112,11 +134,6 @@ const SignupForm = () => {
                                 id="pass"
                                 onChange={({ target }) => setPassword(target.value)}
                                 isInvalid={password.length > 0 && password.length < 8}
-                            />
-                            <i 
-                                className={`bi ${passwordVisible ? 'bi-eye' : 'bi-eye-slash'}`} 
-                                style={isLogin? { position: 'absolute', right: '25px', top: '51%', cursor: 'pointer'}: { position: 'absolute', right: '25px', top: '53%', cursor: 'pointer'}}
-                                onClick={togglePasswordVisibility}
                             />
 
                          {!isLogin && (

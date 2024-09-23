@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
 
 
+
 const ResetPasswordForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,15 +18,16 @@ const ResetPasswordForm = () => {
     const dispatch = useDispatch<AppDispatch>();
 
 
+
     const handleResetPassword = async (event: React.SyntheticEvent) => {
         event.preventDefault();
 
-        if (password !== confirmPassword) {
-            dispatch(notifyError("Passwords do not match"));
-            return;
-        }
-
         try {
+            if (password !== confirmPassword) {
+                dispatch(notifyError("Passwords do not match"));
+                return;
+            }
+
             await userService.resetPassword({ token, email, newPassword: password });
             dispatch(notifySuccess("Password has been reset successfully."));
         } catch (error) {

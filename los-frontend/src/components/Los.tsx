@@ -19,23 +19,10 @@ const InputSection = ({ title, fields, setFields, addField}:
     const textAreasRef = useRef<(HTMLTextAreaElement | null)[]>([]);
 
     const handleInputChange = (index: number, value: string) => {
+
         const updatedFields = [...fields];
         updatedFields[index] = value;
         setFields(updatedFields);
-
-
-        let fieldTitle = title.toLowerCase()
-        if (title === 'Outcomes and Impacts') {
-            fieldTitle = "outcomes"
-        } 
-
-        // Save the updated field in localStorage with dynamic keys
-        const storedLosData = JSON.parse(localStorage.getItem('losData') || '{}');
-        const losData = {
-            ...storedLosData,
-            [fieldTitle]: updatedFields 
-        };
-        localStorage.setItem('losData', JSON.stringify(losData));
 
 
         setTimeout(() => resizeTextArea(index), 0);
@@ -81,18 +68,8 @@ const InputSection = ({ title, fields, setFields, addField}:
     return (
         <Container>
             <div className="input-titles">{title}</div>
-            <Card >
-                {/* Default blank textarea */}
-                {fields.length === 0 ? (
-                    <textarea
-                    className="input-textarea"
-                    value={""}
-                    onChange={(e) => handleInputChange(0, e.target.value)}
-                    onDrop={(e) => handleDrop(e, 0)}
-                    onDragOver={(e) => handleDragOver(e)}
-                />                          
-                ) : (
-                 fields.map((field, index) => (
+            <Card style={{ border: 'none'}}>
+                {fields.map((field, index) => (
                     <div key={index} className="input-section-container" >
                         <textarea
                         ref={el => textAreasRef.current[index] = el}
@@ -112,8 +89,7 @@ const InputSection = ({ title, fields, setFields, addField}:
                     </button>
                     )}
                     </div>
-                ))
-                )}
+                ))}
                 <button onClick={addField} className="add-input-button" >
                     +
                 </button>
@@ -136,27 +112,21 @@ const LosMapper = () => {
     const los = useSelector((state: RootState) => state.los?.los?.id === pitchId ? state.los.los : null);
     const pitch = useSelector((state: RootState) => state.pitch?.pitch?.id === pitchId ? state.pitch.pitch : null);
 
-    // Pre-fill fields
+    // Pre-fill fields (fields are not stored until changes until saved - no local storage)
     useEffect(() => {
-        const localLos = localStorage.getItem('losData');
-        if (localLos) { // If user has made changes, fetch LOS from local storage
-            const storedLos = JSON.parse(localLos);
-            setInputFields(storedLos.inputs || ['']);
-            setActivityFields(storedLos.activities || ['']);
-            setOutcomeFields(storedLos.outcomes || ['']);
-            setUsageFields(storedLos.usages || ['']);
-            setOutputFields(storedLos.outputs || ['']);
-        } else if (pitchId && !los) { // If user hasn't made changes and no LOS is found in redux, fetch LOS from API (initial load)
+        if (pitchId && !los) {
             dispatch(fetchLos(pitchId));
         }
-    
-        if (los && !localLos) { // If user hasn't made changes and LOS is found in redux, fetch LOS from redux
+        
+        if (los) {
             setInputFields(los.inputs || ['']);
             setActivityFields(los.activities || ['']);
             setOutcomeFields(los.outcomes || ['']);
             setUsageFields(los.usages || ['']);
             setOutputFields(los.outputs || ['']);
         }
+
+
     }, [los, dispatch]);
 
     // Save logic
@@ -176,7 +146,6 @@ const LosMapper = () => {
             dispatch(editLos(updatedLos));
             dispatch(notifySuccess("Saved"));
 
-            localStorage.removeItem('losData');
         } else {
             console.error('User ID is not available');
             dispatch(notifyError("Error updating line-of-sight"));

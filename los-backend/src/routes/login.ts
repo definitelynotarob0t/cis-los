@@ -7,7 +7,6 @@ import bcrypt from 'bcrypt'
 
 const router = express.Router();
 
-
 // Log-in user, create session (by posting email and password in req.body)
 router.post('/', async (req, res, next) => {
   const body = req.body
@@ -42,7 +41,6 @@ router.post('/', async (req, res, next) => {
         
           // Create JWT
           const token = jwt.sign(userForToken, SECRET)
-          // add expiration? - const token = jwt.sign(userForToken, SECRET, { expiresIn: '1h' });
         
           // Store session
           await Session.create({
@@ -52,9 +50,7 @@ router.post('/', async (req, res, next) => {
         
           // Send response with JWT and user details
           res.status(200).send({ token, name: user.name, id: user.id, pitchId: user.pitchId })
-    // } else {
-    //     res.status(401).json({ error: 'Incorrect password' });
-    //     return
+
     }  
   } catch (error) {
     next(error)

@@ -12,6 +12,20 @@ const ForgotPasswordForm = () => {
 
     const handleForgotPassword = async (event: React.SyntheticEvent) => {
         event.preventDefault();
+
+        if (!email) {
+            dispatch(notifyError("Please provide your email"))
+            return
+        }
+
+        // Check if the email is registered
+        try {
+            await userService.findUserByEmail(email);
+        } catch (erorr) {
+            dispatch(notifyError("Email is not registered. Please sign up to create an account."));
+            return
+        }
+        
         try {
             await userService.forgotPassword({ email });
             dispatch(notifySuccess(`Password reset link has been sent to your email`));
@@ -20,12 +34,12 @@ const ForgotPasswordForm = () => {
         }
     };
 
-    return (
+    return ( 
         <div className="forgot-password-container">
             <h1 >Forgot Password?</h1>
             <Form onSubmit={handleForgotPassword}>
                 <Form.Group>
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>Email: </Form.Label>
                     <Form.Control
                         type="email"
                         value={email}
@@ -33,7 +47,7 @@ const ForgotPasswordForm = () => {
                         style={{width: '300px'}}
                     />
                 </Form.Group>
-                <Button type="submit" style={{marginTop: '15px', backgroundColor: ' rgb(11, 64, 96)'}}>Email Reset Link</Button>
+                <Button type="submit" style={{marginTop: '15px', backgroundColor: 'rgb(11, 64, 96)'}}>Send Reset Link</Button>
             </Form>
         </div>
     );

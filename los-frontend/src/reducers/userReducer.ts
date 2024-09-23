@@ -39,10 +39,10 @@ export const setUser = (credentials: { email: string, password: string }) => {
         dispatch(setPitch(pitch));
       }
       
-      pitchService.setToken(user.token); // Set the user's token in pitchService for future authenticated requests
+      pitchService.setToken(user.token); // Set the user's token for future authenticated requests
       dispatch(loginUser(user)); // Dispatch the loginUser action to update the Redux store with user's data
     };
-  };
+  }; 
 
 // Used to determine component rendering
 export const initialiseUser = () => {

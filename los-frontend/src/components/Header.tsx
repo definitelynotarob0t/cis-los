@@ -29,9 +29,21 @@ const Header: React.FC<HeaderProps> = ({ updateLos }) => {
         }
 
         if (element) {
+            // Replace textareas with divs to display full content
+            const textareas = element.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                const div = document.createElement('div');
+                div.textContent = textarea.value;
+                div.style.whiteSpace = 'pre-wrap';  // Preserve line breaks
+                div.style.border = '1px solid #ccc'; // Keep the appearance consistent
+                div.style.padding = '5px';           // Add padding to match text area appearance
+                div.style.minHeight = textarea.style.height;
+                textarea.parentNode?.replaceChild(div, textarea);
+            });
+
             const options = {
                 filename: 'line-of-sight.pdf',
-                html2canvas: { scale: 2 },
+                html2canvas: { scale: 2,  scrollY: -window.scrollY },
                 jsPDF: { orientation: 'landscape' }
             }
             html2pdf().set(options).from(element).save()
@@ -58,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ updateLos }) => {
 
     return (
         <>
-        <Navbar>
+        <Navbar >
             <div className= 'header-contents'>
                 <a href="https://consultingis.com.au/"><img 
                     src={logo}

@@ -1,5 +1,4 @@
 import ElevatorPitch from "./components/ElevatorPitch"
-import store from "./store"
 import SignupForm from "./components/Signup"
 import LosMapper from "./components/Los"
 import SuccessNotification from "./components/SuccessNotification";
@@ -16,9 +15,10 @@ import { setLos } from "./reducers/losReducer"
 import { Routes, Route, Navigate } from 'react-router-dom'
 import ForgotPasswordForm from "./components/ForgotPassword";
 import PasswordResetForm from './components/PasswordReset'
+// import store from "./store";
 
 
-function App() {
+function App() {  
   const user = useSelector((state: any) => state.user.user); 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,7 +28,8 @@ function App() {
   useEffect(() => {
     dispatch(initialiseUser());
 
-    // Ensure that pitch and LoS will be rendered upon page refresh
+
+    // Ensure that pitch and LoS will be fetched upon page refresh
     if (user) {
       const getUserPitch = async () => {
         try {
@@ -53,7 +54,7 @@ function App() {
 
     }
 
-  }, [dispatch]);
+  }, [dispatch, location]);
 
 
   return (

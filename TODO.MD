@@ -1,21 +1,16 @@
 
 1. Write a README file
-2. Check security best practices. ChatGPT suggestions: 
-    - Rate Limiting: Implement rate limiting to prevent brute force attacks on your sign-up route. You can use libraries like express-rate-limit.
-    - Security Headers: Ensure you're using security headers like Content-Security-Policy and X-Content-Type-Options to enhance security.
-    - HTTPS for API Calls: Ensure your frontend is sending sensitive information like email and password over HTTPS. This prevents man-in-the-middle attacks.
-3. Ensure refresh is working correctly - do not navigate to a different page
-4. Testing (end-to-end)
-5. ESLint
+2. Testing (end-to-end). 
+3. ESlint
 
 
-Should the notification banner auto-disappear or the user closes it ? 
-Ask for opinion on notification display
-Check the modal text
-Data persistance is in LOS but not elevator pitch. Thoughts on when it is needed?
-Check PDFs - landscape or portrait? Including the right info?
-Update email that sends the password reset link
-Check what is preferred for indicating current page
+
+* Should the notification banner auto-disappear or the user closes it ? 
+* Opinion on notification display?
+* Data persistance - currently, changes are not stored until user saves. Should changes be saved to       persist across relaods?
+* Check PDFs - landscape or portrait? Including the right info? Currently, user will have to refresh page to resume typing after exporting to PDF (otherwise only first line of input is displayed)
+* Ensure compatibility with mobile phone display? NB: Header is not adjusting to full width of phone screen because it has been manually sized based on CIS website. 
+
 
 
 TBD: 
@@ -24,3 +19,11 @@ TBD:
     - Email for inactive accounts warning them that their data will be lost if they remain inactive
     - Login photo
     - Login spiel
+    - Update email that sends the password reset link
+
+
+
+Commands:
+flyctl proxy 5432 -a cis-los-db  
+flyctl postgres connect -a cis-los-db
+npm run dev

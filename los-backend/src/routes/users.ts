@@ -203,6 +203,24 @@ router.put('/reset-password', async (req, res, next) => {
     }
 });
 
+// Find user by email
+router.get('/email/:email', async (req, res, next) => {
+    try {
+        const user = await UserModel.findOne({
+            where: { email: req.params.email },
+            attributes: ['id', 'email'] 
+        });
+
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
 
 // Remove user
 router.delete('/:id', async (req, res, next) => {

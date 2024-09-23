@@ -92,8 +92,8 @@ html, body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 100vw;
 }
-
 
 /* HEADER */
 
@@ -151,7 +151,6 @@ html, body {
     
 }
 
-/* .navbar-item.primary, */
 .save-button {
     background-color:rgb(34, 91, 126);
     padding: 10px;
@@ -161,7 +160,7 @@ html, body {
 }
 
 .navbar-item.primary {
-    padding: 10px 0px;
+    padding: 10px 0px 7px 0px;
     border-bottom: 3px white solid;
 }
 
@@ -355,11 +354,13 @@ button[data-tooltip]:hover::after {
     font-size: 17px;
     width: 152px;
     text-transform: uppercase;
+    margin-top: 8px;
 }
 
 .accordion-body {
     width: 152px;
-    max-height: 430px;
+    /* max-height: 430px; */
+    max-height: calc(100vh - 163px);
     overflow-y: auto;
     padding-right: 10px;
     padding: 0 3px;
@@ -368,7 +369,7 @@ button[data-tooltip]:hover::after {
 
 .answer-box {
     margin-bottom: 5px;
-    border: 1px solid;
+    border: 1px solid rgba(11, 63, 96, 0.239);
     padding: 3px;
 }
 
@@ -445,12 +446,13 @@ button[data-tooltip]:hover::after {
     box-sizing: border-box;
     font-weight: 250;
     border-radius: 0;
+    border: 1px solid #ccc
 }
 
 .add-input-button {
     border: 0;
+    margin-bottom: 5px;
 }
-
 
 /* FORGOT PASSWORD FORM */
 .forgot-password-container {

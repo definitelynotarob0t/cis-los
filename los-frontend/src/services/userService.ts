@@ -20,4 +20,12 @@ const resetPassword = async (data: { token: string | null, email: string | null,
     await axios.put(`${userUrl}/reset-password`, data);
 };
 
-export default { createUser, forgotPassword, resetPassword };
+
+// Check if user with the given email exists
+const findUserByEmail = async (email: string | null) => {
+  const response = await axios.get(`${userUrl}/email/${email}`);
+  return response.data; // This will return the user or null if not found
+};
+
+export default { createUser, forgotPassword, resetPassword, findUserByEmail };
+ 
