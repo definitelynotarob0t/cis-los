@@ -14,7 +14,7 @@ const ForgotPasswordForm = () => {
         event.preventDefault();
 
         if (!email) {
-            dispatch(notifyError("Please provide your email"))
+            dispatch(notifyError("Please enter your email"))
             return
         }
 

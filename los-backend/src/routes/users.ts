@@ -6,6 +6,7 @@ import LosModel from '../models/los';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import { Op } from 'sequelize';
+import ProgramModel from '../models/program';
 
 const router = express.Router();
 
@@ -13,12 +14,7 @@ const router = express.Router();
 router.get('/', async (_req, res, next) => {
     try {
         const users = await UserModel.findAll({ 
-            attributes: ['id', 'email', 'name', 'pitchId'],
-            // include: { 
-            //     model: PitchModel, 
-            //     attributes: ['id', 'title'], 
-            //     required: false 
-            // }
+            attributes: ['id', 'email', 'name', 'program_ids']
         })
         res.json(users)
     }    catch(error) {
@@ -26,12 +22,12 @@ router.get('/', async (_req, res, next) => {
     }
 }) 
 
-// Get individual user
+// Get  user by id
 router.get('/:id', async (req, res, next) => {
     try {
         const user = await UserModel.findOne({
             where: { id: req.params.id},
-            attributes: ['id', 'email', 'name', 'pitchId'],
+            attributes: ['id', 'email', 'name'],
         })
 
         if (user) {
@@ -74,7 +70,8 @@ router.post('/', async (req, res, next) => {
         mainActivity: "",
         challenge: "",
         outcome: "",
-        userId: null // Will be assigned after user creation
+        userId: null, // Will be assigned after user creation
+        programId: null // Will be assigned after user creation
     });
 
     // Create a blank LoS to associate with new user
@@ -85,8 +82,17 @@ router.post('/', async (req, res, next) => {
         outputs: [],
         usages: [],
         outcomes: [],
-        userId: null // Will be assigned after user creation
+        userId: null, // Will be assigned after user creation
+        programId: null // Will be assigned after user creation
     })
+
+    // Create a program and associate it with a blank LoS and Pitch 
+    const blankProgram = await ProgramModel.create({
+        userId: null, // Will be assigned after user creation
+        pitchId: blankPitch.id,
+        losId: blankLos.id
+    });
+
 
     // Create user 
     try {
@@ -94,16 +100,22 @@ router.post('/', async (req, res, next) => {
             email,
             name,
             passwordHash,
-            pitchId: blankPitch.id 
+            programIds: [blankProgram.id],
         })
 
         // Update the pitch with the created user's ID
         blankPitch.userId = userToAdd.id;
+        blankPitch.programId = blankProgram.id
         await blankPitch.save();
 
         // Update the LoS with the created user's ID
         blankLos.userId = userToAdd.id;
-        await blankLos.save()
+        blankLos.programId = blankProgram.id
+        await blankLos.save();
+
+        // Update the Program with the created user's ID
+        blankProgram.userId = userToAdd.id;
+        await blankProgram.save();
 
         res.status(201).json(userToAdd)
 

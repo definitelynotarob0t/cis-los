@@ -22,9 +22,21 @@ const resetPassword = async (data: { token: string | null, email: string | null,
 
 
 // Check if user with the given email exists
-const findUserByEmail = async (email: string | null) => {
-  const response = await axios.get(`${userUrl}/email/${email}`);
-  return response.data; // This will return the user or null if not found
+const findUserByEmail = async (email: string) => {
+  try {
+    const response = await axios.get(`${userUrl}/email/${email}`);
+    if (response.data && response.data.length > 0) {
+      return response.data[0]; // User found
+    }
+    return null; // No user found
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response && error.response.status === 404) {
+        return null; // No user found, return null
+      }
+    }
+    throw error; // Other errors should be rethrown
+  }
 };
 
 export default { createUser, forgotPassword, resetPassword, findUserByEmail };

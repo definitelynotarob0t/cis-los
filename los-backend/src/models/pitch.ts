@@ -9,6 +9,7 @@ class PitchModel extends Model {
   challenge!: string | null;
   outcome!: string | null;
   userId!: number;
+  programId!: number | null;
 }
 
 
@@ -38,7 +39,13 @@ PitchModel.init({
     type: DataTypes.INTEGER,
     allowNull: true,
     references: { model: 'users', key: 'id' }
-  }
+  },
+  programId: { 
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: { model: 'programs', key: 'id' },
+    onDelete: 'CASCADE'
+  },
 }, {
   sequelize,
   underscored: true,

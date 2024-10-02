@@ -6,31 +6,40 @@ import { AppDispatch } from '../store'
 
 // Define a type for the slice state
 interface PitchState {
-    pitch: Pitch | null;
+    pitches: Pitch[];
 }
   
 // Define the initial state using that type
 const initialState: PitchState = {
-    pitch: null,
+    pitches: [],
 } 
 
 const pitchSlice = createSlice({
-  name: "pitch",
+  name: "pitches",
   initialState,
   reducers : {
-    setPitch(state, action: PayloadAction<Pitch>) {
-        state.pitch = action.payload
-      }
+    setPitches(state, action: PayloadAction<Pitch[]>) {
+        state.pitches = action.payload
+      },
+    updatePitch(state, action: PayloadAction<Pitch>) {
+      const updatedPitch = action.payload
+      if (state.pitches) {
+        const index = state.pitches.findIndex(pitch => pitch.id === updatedPitch.id);
+        if (index !== -1) {
+            state.pitches[index] = updatedPitch;
+        }
+    }
+    },
   }
 })
 
-export const {setPitch } = pitchSlice.actions
+export const {setPitches, updatePitch } = pitchSlice.actions
 
 export const fetchPitch = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {
       const pitch = await pitchService.getPitch(id);
-      dispatch(setPitch(pitch));
+      dispatch(setPitches(pitch));
     } catch (error) {
       console.error("Failed to fetch pitch", error);
     }
@@ -39,10 +48,15 @@ export const fetchPitch = (id: number) => {
 
 
 export const editPitch = (pitch: Pitch) => {
-    return async (dispatch: AppDispatch) => {
-        const editedPitch: Pitch = await pitchService.updatePitch(pitch) 
-        dispatch(setPitch(editedPitch))
-    }
-}
+  return async (dispatch: AppDispatch) => {
+      try {
+          const editedPitch: Pitch = await pitchService.updatePitch(pitch);
+          dispatch(updatePitch(editedPitch)); 
+      } catch (error) {
+          console.error("Failed to update pitch", error);
+      }
+  };
+};
+
 
 export default pitchSlice.reducer

@@ -25,13 +25,14 @@ const SignupForm = () => {
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     }
+    
 
     const handleLogin = async (event: SyntheticEvent) => {
         event.preventDefault();
 
         try {
             await dispatch(setUser({ email, password }));
-            navigate('/elevator-pitch')
+            navigate("/home");
             setEmail("");
             setPassword("");
         } catch (error) {
@@ -54,37 +55,43 @@ const SignupForm = () => {
     const handleSignUp = async (event: SyntheticEvent) => {
         event.preventDefault()
 
-        // Check if  email is already registered
-        const registeredEmail = await userService.findUserByEmail(email)
-        if (registeredEmail) {
-            dispatch(notifyError("There is already an account registered with this email."))
-            return
-        }
-
-
-        // Password validation
-        if (passwordConfirm !== password) {
-            dispatch(notifyError("Passwords do not match"))
-            return;
-        } 
-        if (password.length < 8) {
-            dispatch(notifyError("Password must be at least 8 characters"));
-            return;
-        }
-
-        // Email validation
-        if (!validateEmail(email)) {
-            dispatch(notifyError("Please enter a valid email"))
-            return;
-        }
-        
-        // Create user
         try {
+
+            // Ensure all fields are complete
+            if (!email || !name || ! password || !passwordConfirm) {
+                dispatch(notifyError('Please ensure all fields are complete.'));
+                return;
+            }
+            // Check if  email is already registered
+            const registeredEmail = await userService.findUserByEmail(email)
+            if (registeredEmail) {
+                dispatch(notifyError("There is already an account registered with this email."))
+                return
+            }
+
+
+            // Password validation
+            if (passwordConfirm !== password) {
+                dispatch(notifyError("Passwords do not match"))
+                return;
+            } 
+            if (password.length < 8) {
+                dispatch(notifyError("Password must be at least 8 characters"));
+                return;
+            }
+
+            // Email validation
+            if (!validateEmail(email)) {
+                dispatch(notifyError("Please enter a valid email"))
+                return;
+            }
+            
+            // Create account
             await userService.createUser({ email, password, name }); // Credentials sent to API, no state update until user logs-in
             dispatch(notifySuccess("Account created"))
-
+ 
         } catch (error) {
-            dispatch(notifyError('Error signing up'))
+            dispatch(notifyError('Error signing up. Please try again.'))
         }
 
     }

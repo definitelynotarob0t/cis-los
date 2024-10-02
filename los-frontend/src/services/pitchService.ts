@@ -10,6 +10,27 @@ const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
 };
 
+const getPitches = async () => {
+
+  const config = {
+    headers: { Authorization: token }
+  };
+  const response = await axios.get(pitchUrl, config);
+  return response.data;
+}
+
+
+const getUserPitches = async (userId: number) => {
+  try {
+    const allPitches = await getPitches();
+    // Filter pitches by userId
+    return allPitches.filter((pitch: Pitch) => pitch.userId === userId);
+  } catch (error) {
+    console.error('Failed to fetch user programs:', error);
+  }
+};
+
+
 const getPitch = async (id: number) => {
   const config = {
     headers: { Authorization: token }
@@ -28,4 +49,4 @@ const updatePitch = async (pitch: Pitch) => {
 }
 
 
-export default { setToken, getPitch, updatePitch }
+export default { setToken, getPitches, getUserPitches, getPitch, updatePitch }

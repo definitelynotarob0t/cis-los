@@ -82,9 +82,12 @@ strong {
 
 html, body {
     height: 100%;
+    width: 100%;
     margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
+    overflow-x: auto;
   }
 
 .content {
@@ -95,13 +98,37 @@ html, body {
     min-width: 100vw;
 }
 
+.page-break {
+    page-break-inside: avoid;
+}
+
+@media (max-width: 768px) { /* Display for mobile */
+    .navbar {
+      max-width: 920px; /* To prevent header of Los page overflowing too far */
+    }
+    .footer {
+        min-width: 920px;
+    }
+    .pitch-content {
+        min-width: 900px;
+    }
+    .signup-container {
+        display: block;
+        width: 800px;
+    }
+  }
+
 /* HEADER */
 
 .navbar {
     background-color: rgb(11, 64, 96); 
     height: 143px;
     padding: 0px;
+    width: fit-content;  
+    left: 0;
+    right: 0;
 }
+
 
 .header-contents {
     margin: 0px 135px;
@@ -126,6 +153,7 @@ html, body {
     padding: 12px 24px;
 }
 
+.dropdown-toggle,
 .navbar-item {
     color: rgb(241, 240, 240);
     cursor: pointer;
@@ -137,6 +165,23 @@ html, body {
     text-transform: uppercase;
 }
 
+.dropdown-toggle {
+    padding: 10px;
+}
+.dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+}
+
+.dropdown-toggle:focus,
+
+.dropdown-toggle:active,
+.dropdown.show .dropdown-toggle {
+    background-color: rgb(34, 91, 126) !important;
+    border: none !important;
+    box-shadow: 1px 1px 1px black !important;
+    border-radius: 0px;
+}
 
 .header-start,
 .header-end {
@@ -210,6 +255,7 @@ button[data-tooltip]:hover::after {
     color: white;
     text-align: center;
     text-transform: uppercase;
+    width: 100%;
 };
 
 
@@ -242,6 +288,7 @@ button[data-tooltip]:hover::after {
     background-color: rgba(236, 159, 159, 0.704);
     padding: 5px; 
 }
+
 
 
 /* LOGIN  */
@@ -289,11 +336,37 @@ button[data-tooltip]:hover::after {
     padding-left: 5px;
 }
 
+/* HOME PAGE */
+
+.new-program-button {
+    width: 300px;
+    background-color:rgb(34, 91, 126);
+    padding: 10px;
+    color: white;
+    border: 1px black solid;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s; 
+    margin: 8px;
+}
+
+.edit-delete-program-btn {
+    background-color:rgb(34, 91, 126);
+    padding: 5px;
+    color: white;
+    border: 1px black solid;
+    margin: 5px;
+}
+
+.new-program-button:hover {
+    transform: translateY(-2px); /* Lift the button slightly */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5); /* Enhance shadow on hover */
+}
+
 /* ELEVATOR PITCH PAGE */
 .pitch-content {
     display: flex;
     flex-direction: row;
-    height: calc(100vh-143px);
+    height: calc(100vh-143px-44px); /* viewheight - header - footer */
     gap: 40px;
     margin: 20px;
 }  
@@ -308,11 +381,19 @@ button[data-tooltip]:hover::after {
 }
 
 .pitch-input {
+    border-radius: 3px;
+    padding: 8px;
+    min-height: 60px;
     width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     margin-bottom: 16px;
     font-size: 18px;
     font-weight: 250;
+    border: 1px solid #ccc;
 }
+
+
 
 .pitch-card {
     font-size: 25px;
@@ -327,12 +408,13 @@ button[data-tooltip]:hover::after {
 .los-container {
     flex-grow: 1; 
     display: flex;
-    height: calc(100vh-143px);
+    height: calc(100vh-143px-44px); /* viewheight - header - footer */
     width: 100%; 
 }
 
 .accordion-container {
     flex-basis: 10%;
+    
 }
 
 .user-los-container {
@@ -359,8 +441,7 @@ button[data-tooltip]:hover::after {
 
 .accordion-body {
     width: 152px;
-    /* max-height: 430px; */
-    max-height: calc(100vh - 163px);
+    max-height: calc(100vh - 150px); 
     overflow-y: auto;
     padding-right: 10px;
     padding: 0 3px;
@@ -424,7 +505,7 @@ button[data-tooltip]:hover::after {
 
 .delete-input {
     position: absolute;
-    top: 3px;
+    top: 0px;
     right: 3px;
     height: 16px;
     width: 16px;
@@ -440,13 +521,17 @@ button[data-tooltip]:hover::after {
 }
 
     
-.input-textarea {
+.input-contenteditable {
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    padding: 4px;
+    min-height: 35px;
     width: 100%;
-    overflow: hidden; /* Hide scrollbar */
-    box-sizing: border-box;
-    font-weight: 250;
-    border-radius: 0;
-    border: 1px solid #ccc
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    outline: none;
+    margin-bottom: 5px;
+    max-width: 225px;
 }
 
 .add-input-button {

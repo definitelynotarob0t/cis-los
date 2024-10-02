@@ -49,7 +49,7 @@ router.post('/', async (req, res, next) => {
           });
         
           // Send response with JWT and user details
-          res.status(200).send({ token, name: user.name, id: user.id, pitchId: user.pitchId })
+          res.status(200).send({ token, name: user.name, id: user.id, programIds: user.programIds })
 
     }  
   } catch (error) {

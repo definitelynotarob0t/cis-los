@@ -8,6 +8,7 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
 // Import routers
+import programRouter from './routes/programs';
 import pitchRouter from './routes/pitches';
 import userRouter from './routes/users';
 import loginRouter from './routes/login';
@@ -22,6 +23,7 @@ const app = express();
 app.use(cors());
 app.use(helmet()); // Automatically sets security headers
 app.use(express.json());
+
 
 
 // Limit requests to the login route to avoid brute force attacks
@@ -47,6 +49,7 @@ app.use('/api/login', loginLimiter); // Apply the login limiter to the login rou
 app.use('/api/login', loginRouter);
 
 // app.use('/api/', apiLimiter); // Apply the general limiter to all API routes
+app.use('/api/programs', programRouter);
 app.use('/api/pitches', pitchRouter);
 app.use('/api/users', userRouter);
 app.use('/api/logout', logoutRouter);

@@ -6,7 +6,7 @@ class UserModel extends Model {
     email!: string;
     name!: string;
     passwordHash!: string;
-    pitchId!: number | null; 
+    programIds!: number[] | null; 
     disabled!: boolean;
 }
 
@@ -36,17 +36,16 @@ UserModel.init({
       len: [60, 60], 
     }
   },
-  pitchId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'pitches', key: 'id' }
-  },
   resetToken: {
     type: DataTypes.STRING,
     allowNull: true
   }, 
   resetTokenExpiry: {
     type: DataTypes.DATE,
+    allowNull: true
+  },
+  programIds: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: true
   }
 }, {

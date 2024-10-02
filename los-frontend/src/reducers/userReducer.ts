@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import loginService from '../services/loginService';
-import pitchService from '../services/pitchService';
+import programService from '../services/programService';
 import { AppDispatch } from '../store';
-import { setPitch } from './pitchReducer';
+import { setPrograms } from './programReducer';
 import { User } from '../types';
 
 interface UserState {
@@ -23,34 +23,41 @@ const userSlice = createSlice({
     logoutUser(state) {
       state.user = null;
     },
+    updateUserProgramIds(state, action: PayloadAction<number[]>) {
+      if (state.user) {
+        state.user.programIds = action.payload;
+      }
+    },
   },
 });
 
-export const { loginUser, logoutUser } = userSlice.actions;
+export const { loginUser, logoutUser, updateUserProgramIds } = userSlice.actions;
 
 export const setUser = (credentials: { email: string, password: string }) => {
     return async (dispatch: AppDispatch) => {
       const user = await loginService.login(credentials); // Upon successful login, the backend will respond with user data, including JWT . 
       sessionStorage.setItem('loggedUser', JSON.stringify(user)); // Store the user data (including JWT) in sessionStorage for persistence across reloads
       
-      // Fetch the associated pitch
-      if (user.pitchId) {
-        const pitch = await pitchService.getPitch(user.pitchId);
-        dispatch(setPitch(pitch));
+
+      // Fetch the associated program(s)
+      if (user.programIds) { 
+        const programs = await programService.getPrograms();
+        dispatch(setPrograms(programs));
       }
-      
-      pitchService.setToken(user.token); // Set the user's token for future authenticated requests
+
+      programService.setToken(user.token); // Set the user's token for future authenticated requests
       dispatch(loginUser(user)); // Dispatch the loginUser action to update the Redux store with user's data
+
     };
   }; 
 
-// Used to determine component rendering
+// Used to maintain user data in redux store across page reloads
 export const initialiseUser = () => {
   return (dispatch: AppDispatch) => {
     const loggedUserJSON = sessionStorage.getItem('loggedUser'); 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      pitchService.setToken(user.token);
+      programService.setToken(user.token);
       dispatch(loginUser(user));
     }
   };

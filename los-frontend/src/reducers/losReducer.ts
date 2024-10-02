@@ -6,31 +6,43 @@ import { AppDispatch } from '../store'
 
 // Define a type for the slice state
 interface LosState {
-    los: Los | null;
+    loses: Los[] | [];
 }
   
 // Define the initial state using that type
 const initialState: LosState = {
-    los: null,
+    loses: [],
 } 
 
 const losSlice = createSlice({
-  name: "los",
+  name: "loses",
   initialState,
   reducers : {
-    setLos(state, action: PayloadAction<Los>) {
-        state.los = action.payload
-      }
+    setLoses(state, action: PayloadAction<Los[]>) {
+        state.loses = action.payload
+      },
+    updateLos(state, action: PayloadAction<Los>) {
+      const updatedLos = action.payload
+      if (state.loses) {
+        const index = state.loses.findIndex(los => los.id === updatedLos.id);
+        if (index !== -1) {
+            state.loses[index] = updatedLos;
+        }
+    }
+    },
   }
 })
 
-export const { setLos } = losSlice.actions
+export const { setLoses, updateLos } = losSlice.actions
 
+export const fetchLoses = () => {
+
+}
 export const fetchLos = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {
       const los = await losService.getLos(id);
-      dispatch(setLos(los));
+      dispatch(setLoses(los));
     } catch (error) {
       console.error("Failed to fetch line-of-sight", error);
     }
@@ -39,10 +51,14 @@ export const fetchLos = (id: number) => {
 
 
 export const editLos = (los: Los) => {
-    return async (dispatch: AppDispatch) => {
-        const editedLos: Los = await losService.updateLos(los) 
-        dispatch(setLos(editedLos))
-    }
-}
+  return async (dispatch: AppDispatch) => {
+      try {
+          const editedLos: Los = await losService.updateLos(los);
+          dispatch(updateLos(editedLos)); 
+      } catch (error) {
+          console.error("Failed to update los", error);
+      }
+  };
+};
 
 export default losSlice.reducer

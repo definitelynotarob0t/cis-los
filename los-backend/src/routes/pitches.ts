@@ -52,22 +52,31 @@ router.post('/', sessionValidator, async (req, res, next) => {
 
 // Edit pre-existing pitch
 router.put('/:id', async (req, res, next) => {
-    const pitchToUpdate = await PitchModel.findByPk(req.params.id)
-    if (pitchToUpdate) {
-            pitchToUpdate.title = req.body.title
-            pitchToUpdate.mainActivity = req.body.mainActivity
-            pitchToUpdate.challenge = req.body.challenge
-            pitchToUpdate.outcome = req.body.outcome
-        try {
-            await pitchToUpdate.save()
-            res.json(pitchToUpdate)
-        } catch (error) {
-            next(error)
-        }          
-    } else {
-        res.status(400).json({error: Error})
+    const pitchId = parseInt(req.params.id, 10);
+
+    if (isNaN(pitchId)) {
+        res.status(400).json({ error: "Invalid pitch ID" });
+        return;
     }
-})
+
+    try {
+        const pitchToUpdate = await PitchModel.findByPk(pitchId);
+        
+        if (pitchToUpdate) {
+            pitchToUpdate.title = req.body.title;
+            pitchToUpdate.mainActivity = req.body.mainActivity;
+            pitchToUpdate.challenge = req.body.challenge;
+            pitchToUpdate.outcome = req.body.outcome;
+            
+            await pitchToUpdate.save();
+            res.json(pitchToUpdate);
+        } else {
+            res.status(404).json({ error: "Pitch not found" });
+        }
+    } catch (error) {
+        next(error);
+    }
+});
 
 // Delete a pitch
 router.delete('/:id', async (req, res, next) => {

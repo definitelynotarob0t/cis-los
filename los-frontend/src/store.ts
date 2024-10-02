@@ -4,15 +4,17 @@ import userReducer from './reducers/userReducer'
 import notificationReducer from './reducers/notificationReducer'
 import losReducer from './reducers/losReducer'
 import errorReducer from './reducers/errorReducer'
+import programReducer from './reducers/programReducer'
 
 
 const store = configureStore({
     reducer: {
-        pitch: pitchReducer,
         user: userReducer,
         notification: notificationReducer, //for success notifications
         error: errorReducer, // for error notifications
-        los: losReducer
+        pitches: pitchReducer,
+        loses: losReducer,
+        programs: programReducer
     }
   })
   

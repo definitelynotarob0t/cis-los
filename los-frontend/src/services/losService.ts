@@ -10,6 +10,24 @@ const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
 };
 
+const getLoses = async () => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const response = await axios.get(losUrl, config);
+  return response.data;
+}
+
+
+const getUserLoses = async (userId: number) => {
+  try {
+    const allLoses = await getLoses();
+    // Filter loses by userId
+    return allLoses.filter((los: Los) => los.userId === userId);
+  } catch (error) {
+    console.error('Failed to fetch user programs:', error);
+  }
+}
 
 const getLos = async (id: number) => {
   const config = {
@@ -28,4 +46,4 @@ const updateLos = async (los: Los) => {
   return response.data
 }
 
-export default { setToken, getLos, updateLos }
+export default { setToken, getLoses, getUserLoses, getLos, updateLos }

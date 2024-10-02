@@ -4,7 +4,8 @@ export interface Pitch {
     mainActivity: string | null,
     challenge: string | null,
     outcome: string | null,
-    userId: number | null
+    userId: number | null,
+    programId: number | null
 } 
 export type Content = Omit<Pitch, "id">;
 
@@ -13,8 +14,9 @@ export interface User {
     email: string,
     name: string,
     passwordHash: string,
-    pitchId: number,
-    disabled: boolean
+    programIds?: number[] | [],
+    disabled: boolean,
+    token: string,
 }
 
 export interface Session {
@@ -30,5 +32,15 @@ export interface Los {
     outputs: string[] | null,
     usages: string[] | null,
     outcomes: string[] | null,
-    userId: number | null
+    userId: number | null,
+    programId: number | null
+}
+
+export interface Program {
+    id: number;
+    userId: number;
+    pitchId: number;
+    losId: number | null
+    createdAt?: string;  
+    updatedAt?: string;
 }
