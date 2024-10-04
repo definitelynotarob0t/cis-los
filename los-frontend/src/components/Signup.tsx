@@ -182,7 +182,7 @@ const SignupForm = () => {
                         <div className="toggle-signup">
                             {isLogin ? (
                                 <>
-                                    <p>No account?</p>
+                                    <p>Don't have an account?</p>
                                     <Button variant="link" className="signup-link" onClick={() => setIsLogin(!isLogin)}>Sign up</Button>
                                 </>
                             ) : (

@@ -161,7 +161,7 @@ router.post('/forgot-password', async (req, res, next) => {
         const mailOptions = {
             to: email,
             subject: 'Password Reset Request',
-            html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 5 minutes.</p>`,
+            html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire 5 minutes after it was sent.</p>`,
         };
 
         await transporter.sendMail(mailOptions);

@@ -43,6 +43,9 @@ const Home = () => {
 
 
     const handleEditProgram = (pitchId: number, programId: number) => {
+        console.log("userPrograms", userPrograms)
+        console.log('programId:', programId)
+        console.log('pitchId:', pitchId)
         navigate(`/programs/${programId}/elevator-pitch/${pitchId}`); 
     };
 

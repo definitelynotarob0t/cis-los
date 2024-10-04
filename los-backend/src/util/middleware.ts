@@ -11,7 +11,6 @@ export const unknownEndpoint = (_req: Request, res: Response): void => {
 export const errorHandler = (error: ErrorWithName , _req: Request, res: Response, next: NextFunction)
 : Response<any, Record<string, any>> | void => {
     if (error.name === 'SequelizeValidationError') {
-        // add specific error handling for invalid email
         return res.status(400).json({ error: error.message })
     } else if (error.name === 'NotFoundError') { 
         return res.status(404).json({ error: 'Not found' })
