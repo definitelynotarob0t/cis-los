@@ -66,7 +66,6 @@ router.post('/', sessionValidator, async (req, res, next) => {
 
         // Create the associated LoS (using pitchId as losId)
        const newLos =  await LosModel.create({
-            id: newPitch.id,
             inputs: [],
             activities: [],
             outputs: [],
@@ -86,13 +85,11 @@ router.post('/', sessionValidator, async (req, res, next) => {
         // Update the Pitch and LoS to reference the new Program ID
         await newPitch.update({ programId: newProgram.id }, { transaction: t });
         await newLos.update({ programId: newProgram.id }, { transaction: t });
-
-        // Ensure programIds is initialized if it's null
-        const updatedProgramIds = user.programIds ? [...user.programIds] : [];
-        updatedProgramIds.push(newProgram.id);
-
-        // Assign the updated array back to the user instance
-        user.programIds = updatedProgramIds;
+        
+        // Update user data
+        user.programIds = [...(user.programIds || []), newProgram.id];
+        user.pitchIds = [...(user.pitchIds || []), newPitch.id];
+        user.losIds = [...(user.losIds || []), newLos.id];
 
         // Save user instance with transaction
         await user.save({ transaction: t });

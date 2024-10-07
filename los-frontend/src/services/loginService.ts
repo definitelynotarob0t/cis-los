@@ -10,8 +10,7 @@ const login = async (credentials: { email: string, password: string }) => {
 };
 
 const logout = () => {
-  tokenService.setToken(null);
-  sessionStorage.removeItem('loggedUser');
+  tokenService.clearToken();
 };
 
 export default { login, logout };

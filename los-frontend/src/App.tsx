@@ -75,8 +75,8 @@ function App() {
           {/* Add a loading state */}
           <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/home" />} />
           <Route path="/home" element={user? <Home /> : <Navigate to="/login" />} />
-          <Route path="/programs/:programId/elevator-pitch/:pitchId" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
-          <Route path="/programs/:programId/line-of-sight/:pitchId" element={user ? <LosPage /> : <Navigate to="/login" />} />
+          <Route path="/projects/:programId/elevator-pitch/:pitchId" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
+          <Route path="/projects/:programId/line-of-sight/:pitchId" element={user ? <LosPage /> : <Navigate to="/login" />} />
           <Route path="/forgot-password" element={<ForgotPasswordForm />}/>
           <Route path="/reset-password" element={<PasswordResetForm />} />
         </Routes>

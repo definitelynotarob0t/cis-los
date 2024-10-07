@@ -23,6 +23,7 @@ const InputSection = ({ title, fields, setFields, addField }:
         updatedFields[index] = event.currentTarget.innerText;
         setFields(updatedFields);
         setFocusedIndex(null); 
+        
     };
 
     const handleInputFocus = (index: number) => {
@@ -46,7 +47,7 @@ const InputSection = ({ title, fields, setFields, addField }:
                         {field === '' && focusedIndex !== index && (
                             <button
                                 onClick={() => setFields(fields.filter((_, i) => i !== index))}
-                                className="delete-input"
+                                className="delete-input-btn"
                             >
                                 x
                             </button>
@@ -191,11 +192,11 @@ const LosPage = () => {
                     </Card>
 
                     <div>
-                        {filteredLoses.map((los) => (
+                        {filteredLoses.map((los, index) => (
                             <div className="user-los-container" key={los.id}>
                                 <div className="titles-answers-container">
-                                    <h1 className="project-number">
-                                        <strong>Project {los.id}</strong>
+                                    <h1 className="program-number">
+                                        <strong>Program {index + 1}</strong>
                                         <button
                                             onClick={() => handleDeleteLos(los.id)}
                                             className="delete-los-btn"
@@ -230,7 +231,7 @@ const LosPage = () => {
                                               ...prevState,
                                               [los.id]: {
                                                 ...prevState[los.id],
-                                                activities: typeof fields === 'function' ? fields(prevState[los.id].outputs) : fields, // Ensure fields is an array
+                                                outputs: typeof fields === 'function' ? fields(prevState[los.id].outputs) : fields, // Ensure fields is an array
                                               },
                                             }))
                                           }
@@ -247,7 +248,7 @@ const LosPage = () => {
                                               ...prevState,
                                               [los.id]: {
                                                 ...prevState[los.id],
-                                                activities: typeof fields === 'function' ? fields(prevState[los.id].usages) : fields, // Ensure fields is an array
+                                                usages: typeof fields === 'function' ? fields(prevState[los.id].usages) : fields, // Ensure fields is an array
                                               },
                                             }))
                                           }
@@ -264,7 +265,7 @@ const LosPage = () => {
                                               ...prevState,
                                               [los.id]: {
                                                 ...prevState[los.id],
-                                                activities: typeof fields === 'function' ? fields(prevState[los.id].outcomes) : fields, // Ensure fields is an array
+                                                outcomes: typeof fields === 'function' ? fields(prevState[los.id].outcomes) : fields, // Ensure fields is an array
                                               },
                                             }))
                                           }
@@ -278,7 +279,7 @@ const LosPage = () => {
                             </div>
                             ))}
                     </div>
-                    <button className="add-los-btn" onClick={handleAddLos}> +  </button>
+                    <button className="add-los-btn" onClick={handleAddLos}> Add new program  </button>
                 </div>
             </div>
             <Footer />

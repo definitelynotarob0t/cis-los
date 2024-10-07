@@ -98,9 +98,6 @@ html, body {
     min-width: 100vw;
 }
 
-.page-break {
-    page-break-inside: avoid;
-}
 
 @media (max-width: 768px) { /* Display for mobile */
     .navbar {
@@ -117,6 +114,11 @@ html, body {
         width: 800px;
     }
   }
+
+/* To remove buttons from PDF of LoS page */
+.hidden-buttons {
+    display: none;
+} 
 
 /* HEADER */
 
@@ -192,7 +194,7 @@ html, body {
 
 .header-end {
     margin-left: auto;
-    padding: 0px 5px;
+    padding: 5px;
     
 }
 
@@ -274,18 +276,21 @@ button[data-tooltip]:hover::after {
     margin: 20px auto;
     color: #fff;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-25px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     
 }
 
+
 .success-notification {
+    border-left: rgb(148, 215, 151) 8px solid;
     background-color: rgba(159, 236, 163, 0.523);
-    padding: 5px; 
+    padding: 8px; 
 }
 
 .error-notification {
-    background-color: rgba(236, 159, 159, 0.704);
+    border-left: rgb(228, 123, 123) 8px solid;
+    background-color: rgba(236, 159, 159, 0.57);
     padding: 5px; 
 }
 
@@ -349,7 +354,7 @@ button[data-tooltip]:hover::after {
     margin: 8px;
 }
 
-.edit-delete-program-btn {
+.edit-delete-project-btn {
     background-color:rgb(34, 91, 126);
     padding: 5px;
     color: white;
@@ -422,7 +427,6 @@ button[data-tooltip]:hover::after {
     flex-direction: column;
     margin-top: 10px;
     flex-basis: auto;
-    padding-left: 10px;
     flex-basis: 90%;
 }
 
@@ -466,13 +470,14 @@ button[data-tooltip]:hover::after {
     border-top: 1px;
     text-transform: uppercase;
     min-height: 25px;
+    margin: 0 15px 0 15px;
 }
 
 .details-card {
     padding: 8px;
     border: none;
     margin-bottom: 10px;
-    min-height: 60px;
+    margin: 0 15px 20px 15px;
 }
 
 
@@ -504,7 +509,7 @@ button[data-tooltip]:hover::after {
     flex-direction: row;
 }
 
-.project-number {
+.program-number {
     width: 100%;
     font-size: 18px;
     margin: 0 15px 5px 15px;
@@ -522,7 +527,7 @@ button[data-tooltip]:hover::after {
 }
 
 
-.delete-input,
+.delete-input-btn,
 .delete-los-btn {
     display: flex;
     justify-content: center;
@@ -535,10 +540,10 @@ button[data-tooltip]:hover::after {
     text-align: center;
 }
 
-.delete-input {
+.delete-input-btn {
     position: absolute;
     top: 0px;
-    right: 3px;
+    right: 0px;
     height: 16px;
     width: 16px;
 }
@@ -555,6 +560,13 @@ button[data-tooltip]:hover::after {
     outline: none;
     margin-bottom: 5px;
 }
+
+.input-contenteditable,
+.input-section-container {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
 
 .add-input-button {
     border: 0;

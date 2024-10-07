@@ -76,7 +76,6 @@ export const initialiseUser = () => {
 
 export const logout = () => {
   return async (dispatch: AppDispatch) => {
-    sessionStorage.clear();
     loginService.logout();
     dispatch(logoutUser());
   };

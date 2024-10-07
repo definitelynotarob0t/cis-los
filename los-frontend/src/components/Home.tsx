@@ -43,7 +43,7 @@ const Home = () => {
 
 
     const handleEditProgram = (pitchId: number, programId: number) => {
-        navigate(`/programs/${programId}/elevator-pitch/${pitchId}`); 
+        navigate(`/projects/${programId}/elevator-pitch/${pitchId}`); 
     };
 
 
@@ -63,9 +63,9 @@ const Home = () => {
                 dispatch(setPrograms(fetchedUserPrograms)); 
             }
   
-            dispatch(notifySuccess('New program added'));
+            dispatch(notifySuccess('New project created'));
         } catch (error) {
-            dispatch(notifyError('Error adding new program'));
+            dispatch(notifyError('Error adding new project'));
         }
     };
 
@@ -86,9 +86,9 @@ const Home = () => {
                 dispatch(setPrograms(userPrograms));  // Set updated programs    
             }
 
-            dispatch(notifySuccess('Program deleted'));
+            dispatch(notifySuccess('Project deleted'));
         } catch (error) {
-            dispatch(notifyError('Error deleting program'));
+            dispatch(notifyError('Error deleting project'));
         }
     };
 
@@ -102,9 +102,9 @@ const Home = () => {
             <p style={{margin: "8px"}}>You currently have {userPrograms && (  
                 userPrograms.length
             )} {userPrograms && userPrograms.length === 1? (
-               <span>program:</span> 
+               <span>project:</span> 
             ) : ( 
-                <span>programs:</span>
+                <span>profects:</span>
             )} </p>
             {userPrograms && userPrograms.length > 0 ? userPrograms.map((program, index) => (
             <ul key={index}>
@@ -112,14 +112,14 @@ const Home = () => {
                     <span style={{ opacity: programTitles[index] ? 1 : 0.5 }}>
                         {programTitles[index] || "Untitled"}
                     </span>
-                    <button onClick={() => handleEditProgram(program.pitchId, program.id)} className="edit-delete-program-btn" > edit</button> 
-                    <button onClick={() => handleDeleteProgram(program.id)} className="edit-delete-program-btn"> delete</button>
+                    <button onClick={() => handleEditProgram(program.pitchId, program.id)} className="edit-delete-project-btn" > edit</button> 
+                    <button onClick={() => handleDeleteProgram(program.id)} className="edit-delete-project-btn"> delete</button>
                 </li>
             </ul>
             
-        )) : <p>No programs available.</p>}
+        )) : <p>No projects available.</p>}
 
-            <button onClick={handleAddProgram} className="new-program-button"> Create new program </button>
+            <button onClick={handleAddProgram} className="new-program-button"> Create new project </button>
             <Footer />
         </div >
     )
