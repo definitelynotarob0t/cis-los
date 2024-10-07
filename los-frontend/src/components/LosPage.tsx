@@ -16,7 +16,6 @@ import { useParams } from "react-router-dom";
 
 
 const LosPage = () => {
-    const [inputFields, setInputFields] = useState<string[]>(['']);
     const [activityFields, setActivityFields] = useState<string[]>(['',]);
     const [outputFields, setOutputFields] = useState<string[]>(['']);
     const [usageFields, setUsageFields] = useState<string[]>(['']);
@@ -48,7 +47,6 @@ const LosPage = () => {
     useEffect(() => {
     if (filteredLoses.length > 0) {
         const los = filteredLoses[0]; // Only the first LoS  for now 
-        setInputFields(los.inputs || ['']);
         setActivityFields(los.activities || ['']);
         setOutcomeFields(los.outcomes || ['']);
         setUsageFields(los.usages || ['']);
@@ -64,7 +62,6 @@ const LosPage = () => {
             if (userId && pitchIdNumber !== undefined) {
                 const updatedLos: Los = {
                     id: pitchIdNumber,
-                    inputs: inputFields,
                     activities: activityFields,
                     outputs: outputFields,
                     usages: usageFields,
@@ -89,7 +86,6 @@ const LosPage = () => {
         try {
             if (userId && pitchIdNumber !== undefined) {
                 const newLos: Omit<Los, 'id'> = {
-                    inputs: [''],
                     activities: [''],
                     outputs: [''],
                     usages: [''],
@@ -145,7 +141,7 @@ const LosPage = () => {
                 <LosMapper key={los.id} los={los} />
             ))}
             </div>
-            <button className="add-los-btn" onClick={handleAddLos}> +  </button>
+            <button className="add-los-btn" onClick={handleAddLos}> Add Project  </button>
         </div>
       </div>
        

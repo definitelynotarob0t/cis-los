@@ -27,7 +27,6 @@ export interface Session {
 
 export interface Los {
     id: number,
-    inputs: string[] | null,
     activities: string[] | null, 
     outputs: string[] | null,
     usages: string[] | null,

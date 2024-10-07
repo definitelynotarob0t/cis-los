@@ -61,7 +61,6 @@ interface LosMapperProps {
 }
 
 const LosMapper: React.FC<LosMapperProps> = ({ los }) => {
-const [inputFields, setInputFields] = useState(los.inputs || [''])
 const [activityFields, setActivityFields] = useState(los.activities || [''])
 const [outputFields, setOutputFields] = useState(los.outputs || [''])
 const [usageFields, setUsageFields] = useState(los.usages || [''])
@@ -91,12 +90,6 @@ return (
                         </button>
                         </h1>  
                     <div className="individual-answers-container">
-                        <InputSection 
-                            title="Inputs" 
-                            fields={inputFields} 
-                            setFields={setInputFields} 
-                            addField={() => setInputFields([...inputFields, ''])} 
-                        />
                         <InputSection 
                             title="Activities" 
                             fields={activityFields} 
