@@ -1,5 +1,5 @@
 import { Accordion } from "react-bootstrap";
-import { inputAnswers, activityAnswers, outcomeAnswers, outputAnswers, usageAnswers } from "../data";
+import { activityAnswers, outcomeAnswers, outputAnswers, usageAnswers } from "../data";
 
 const AccordionWidget = () => {
 

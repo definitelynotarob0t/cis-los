@@ -554,7 +554,6 @@ button[data-tooltip]:hover::after {
     word-wrap: break-word;
     outline: none;
     margin-bottom: 5px;
-    max-width: 225px;
 }
 
 .add-input-button {

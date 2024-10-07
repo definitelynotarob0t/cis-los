@@ -1,14 +1,3 @@
-export interface Pitch {
-    id: number,
-    title: string | null,
-    mainActivity: string | null,
-    challenge: string | null,
-    outcome: string | null,
-    userId: number
-    programId: number | null
-} 
-export type Content = Omit<Pitch, "id">;
-
 export interface User {
     id: number,
     email: string,

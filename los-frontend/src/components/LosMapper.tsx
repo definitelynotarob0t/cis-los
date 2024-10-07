@@ -29,7 +29,7 @@ const InputSection = ({ title, fields, setFields, addField}:
             <div className="input-titles">{title}</div>
             <Card style={{ border: 'none'}}>
                 {fields.map((field, index) => (
-                     <div key={index} className="input-section-container page-break">
+                     <div key={index} className="input-section-container">
                         <div
                             contentEditable
                             onBlur={(e) => handleInputBlur(index, e)}

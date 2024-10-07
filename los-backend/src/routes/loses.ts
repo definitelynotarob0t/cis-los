@@ -30,7 +30,7 @@ router.get('/:id', async (req, res, next) => {
 // Create new los
 router.post('/', sessionValidator, async (req, res, next) => {
     try {
-        const { inputs, activities, outputs, usages, outcomes, programId } = req.body;
+        const { activities, outputs, usages, outcomes, programId } = req.body;
         const userId = req.user?.id; // Extract userId from the session
 
 
@@ -40,7 +40,6 @@ router.post('/', sessionValidator, async (req, res, next) => {
         }
 
         const los = await LosModel.create({
-        inputs,
         activities,
         outputs,
         usages,
@@ -85,7 +84,6 @@ router.put('/:id', async (req, res, next) => {
 
     const losToUpdate = await LosModel.findByPk(req.params.id)
     if (losToUpdate) {
-            losToUpdate.inputs = req.body.inputs
             losToUpdate.activities = req.body.activities
             losToUpdate.outputs = req.body.outputs
             losToUpdate.usages = req.body.usages

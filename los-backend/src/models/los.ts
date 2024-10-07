@@ -4,7 +4,6 @@ import { sequelize } from '../util/db'
 
 class LosModel extends Model {
   id!: number;
-  inputs!: string[] | null;
   activities!: string[] | null;
   outputs!: string[] | null;
   usages!: string[] | null;
@@ -20,10 +19,6 @@ LosModel.init({
     primaryKey: true,
     autoIncrement: true
 },
-  inputs: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: true
-  },
   activities: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true
