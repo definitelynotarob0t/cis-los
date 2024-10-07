@@ -90,11 +90,16 @@ const SignupForm = () => {
             await userService.createUser({ email, password, name }); // Credentials sent to API, no state update until user logs-in
             dispatch(notifySuccess("Account created"))
  
-        } catch (error) {
-            dispatch(notifyError('Error signing up. Please try again.'))
-        }
-
-    }
+        } catch (error: any) {  // Catch errors during user creation
+            if (axios.isAxiosError(error) && error.response) {
+              // If the error comes from the backend, show the specific error
+              dispatch(notifyError(error.response.data.error || "An error occurred during sign-up."));
+            } else {
+              // Handle other types of errors
+              dispatch(notifyError("An unexpected error occurred."));
+            }
+          }
+    };
     return (
         <div >
         < div className="signup-container">

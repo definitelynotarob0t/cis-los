@@ -30,10 +30,16 @@ const losSlice = createSlice({
         }
     }
     },
+    addLosToState(state, action: PayloadAction<Los>) {
+      state.loses = [...state.loses, action.payload];
+    },
+    removeLosFromState(state, action: PayloadAction<number>) {
+      state.loses = state.loses.filter((los) => los.id !== action.payload);
+    }
   }
 })
 
-export const { setLoses, updateLos } = losSlice.actions
+export const { setLoses, updateLos, addLosToState, removeLosFromState } = losSlice.actions
 
 export const fetchLoses = () => {
 
@@ -60,5 +66,29 @@ export const editLos = (los: Los) => {
       }
   };
 };
+
+
+export const addLos = (newLos: Omit<Los, 'id'>) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const createdLos = await losService.createLos(newLos);  
+      dispatch(addLosToState(createdLos));  
+    } catch (error) {
+      console.error("Failed to create a new LoS", error);
+    }
+  };
+}
+
+export const removeLos = (losId: number) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await losService.deleteLos(losId);
+      dispatch(removeLosFromState(losId));
+    }
+    catch (error) {
+      console.log("Failed to delete LoS", error);
+    }
+  }
+}
 
 export default losSlice.reducer

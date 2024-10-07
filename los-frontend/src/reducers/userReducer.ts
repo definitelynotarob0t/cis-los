@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import loginService from '../services/loginService';
 import programService from '../services/programService';
+import losService from '../services/losService';
+import pitchService from '../services/pitchService';
 import { AppDispatch } from '../store';
 import { setPrograms } from './programReducer';
 import { User } from '../types';
@@ -46,6 +48,8 @@ export const setUser = (credentials: { email: string, password: string }) => {
       }
 
       programService.setToken(user.token); // Set the user's token for future authenticated requests
+      losService.setToken(user.token); 
+      pitchService.setToken(user.token)
       dispatch(loginUser(user)); // Dispatch the loginUser action to update the Redux store with user's data
 
     };
@@ -58,6 +62,8 @@ export const initialiseUser = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       programService.setToken(user.token);
+      losService.setToken(user.token); 
+      pitchService.setToken(user.token)
       dispatch(loginUser(user));
     }
   };

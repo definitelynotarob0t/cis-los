@@ -80,7 +80,7 @@ router.post('/', sessionValidator, async (req, res, next) => {
         const newProgram = await ProgramModel.create({
             userId,
             pitchId: newPitch.id, 
-            losId: newLos.id 
+            losIds: [newLos.id] 
         }, { transaction: t });
 
         // Update the Pitch and LoS to reference the new Program ID
@@ -112,15 +112,20 @@ router.post('/', sessionValidator, async (req, res, next) => {
 // Delete a program
 router.delete('/:id', sessionValidator, async (req, res, next) => {
     try {
-        const programToDelete = await ProgramModel.findByPk(req.params.id)
+        const programToDelete = await ProgramModel.findByPk(req.params.id);
+
 
         if (!programToDelete) {
             res.status(404).json({ error: 'Program not found' });
             return
         }
     
-        if (programToDelete.userId === req.user?.id) {
+        const userToUpdate = await UserModel.findByPk(programToDelete.userId);
+
+        if (programToDelete.userId === req.user?.id && userToUpdate && userToUpdate.programIds) {
             try {
+                userToUpdate.programIds = userToUpdate.programIds.filter((id: number) => id !== programToDelete.id);
+                await userToUpdate.save();
                 await programToDelete.destroy();
                 res.status(204).end()
             } catch(error) {

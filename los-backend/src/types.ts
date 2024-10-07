@@ -5,6 +5,7 @@ export interface Pitch {
     challenge: string | null,
     outcome: string | null,
     userId: number
+    programId: number | null
 } 
 export type Content = Omit<Pitch, "id">;
 
@@ -13,8 +14,9 @@ export interface User {
     email: string,
     name: string,
     passwordHash: string,
-    pitchId: number,
-    disabled: boolean
+    programIds: number[] | null,
+    losIds: number[] | null,
+    pitchIds: number[] | null
 }
 
 interface SimpleUser {

@@ -7,7 +7,8 @@ class UserModel extends Model {
     name!: string;
     passwordHash!: string;
     programIds!: number[] | null; 
-    disabled!: boolean;
+    pitchIds!: number[] | null;
+    losIds!: number[] | null;
 }
 
 
@@ -46,15 +47,18 @@ UserModel.init({
   },
   programIds: {
     type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: true
+    allowNull: true,
+  },
+  pitchIds: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
+  },
+  losIds: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
   }
 }, {
   sequelize,
-  defaultScope: {
-    where: {
-      disabled: false
-    },
-  },
   underscored: true,
   timestamps: true,
   modelName: 'User'

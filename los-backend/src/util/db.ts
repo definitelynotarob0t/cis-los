@@ -2,11 +2,23 @@ import { Sequelize } from 'sequelize'
 import { config } from './config'
 import { Umzug, SequelizeStorage } from 'umzug'
 
-if (!config.DATABASE_URL) {
-    throw new Error('DATABASE_URL is not defined');
-  }
+// // Pre tunnelling :
 
-const sequelize = new Sequelize(config.DATABASE_URL)
+// const sequelize = new Sequelize(config.DATABASE_URL)
+
+// if (!config.DATABASE_URL) {
+//   throw new Error('DATABASE_URL is not defined');
+// }
+
+
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+  host: config.host,
+  port: config.port,
+  dialect: config.dialect,
+  dialectOptions: config.dialectOptions,
+  pool: config.pool
+});
+
 
 const connectToDatabase = async () => {
   try {
@@ -20,6 +32,8 @@ const connectToDatabase = async () => {
 
   return null
 }
+
+
 
 const migrationConf = {
   migrations: {

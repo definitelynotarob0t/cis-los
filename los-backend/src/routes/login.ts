@@ -24,10 +24,6 @@ router.post('/', async (req, res, next) => {
 
     // Check if user exists and password is correct
     if (user && await bcrypt.compare(body.password, user.passwordHash)) {
-        if (user.disabled) {
-          res.status(401).json({ error: 'Account disabled' });
-          return
-        } 
     
         // Prepare payload for JWT
         const userForToken = {

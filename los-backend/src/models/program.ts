@@ -4,8 +4,8 @@ import { sequelize } from '../util/db';
 class ProgramModel extends Model {
   id!: number;
   userId!: number;
-  pitchId!: number;
-  losId!: number;
+  pitchId!: number | null;
+  losIds!: number[] | null;
 }
 
 ProgramModel.init({
@@ -21,17 +21,13 @@ ProgramModel.init({
   },
   pitchId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
     references: { model: 'pitches', key: 'id' },
     onDelete: 'CASCADE', 
   },
-  losId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { 
-      model: 'los', 
-      key: 'id' 
-    },
+  losIds: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
     onDelete: 'CASCADE',  
   }
 }, {

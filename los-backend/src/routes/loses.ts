@@ -1,6 +1,8 @@
 import express from 'express';
 import LosModel from '../models/los';
 import sessionValidator from '../util/sessionValidator';
+import ProgramModel from '../models/program';
+import UserModel from '../models/user';
 
 const router = express.Router();
 
@@ -28,8 +30,9 @@ router.get('/:id', async (req, res, next) => {
 // Create new los
 router.post('/', sessionValidator, async (req, res, next) => {
     try {
-        const { inputs, activities, outputs, usages, outcomes } = req.body;
+        const { inputs, activities, outputs, usages, outcomes, programId } = req.body;
         const userId = req.user?.id; // Extract userId from the session
+
 
         if (!userId) {
             res.status(400).json({ error: 'User not authenticated.' });
@@ -42,10 +45,29 @@ router.post('/', sessionValidator, async (req, res, next) => {
         outputs,
         usages,
         outcomes,
-        userId 
+        userId,
+        programId
         });
 
+        const programToUpdate = await ProgramModel.findOne( {where: {id: programId} });
+        if (!programToUpdate) {
+            res.status(404).json({ error: 'Program not found.' });
+            return
+        }
+        programToUpdate.losIds?.push(los.id);
+
+        const userToUpdate = await UserModel.findByPk(userId);
+        if (!userToUpdate) {
+            res.status(404).json({ error: 'User not found.' });
+            return
+        }
+        userToUpdate.losIds?.push(los.id);
+
+        await programToUpdate.save();
+        await userToUpdate.save();
+
         res.status(201).json(los);
+        return
     } catch (error) {
         next(error);
     }
@@ -53,6 +75,14 @@ router.post('/', sessionValidator, async (req, res, next) => {
 
 // Edit pre-existing los
 router.put('/:id', async (req, res, next) => {
+    const userId = req.user?.id; // Extract userId from the session
+
+
+    if (!userId) {
+        res.status(400).json({ error: 'User not authenticated.' });
+        return
+    }
+
     const losToUpdate = await LosModel.findByPk(req.params.id)
     if (losToUpdate) {
             losToUpdate.inputs = req.body.inputs
@@ -73,23 +103,51 @@ router.put('/:id', async (req, res, next) => {
 
 // Delete a los
 router.delete('/:id', async (req, res, next) => {
-    const losToDelete = await LosModel.findByPk(req.params.id)
-    if (losToDelete) {
-        // if (losToDelete.userId === req.user?.id) {
-            try {
-                await losToDelete.destroy();
-                res.status(204).end()
-            } catch(error) {
-                next(error)
-            }
-        // } else {
-        //     res.status(403).json({ error: 'You are not authorized to delete this los.' });
-        //     return
-        // }
-    } else {
-        res.status(400).json({ error: Error})
+    const userId = req.user?.id; // Extract userId from the session
+
+    if (!userId) {
+        res.status(400).json({ error: 'User not authenticated.' });
+        return;
     }
-})
+
+    const losToDelete = await LosModel.findByPk(req.params.id);
+    if (!losToDelete) {
+        res.status(404).json({ error: 'LoS not found.' });
+        return
+    }
+
+    try {
+        // Update program to remove the deleted LoS
+        const programToUpdate = await ProgramModel.findOne({ where: { id: losToDelete.programId } });
+        if (!programToUpdate) {
+            res.status(404).json({ error: 'Program not found.' });
+            return
+        }
+
+        // Filter out the losId from program's losIds and reassign
+        programToUpdate.losIds = programToUpdate.losIds?.filter((id) => id !== losToDelete.id) || [];
+        await programToUpdate.save();
+
+        // Update user to remove the deleted LoS
+        const userToUpdate = await UserModel.findByPk(userId);
+        if (!userToUpdate) {
+            res.status(404).json({ error: 'User not found.' });
+            return
+        }
+
+        // Filter out the losId from user's losIds and reassign
+        userToUpdate.losIds = userToUpdate.losIds?.filter((id) => id !== losToDelete.id) || [];
+        await userToUpdate.save();
+
+        // Delete the LoS
+        await losToDelete.destroy();
+        res.status(204).end();
+        return
+
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default router;
 

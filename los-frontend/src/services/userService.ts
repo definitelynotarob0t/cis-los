@@ -6,9 +6,21 @@ const userUrl = `${apiBaseUrl}/users`
 
 // Create user upon sign-in form submission
 const createUser = async ( credentials: {email: string, password: string, name: string }) => {
-  const response = await axios.post(userUrl, credentials)
-  return response.data
-}
+  try {
+    const response = await axios.post(userUrl, credentials)
+    return response.data
+
+  } catch (error: unknown) {  // Use unknown type for error initially
+    if (axios.isAxiosError(error)) {  // Check if the error is an AxiosError
+      console.log("Axios error message:", error.message);
+      console.log("Axios error response:", error.response?.data);  // Safely access error response
+
+    } else {
+      console.log("Unknown error:", error);
+    }
+    throw error;  // Re-throw the error for further handling
+  }
+};
 
 // Redirect user to forgot password from
 const forgotPassword = async (credentials: { email: string }) => {

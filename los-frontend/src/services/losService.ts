@@ -46,4 +46,21 @@ const updateLos = async (los: Los) => {
   return response.data
 }
 
-export default { setToken, getLoses, getUserLoses, getLos, updateLos }
+
+const createLos = async (newLos: Omit<Los, 'id'>) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const response = await axios.post(losUrl, newLos, config)
+  return response.data
+}
+
+const deleteLos = async (id: number) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  await axios.delete(`${losUrl}/${id}`, config)
+}
+
+
+export default { setToken, getLoses, getUserLoses, getLos, updateLos, createLos, deleteLos }

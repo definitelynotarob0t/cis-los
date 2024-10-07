@@ -15,11 +15,11 @@ class LosModel extends Model {
 
 
 LosModel.init({
-  id: { // los id is pitch id
+  id: { 
     type: DataTypes.INTEGER,
     primaryKey: true,
-    references: { model: 'pitches', key: 'id'}
-  },
+    autoIncrement: true
+},
   inputs: {
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true

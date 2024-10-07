@@ -14,7 +14,7 @@ const router = express.Router();
 router.get('/', async (_req, res, next) => {
     try {
         const users = await UserModel.findAll({ 
-            attributes: ['id', 'email', 'name', 'program_ids']
+            attributes: ['id', 'name', 'program_ids', 'pitch_ids', 'los_ids']
         })
         res.json(users)
     }    catch(error) {
@@ -44,8 +44,9 @@ router.get('/:id', async (req, res, next) => {
 
 // Create new user
 router.post('/', async (req, res, next) => {
+    
     const { email, name, password } = req.body
-
+   
     // Validate password
     if (!password || password.length < 8) {
         res.status(400).json({ error: 'Password must be at least 8 characters long.' }).end();
@@ -76,7 +77,6 @@ router.post('/', async (req, res, next) => {
 
     // Create a blank LoS to associate with new user
     const blankLos = await LosModel.create({
-        id: blankPitch.id,
         inputs: [],
         activities: [],
         outputs: [],
@@ -90,7 +90,7 @@ router.post('/', async (req, res, next) => {
     const blankProgram = await ProgramModel.create({
         userId: null, // Will be assigned after user creation
         pitchId: blankPitch.id,
-        losId: blankLos.id
+        losIds: [blankLos.id]
     });
 
 
@@ -101,25 +101,29 @@ router.post('/', async (req, res, next) => {
             name,
             passwordHash,
             programIds: [blankProgram.id],
+            pitchIds: [blankPitch.id],
+            losIds: [blankLos.id]
         })
 
-        // Update the pitch with the created user's ID
+        // Update the pitch 
         blankPitch.userId = userToAdd.id;
         blankPitch.programId = blankProgram.id
         await blankPitch.save();
 
-        // Update the LoS with the created user's ID
+        // Update the LoS
         blankLos.userId = userToAdd.id;
         blankLos.programId = blankProgram.id
         await blankLos.save();
 
-        // Update the Program with the created user's ID
+        // Update the Program 
         blankProgram.userId = userToAdd.id;
         await blankProgram.save();
 
         res.status(201).json(userToAdd)
 
     } catch (error) {
+        console.error('Error during user creation:', error);
+
         next(error)
     }
 })

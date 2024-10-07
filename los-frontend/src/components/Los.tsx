@@ -3,7 +3,7 @@ import { Card, Container } from "react-bootstrap";
 import { RootState } from "../store";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import AccordionWidget from "./Accordion";
-import { fetchLos, editLos } from "../reducers/losReducer";
+import { fetchLos, editLos, addLos, removeLos } from "../reducers/losReducer";
 import { useAppDispatch } from "../hooks";
 import { notifySuccess } from "../reducers/notificationReducer";
 import { notifyError } from "../reducers/errorReducer";
@@ -14,13 +14,15 @@ import { useParams } from "react-router-dom";
 
 // Reusable component for dynamic input sections
 const InputSection = ({ title, fields, setFields, addField}: 
-    { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void}) => {
+    { title: string, fields: string[] | null, setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void}) => {
 
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
+    // Ensure fields is always an array
+    const fieldArray = fields ?? [''];
 
     const handleInputBlur = (index: number, event: React.FocusEvent<HTMLDivElement>) => {
-        const updatedFields = [...fields];
+        const updatedFields = [...fieldArray];
         updatedFields[index] = event.currentTarget.innerText; // Store the text on blur
         setFields(updatedFields);
         setFocusedIndex(null); // Reset focus when blur happens
@@ -35,7 +37,7 @@ const InputSection = ({ title, fields, setFields, addField}:
         <Container>
             <div className="input-titles">{title}</div>
             <Card style={{ border: 'none'}}>
-                {fields.map((field, index) => (
+                {fieldArray.map((field, index) => (
                      <div key={index} className="input-section-container page-break">
                         <div
                             contentEditable
@@ -47,7 +49,7 @@ const InputSection = ({ title, fields, setFields, addField}:
                         />
                     {field === '' && focusedIndex !== index &&  (
                             <button
-                                onClick={() => setFields(fields.filter((_, i) => i !== index))}
+                                onClick={() => setFields(fieldArray.filter((_, i) => i !== index))}
                                 className="delete-input"
                             >
                                 x
@@ -80,26 +82,28 @@ const LosMapper = () => {
     const userId = useSelector((state: RootState) => state.user?.user?.id);
     const pitches = useSelector((state: RootState) => state.pitches?.pitches);
     const pitch = pitches.find((pitch: Pitch) => pitch.id === pitchIdNumber);
-    const loses = useSelector((state: RootState) => state.loses?.loses)
+    const loses = useSelector((state: RootState) => state.loses?.loses);
+      // Filter Loses by Program ID
+    const filteredLoses = loses.filter((los: Los) => los.programId === programIdNumber);
+
     
-    const los = loses.find((los: Los) => los.id === pitchIdNumber)
-
-    // Pre-fill fields (fields are not stored until changes until saved - no local storage)
     useEffect(() => {
-        if (pitchIdNumber && !los) {
-            dispatch(fetchLos(pitchIdNumber));
+        if (pitchIdNumber && filteredLoses.length === 0) {
+          dispatch(fetchLos(pitchIdNumber)); // Fetch only if there are no filtered loses
         }
-        
-        if (los) {
-            setInputFields(los.inputs || ['']);
-            setActivityFields(los.activities || ['']);
-            setOutcomeFields(los.outcomes || ['']);
-            setUsageFields(los.usages || ['']);
-            setOutputFields(los.outputs || ['']);
-        }
-
-
-    }, [los, dispatch]);
+      }, [filteredLoses, pitchIdNumber, dispatch]);
+    
+    // Pre-fill fields when a new Los is selected (fields are not stored until changes are saved - no local storage)
+    useEffect(() => {
+    if (filteredLoses.length > 0) {
+        const los = filteredLoses[0]; // Only the first LoS  for now 
+        setInputFields(los.inputs || ['']);
+        setActivityFields(los.activities || ['']);
+        setOutcomeFields(los.outcomes || ['']);
+        setUsageFields(los.usages || ['']);
+        setOutputFields(los.outputs || ['']);
+    }
+    }, [filteredLoses]);
 
     // Save logic
     const updateLos = async (event: SyntheticEvent) => {
@@ -122,11 +126,42 @@ const LosMapper = () => {
                 dispatch(notifySuccess("Saved"));
             }
         } catch (error) {
-            dispatch(notifyError("Error saving LOS"));
-            console.error("Error while saving LOS:", error);
+            dispatch(notifyError("Error saving line of sight"));
+            console.error("Error while saving line of sight:", error);
         }
 
     };
+
+    const handleAddLos = async (event: SyntheticEvent) => {
+        event.preventDefault();
+
+        try {
+            if (userId && pitchIdNumber !== undefined) {
+                const newLos: Omit<Los, 'id'> = {
+                    inputs: [''],
+                    activities: [''],
+                    outputs: [''],
+                    usages: [''],
+                    outcomes: [''],
+                    userId: userId,
+                    programId: programIdNumber
+                };
+    
+                await dispatch(addLos(newLos));
+            }
+        } catch (error) {
+            dispatch(notifyError("Error adding a new line of sight"));
+            console.error("Error while adding a new line of sight:", error);
+        }
+    }
+
+    const handleDeleteLos = async (losId: number) => {
+        try {
+            await dispatch(removeLos(losId))
+        } catch (error) {
+            dispatch(notifyError("Error deleting project"))
+        }
+    }
 
     return (
         <div className="content">
@@ -136,6 +171,7 @@ const LosMapper = () => {
             <div className="accordion-container">
                 <AccordionWidget/>
             </div> 
+
             {/* Column 2 */}
             <div className="user-los-container">
                 {/* Column 2 row 1 */}
@@ -146,6 +182,7 @@ const LosMapper = () => {
                         <div style={{color: 'gray'}}>Title will apear here </div>
                     }
                 </Card>
+
                 {/* Column 2 row 2 */}
                 <Card className="details-card">
                     <div style={{ display: 'inline' }}>
@@ -160,14 +197,57 @@ const LosMapper = () => {
                         }
                     </div>
                 </Card>
-                {/* Column 2 row 3 */}
+
+                {/* Column 2, row 3 onwards */}
                 <div className="titles-answers-container">
-                    <InputSection title="Inputs" fields={inputFields} setFields={setInputFields} addField={() => setInputFields([...inputFields, ''])} />
-                    <InputSection title="Activities" fields={activityFields} setFields={setActivityFields} addField={() => setActivityFields([...activityFields, ''])} />
-                    <InputSection title="Outputs" fields={outputFields} setFields={setOutputFields} addField={() => setOutputFields([...outputFields, ''])} />
-                    <InputSection title="Usages" fields={usageFields} setFields={setUsageFields} addField={() => setUsageFields([...usageFields, ''])} />
-                    <InputSection title="Outcomes and Impacts" fields={outcomeFields} setFields={setOutcomeFields} addField={() => setOutcomeFields([...outcomeFields, ''])} />
+                {filteredLoses.map((los: Los, index: number) => (
+                    <React.Fragment key={los.id}>
+                        <h1 className="project-number">
+                            <strong>Project {index + 1}</strong> 
+                            <button
+                                onClick={() => handleDeleteLos(los.id) }
+                                className="delete-los-btn"
+                            >
+                                x
+                            </button>
+                            </h1>  
+                        <div className="individual-answers-container">
+                            <InputSection 
+                                title="Inputs" 
+                                fields={los.inputs ?? ['']}  // Ensure fields is never null
+                                setFields={setInputFields} 
+                                addField={() => setInputFields([...(los.inputs ?? ['']), ''])} 
+                            />
+                            <InputSection 
+                                title="Activities" 
+                                fields={los.activities ?? ['']} 
+                                setFields={setActivityFields} 
+                                addField={() => setActivityFields([...(los.activities ?? ['']), ''])} 
+                            />
+                            <InputSection 
+                                title="Outputs" 
+                                fields={los.outputs ?? ['']}
+                                setFields={setOutputFields} 
+                                addField={() => setOutputFields([...(los.outputs ?? ['']), ''])} 
+                            />
+                            <InputSection 
+                                title="Usages" 
+                                fields={los.usages ?? ['']}
+                                setFields={setUsageFields} 
+                                addField={() => setUsageFields([...(los.usages ?? ['']), ''])} 
+                            />
+                            <InputSection 
+                                title="Outcomes and Impacts" 
+                                fields={los.outcomes ?? ['']} 
+                                setFields={setOutcomeFields} 
+                                addField={() => setOutcomeFields([...(los.outcomes ?? ['']), ''])} 
+                            />
+                        </div>
+                    </React.Fragment>
+                ))}
                 </div>
+
+                <button className="add-los-btn" onClick={handleAddLos}> +  </button>
             </div>
         </div>
         <Footer/>

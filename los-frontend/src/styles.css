@@ -500,15 +500,35 @@ button[data-tooltip]:hover::after {
 }
 .titles-answers-container {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
-.delete-input {
-    position: absolute;
-    top: 0px;
-    right: 3px;
-    height: 16px;
-    width: 16px;
+.project-number {
+    width: 100%;
+    font-size: 18px;
+    margin: 0 15px 5px 15px;
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+    /* border: 1px rgb(34, 91, 126) solid;
+    border-radius: 5px; */
+
+}
+
+
+
+
+.individual-answers-container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin-bottom: 30px;
+}
+
+
+.delete-input,
+.delete-los-btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -518,6 +538,14 @@ button[data-tooltip]:hover::after {
     border: none;
     font-size: 13px;
     text-align: center;
+}
+
+.delete-input {
+    position: absolute;
+    top: 0px;
+    right: 3px;
+    height: 16px;
+    width: 16px;
 }
 
     
@@ -537,6 +565,22 @@ button[data-tooltip]:hover::after {
 .add-input-button {
     border: 0;
     margin-bottom: 5px;
+}
+
+
+.add-los-btn {
+    background-color:rgb(11, 64, 96);
+    /* background-color:rgb(34, 91, 126); */
+    color: white;
+    border: 1px black solid;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s; 
+    margin: 15px;
+}
+
+.add-los-btn:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 /* FORGOT PASSWORD FORM */
