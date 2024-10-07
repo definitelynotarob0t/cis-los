@@ -1,6 +1,6 @@
 import ElevatorPitch from "./components/ElevatorPitch"
 import SignupForm from "./components/Signup"
-import LosMapper from "./components/Los"
+import LosPage from "./components/LosPage";
 import SuccessNotification from "./components/SuccessNotification";
 import ErrorNotification from "./components/ErrorNotification";
 import { setPitches } from "./reducers/pitchReducer"
@@ -76,7 +76,7 @@ function App() {
           <Route path="/login" element={!user ? <SignupForm /> : <Navigate to="/home" />} />
           <Route path="/home" element={user? <Home /> : <Navigate to="/login" />} />
           <Route path="/programs/:programId/elevator-pitch/:pitchId" element={user ? <ElevatorPitch /> : <Navigate to="/login" />} />
-          <Route path="/programs/:programId/line-of-sight/:pitchId" element={user ? <LosMapper /> : <Navigate to="/login" />} />
+          <Route path="/programs/:programId/line-of-sight/:pitchId" element={user ? <LosPage /> : <Navigate to="/login" />} />
           <Route path="/forgot-password" element={<ForgotPasswordForm />}/>
           <Route path="/reset-password" element={<PasswordResetForm />} />
         </Routes>
