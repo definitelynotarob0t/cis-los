@@ -42,15 +42,24 @@ const losSlice = createSlice({
 export const { setLoses, updateLos, addLosToState, removeLosFromState } = losSlice.actions
 
 export const fetchLoses = () => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const loses = await losService.getLoses();
+      dispatch(setLoses(loses));
+    } catch (error) {
+      console.error("Failed to fetch line of sights", error);
 
+    }
+  }
 }
+
 export const fetchLos = (id: number) => {
   return async (dispatch: AppDispatch) => {
     try {
       const los = await losService.getLos(id);
       dispatch(setLoses(los));
     } catch (error) {
-      console.error("Failed to fetch line-of-sight", error);
+      console.error("Failed to fetch line of sight", error);
     }
   };
 };
@@ -62,7 +71,7 @@ export const editLos = (los: Los) => {
           const editedLos: Los = await losService.updateLos(los);
           dispatch(updateLos(editedLos)); 
       } catch (error) {
-          console.error("Failed to update los", error);
+          console.error("Failed to update line of sight", error);
       }
   };
 };
@@ -74,7 +83,7 @@ export const addLos = (newLos: Omit<Los, 'id'>) => {
       const createdLos = await losService.createLos(newLos);  
       dispatch(addLosToState(createdLos));  
     } catch (error) {
-      console.error("Failed to create a new LoS", error);
+      console.error("Failed to create a new line of sight", error);
     }
   };
 }
@@ -86,7 +95,7 @@ export const removeLos = (losId: number) => {
       dispatch(removeLosFromState(losId));
     }
     catch (error) {
-      console.log("Failed to delete LoS", error);
+      console.log("Failed to delete line of sight", error);
     }
   }
 }

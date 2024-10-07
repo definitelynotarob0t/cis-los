@@ -1,13 +1,8 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
+import tokenService from './tokenService';
 
 const loginUrl = `${apiBaseUrl}/login`;
-
-let token: string | null = null;
-
-const setToken = (newToken: string | null) => {
-  token = newToken ? `Bearer ${newToken}` : null;
-}
 
 const login = async (credentials: { email: string, password: string }) => {
   const response = await axios.post(loginUrl, credentials);
@@ -15,8 +10,8 @@ const login = async (credentials: { email: string, password: string }) => {
 };
 
 const logout = () => {
-  token = null;
+  tokenService.setToken(null);
   sessionStorage.removeItem('loggedUser');
 };
 
-export default { login, setToken, logout };
+export default { login, logout };

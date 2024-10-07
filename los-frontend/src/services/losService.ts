@@ -1,16 +1,13 @@
 import axios from 'axios'
 import { Los } from '../types'
 import { apiBaseUrl } from '../constants'
+import tokenService from './tokenService'
 
 const losUrl = `${apiBaseUrl}/loses`
 
-let token: string | null = null;
-
-const setToken = (newToken: string) => {
-  token = `Bearer ${newToken}`;
-};
 
 const getLoses = async () => {
+  const token = tokenService.getToken(); 
   const config = {
     headers: { Authorization: token }
   };
@@ -25,11 +22,13 @@ const getUserLoses = async (userId: number) => {
     // Filter loses by userId
     return allLoses.filter((los: Los) => los.userId === userId);
   } catch (error) {
-    console.error('Failed to fetch user programs:', error);
+    console.error('Failed to fetch user loses:', error);
   }
 }
 
 const getLos = async (id: number) => {
+  const token = tokenService.getToken(); 
+
   const config = {
     headers: { Authorization: token }
   };
@@ -39,6 +38,8 @@ const getLos = async (id: number) => {
 
 
 const updateLos = async (los: Los) => {
+  const token = tokenService.getToken(); 
+
   const config = {
     headers: { Authorization: token }
   };
@@ -48,6 +49,8 @@ const updateLos = async (los: Los) => {
 
 
 const createLos = async (newLos: Omit<Los, 'id'>) => {
+  const token = tokenService.getToken(); 
+
   const config = {
     headers: { Authorization: token }
   };
@@ -56,6 +59,8 @@ const createLos = async (newLos: Omit<Los, 'id'>) => {
 }
 
 const deleteLos = async (id: number) => {
+  const token = tokenService.getToken(); 
+
   const config = {
     headers: { Authorization: token }
   };
@@ -63,4 +68,4 @@ const deleteLos = async (id: number) => {
 }
 
 
-export default { setToken, getLoses, getUserLoses, getLos, updateLos, createLos, deleteLos }
+export default { getLoses, getUserLoses, getLos, updateLos, createLos, deleteLos }

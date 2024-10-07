@@ -8,8 +8,7 @@ import UserModel from '../models/user';
 // Define a type for the decoded token payload
 interface DecodedToken {
     id: number;      // User ID
-    email: string;  
-  }
+}
 
 // Validate session
 const sessionValidator = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,7 +52,6 @@ const sessionValidator = async (req: Request, res: Response, next: NextFunction)
 
     req.user = {
       id: decodedToken.id,
-      email: decodedToken.email 
     };
 
     next();

@@ -1,14 +1,11 @@
 import axios from 'axios';
 import { apiBaseUrl } from '../constants';
 import { Program } from '../types';
+import tokenService from './tokenService';
 
 const programUrl = `${apiBaseUrl}/programs`;
 
-let token: string | null = null;
-
-const setToken = (newToken: string) => {
-  token = `Bearer ${newToken}`;
-};
+const token = tokenService.getToken();
 
 const getPrograms = async () => {
   const config = {
@@ -58,4 +55,4 @@ const deleteProgram = async (id: number) => {
 };
 
 
-export default { setToken, getPrograms, getUserPrograms, createProgram, deleteProgram };
+export default { getPrograms, getUserPrograms, createProgram, deleteProgram };

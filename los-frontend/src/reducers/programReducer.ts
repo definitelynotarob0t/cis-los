@@ -46,7 +46,7 @@ export const fetchPrograms = () => {
       const programs = await programService.getPrograms();
       dispatch(setPrograms(programs));
     } catch (error) {
-      console.error("Failed to fetch program", error);
+      console.error("Failed to fetch programs", error);
     }
   };
 };

@@ -73,9 +73,8 @@ router.post('/', sessionValidator, async (req, res, next) => {
 });
 
 // Edit pre-existing los
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', sessionValidator, async (req, res, next) => {
     const userId = req.user?.id; // Extract userId from the session
-
 
     if (!userId) {
         res.status(400).json({ error: 'User not authenticated.' });
@@ -100,7 +99,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 // Delete a los
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', sessionValidator, async (req, res, next) => {
     const userId = req.user?.id; // Extract userId from the session
 
     if (!userId) {

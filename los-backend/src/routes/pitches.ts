@@ -51,7 +51,14 @@ router.post('/', sessionValidator, async (req, res, next) => {
 });
 
 // Edit pre-existing pitch
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', sessionValidator, async (req, res, next) => {
+    const userId = req.user?.id; // Extract userId from the session
+
+    if (!userId) {
+        res.status(400).json({ error: 'User not authenticated.' });
+        return
+    }
+
     const pitchId = parseInt(req.params.id, 10);
 
     if (isNaN(pitchId)) {
@@ -82,17 +89,12 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
     const pitchToDelete = await PitchModel.findByPk(req.params.id)
     if (pitchToDelete) {
-        // if (pitchToDelete.userId === req.user?.id) {
             try {
                 await pitchToDelete.destroy();
                 res.status(204).end()
             } catch(error) {
                 next(error)
             }
-        // } else {
-        //     res.status(403).json({ error: 'You are not authorized to delete this pitch.' });
-        //     return
-        // }
     } else {
         res.status(400).json({ error: Error})
     }

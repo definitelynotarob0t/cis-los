@@ -1,14 +1,11 @@
 import axios from 'axios'
 import { Pitch } from '../types'
 import { apiBaseUrl } from '../constants'
+import tokenService from './tokenService'
 
 const pitchUrl = `${apiBaseUrl}/pitches`
 
-let token: string | null = null;
-
-const setToken = (newToken: string) => {
-  token = `Bearer ${newToken}`;
-};
+const token = tokenService.getToken();
 
 const getPitches = async () => {
 
@@ -49,4 +46,4 @@ const updatePitch = async (pitch: Pitch) => {
 }
 
 
-export default { setToken, getPitches, getUserPitches, getPitch, updatePitch }
+export default { getPitches, getUserPitches, getPitch, updatePitch }
