@@ -36,19 +36,19 @@ const loginLimiter = rateLimit({
 });
 
 
-// // General API rate limiter
-// const apiLimiter = rateLimit({
-//   windowMs: 5 * 60 * 1000, // 5 minutes
-//   max: 300, // Limit each IP to 300 requests per windowMs
-//   message: 'Too many requests from this IP, please try again later',
-// });
+// General API rate limiter
+const apiLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later',
+});
 
 
 // Routes
 app.use('/api/login', loginLimiter); // Apply the login limiter to the login route
 app.use('/api/login', loginRouter);
 
-// app.use('/api/', apiLimiter); // Apply the general limiter to all API routes
+app.use('/api/', apiLimiter); // Apply the general limiter to all API routes
 app.use('/api/programs', programRouter);
 app.use('/api/pitches', pitchRouter);
 app.use('/api/users', userRouter);

@@ -15,7 +15,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import ForgotPasswordForm from "./components/ForgotPassword";
 import PasswordResetForm from './components/PasswordReset'
 import Home from "./components/Home";
-import store from "./store";
 import { setPrograms } from "./reducers/programReducer";
 import programService from "./services/programService";
 
@@ -24,7 +23,6 @@ function App() {
   const user = useSelector((state: RootState) => state.user.user); 
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log(store.getState())
 
   // Fetch user only on component mount
   useEffect(() => {

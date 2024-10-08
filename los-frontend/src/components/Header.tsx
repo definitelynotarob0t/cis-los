@@ -8,6 +8,7 @@ import { SyntheticEvent, useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 import { RootState } from "../store";
 import { notifyError } from "../reducers/errorReducer";
+import { Pitch } from "../types";
 
 interface HeaderProps {
     updateUserInputs?: (event: SyntheticEvent) => void;
@@ -20,29 +21,35 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
     const currentPath = location.pathname;
     const [showModal, setShowModal] = useState(false);
 
-    const { pitchId, programId } = useParams<{ pitchId: string; programId: string }>(); 
+    const { pitchId, programId } = useParams<{ pitchId: string, programId: string }>(); 
+    let pitchIdNumber = Number(pitchId);
+    let programIdNumber = Number(programId);
 
     const programs = useSelector((state: RootState) => state.programs?.programs);
-    const pitches = useSelector((state: RootState) => state.pitches?.pitches);
+    const unsortedPitches = useSelector((state: RootState) => state.pitches?.pitches);
+    const pitches = unsortedPitches ? 
+        [...unsortedPitches].sort((a: Pitch, b: Pitch) => a.id - b.id) 
+        : [];
 
-    const [_selectedProgramId, setSelectedProgramId] = useState(programId || programs[0]?.id);
-    const [_selectedPitchId, setSelectedPitchId] = useState(pitchId || pitches[0]?.id); // Add state for pitchId
 
+    const [_selectedProgramId, setSelectedProgramId] = useState(programIdNumber || Number(programs[0]?.id));
+    const [_selectedPitchId, setSelectedPitchId] = useState(pitchIdNumber || Number(pitches[0]?.id)); 
 
-    useEffect(() => {
-        if (programId) {
-            setSelectedProgramId(programId);
-        }
-    }, [programId]);
 
     useEffect(() => {
-        if (pitchId) {
-            setSelectedPitchId(pitchId);
+        if (programIdNumber) {
+            setSelectedProgramId(programIdNumber);
         }
-    }, [pitchId]);
+    }, [programIdNumber]);
 
-    const elevatorPitchUrl = `/projects/${programId}/elevator-pitch/${pitchId}`
-    const losUrl = `/projects/${programId}/line-of-sight/${pitchId}`
+    useEffect(() => {
+        if (pitchIdNumber) {
+            setSelectedPitchId(pitchIdNumber);
+        }
+    }, [pitchIdNumber]);
+
+    const elevatorPitchUrl = `/projects/${programIdNumber}/elevator-pitch/${pitchIdNumber}`
+    const losUrl = `/projects/${programIdNumber}/line-of-sight/${pitchIdNumber}`
     
     const exportToPDF = () => {
         let element: HTMLElement | null = null;
@@ -68,27 +75,29 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
             
             html2pdf().set(options).from(element).save();
         } else {
+            dispatch(notifyError('Error exporting PDF'));
             console.error('Element not found for PDF export.');
         }
 };
 
-    const handleProgramChange = (programId: number) => {
-        setSelectedProgramId(programId);
+    const handleProgramChange = (newProgramId: number) => {
+        setSelectedProgramId(newProgramId);
 
-        const selectedProgram =  programs.find((program) => program.id === Number(programId))
+        const selectedProgram =  programs.find((program) => program.id === newProgramId);
+
         if (!selectedProgram) {
-            dispatch(notifyError('Error retrieving projects'));
+            dispatch(notifyError('Error retrieving project'));
             return;
         }
 
         const newPitchId = selectedProgram.pitchId;
 
         if (!newPitchId) {
-            dispatch(notifyError('Error retriving projects'))
+            dispatch(notifyError('Error retriving project'))
             return
         } 
-        setSelectedPitchId(newPitchId); 
-        navigate(`/projects/${programId}/elevator-pitch/${newPitchId}`);
+        setSelectedPitchId(Number(newPitchId)); 
+        navigate(`/projects/${newProgramId}/elevator-pitch/${newPitchId}`);
     };
 
     const handleLogout = () => {
@@ -140,8 +149,8 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
                         {currentPath !== '/home' && (
                             <div>
                                 <button
-                                className={currentPath === `elevatorPitchUrl` ? 'navbar-item primary' : 'navbar-item'}
-                                onClick={() => navigate(`elevatorPitchUrl`)}
+                                className={currentPath === elevatorPitchUrl ? 'navbar-item primary' : 'navbar-item'}
+                                onClick={() => navigate(elevatorPitchUrl)}
                                 >
                                 Elevator Pitch
                                 </button>
@@ -155,12 +164,15 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
                         )}           
                             </div>
                             <div className="header-end">
-                                {(currentPath === `elevatorPitchUrl` || currentPath === losUrl) && (
-                                    < button className="navbar-item save-button" onClick={updateUserInputs}> Save </button>
+                                {(currentPath === elevatorPitchUrl || currentPath === losUrl) && (
+                                    <>
+                                        < button className="navbar-item save-button" onClick={updateUserInputs}> Save </button>
+                                        <button className='navbar-item' id="pdf-button" data-tooltip="Export to PDF" onClick={exportToPDF}>
+                                            <i className="bi bi-file-pdf"></i>
+                                        </button>
+                                    </>
                                 )}
-                                 <button className='navbar-item' id="pdf-button" data-tooltip="Export to PDF" onClick={exportToPDF}>
-                                    <i className="bi bi-file-pdf"></i>
-                                </button>
+                                 
                                 <button onClick={handleLogout} className='navbar-item' id="logout-button" data-tooltip="Log out">
                                     <i className="bi bi-box-arrow-right"></i>
                                 </button>

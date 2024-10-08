@@ -73,7 +73,11 @@ const LosPage = () => {
     const userId = useSelector((state: RootState) => state.user?.user?.id);
     const pitches = useSelector((state: RootState) => state.pitches?.pitches);
     const pitch = pitches.find((pitch: Pitch) => pitch.id === pitchIdNumber);
-    const loses = useSelector((state: RootState) => state.loses?.loses);
+    const unsortedLoses = useSelector((state: RootState) => state.loses?.loses);
+    const loses = unsortedLoses ? 
+    [...unsortedLoses].sort((a: Los, b: Los) => a.id - b.id) 
+    : [];
+
     const filteredLoses = loses.filter((los: Los) => los.programId === programIdNumber);
 
     // Fetch LoSes if not already loaded

@@ -87,7 +87,7 @@ html, body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
+    overflow-x:hidden;
   }
 
 .content {
@@ -98,22 +98,6 @@ html, body {
     min-width: 100vw;
 }
 
-
-@media (max-width: 768px) { /* Display for mobile */
-    .navbar {
-      max-width: 920px; /* To prevent header of Los page overflowing too far */
-    }
-    .footer {
-        min-width: 920px;
-    }
-    .pitch-content {
-        min-width: 900px;
-    }
-    .signup-container {
-        display: block;
-        width: 800px;
-    }
-  }
 
 /* To remove buttons from PDF of LoS page */
 .hidden-buttons {
@@ -342,6 +326,10 @@ button[data-tooltip]:hover::after {
 }
 
 /* HOME PAGE */
+
+.home-content {
+    margin: 15px;
+}
 
 .new-program-button {
     width: 300px;
@@ -575,8 +563,8 @@ button[data-tooltip]:hover::after {
 
 
 .add-los-btn {
+    height: 40px;
     background-color:rgb(11, 64, 96);
-    /* background-color:rgb(34, 91, 126); */
     color: white;
     border: 1px black solid;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
@@ -606,4 +594,124 @@ button[data-tooltip]:hover::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+
+/* PHONE DISPLAY */
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+
+    /* Header */
+    .navbar, .footer {
+        width: 100%;
+        min-width: 100%; 
+        padding: 5px; 
+        height: auto; 
+        overflow-x: scroll;
+    }
+
+    .header-contents {
+        margin: 0;
+        padding: 5px;
+    }
+
+    .navbar-logo {
+        height: 60px;
+        width: 60px; 
+        padding: 8px;
+    }
+
+    .navbar-item, .dropdown-toggle {
+        margin: 10px; 
+        font-size: 12px;
+    }
+
+    /* Signup container and form */
+    .signup-container {
+        width: 100%; 
+        min-height: 100%;
+        flex-direction: column; /* Stack form and image */
+    }
+
+    .login-form {
+        width: 100%;
+        min-height: 100%;
+        padding: 10px; 
+    }
+
+    .road-image {
+        display: none; 
+    }
+
+    /* Buttons */
+    .new-program-button, .edit-delete-project-btn, .login-button {
+        width: 100%; 
+        font-size: 14px; 
+    }
+
+    .signup-link {
+        padding-left: 0;
+        text-align: center; /* Center signup link for mobile */
+    }
+
+    /* Pitch and other content containers */
+    .pitch-content, .los-container {
+        flex-direction: column;
+        margin: 10px;
+    }
+
+    .pitch-form, .pitch-card {
+        width: 100%;
+    }
+
+    .pitch-card {
+        font-size: 18px;
+    }
+
+    .pitch-form .form-label {
+        font-size: 14px !important;
+    }
+
+    .pitch-card h1 {
+        font-size: 22px;
+    }
+
+    .accordion-header { 
+        margin: 0;
+    }
+    .accordion-button, .accordion-body, .details-card, .title-card {
+        font-size: 14px;
+    }
+
+    .details-card, .title-card {
+        margin: 0 5px 0 0;
+    }
+
+    .pitch-input, .input-contenteditable, .program-number, .input-titles {
+        font-size: 13px; 
+        width: 100%; 
+    }
+
+    .individual-answers-container {
+        justify-content: flex-start;
+        max-width: 96%;
+    }
+
+    .container {
+        padding: 1px;
+    }
+
+    /* Notification */
+    .notification {
+        width: 100%; 
+        font-size: 14px;
+    }
+    
+    /* Footer adjustments */
+    .footer {
+        padding: 10px;
+        font-size: 12px; 
+        text-align: center;
+    }
 }
