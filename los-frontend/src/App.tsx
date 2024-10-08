@@ -24,6 +24,7 @@ function App() {
   const dispatch = useDispatch<AppDispatch>();
 
 
+
   // Fetch user only on component mount
   useEffect(() => {
     dispatch(initialiseUser()); // This only runs once

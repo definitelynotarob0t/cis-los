@@ -132,8 +132,6 @@ html, body {
 
 
 .navbar-logo {
-    /* height: 109px !important;
-    width: 109px !important; */
     height: 133px;
     width: 157px;
     padding: 12px 24px;
@@ -153,6 +151,7 @@ html, body {
 
 .dropdown-toggle {
     padding: 10px;
+    font-size: 14px;
 }
 .dropdown-toggle:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -630,13 +629,12 @@ button[data-tooltip]:hover::after {
     /* Signup container and form */
     .signup-container {
         width: 100%; 
-        min-height: 100%;
         flex-direction: column; /* Stack form and image */
     }
 
     .login-form {
         width: 100%;
-        min-height: 100%;
+        min-height: 100vh;
         padding: 10px; 
     }
 
@@ -648,11 +646,6 @@ button[data-tooltip]:hover::after {
     .new-program-button, .edit-delete-project-btn, .login-button {
         width: 100%; 
         font-size: 14px; 
-    }
-
-    .signup-link {
-        padding-left: 0;
-        text-align: center; /* Center signup link for mobile */
     }
 
     /* Pitch and other content containers */

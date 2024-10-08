@@ -105,37 +105,53 @@ router.post('/', sessionValidator, async (req, res, next) => {
     }
 });
 
-
 // Delete a program
 router.delete('/:id', sessionValidator, async (req, res, next) => {
+    const t = await sequelize.transaction(); // Start transaction
     try {
-        const programToDelete = await ProgramModel.findByPk(req.params.id);
+        const userId = req.user?.id; // Extract userId from the session
 
+        if (!userId) {
+            res.status(401).json({ error: 'User not authenticated.' });
+            return;
+        }
+
+        const programToDelete = await ProgramModel.findByPk(req.params.id);
 
         if (!programToDelete) {
             res.status(404).json({ error: 'Program not found' });
-            return
+            return;
         }
     
         const userToUpdate = await UserModel.findByPk(programToDelete.userId);
-
-        if (programToDelete.userId === req.user?.id && userToUpdate && userToUpdate.programIds) {
-            try {
-                userToUpdate.programIds = userToUpdate.programIds.filter((id: number) => id !== programToDelete.id);
-                await userToUpdate.save();
-                await programToDelete.destroy();
-                res.status(204).end()
-            } catch(error) {
-                next(error)
-            }
-        } else {
-            res.status(403).json({ error: 'You are not authorized to delete this program.' });
-            return
+        if (!userToUpdate) {
+            res.status(404).json({ error: 'User not found.' });
+            return;
         }
+
+        // Update user's programIds, losIds, and pitchIds
+        userToUpdate.programIds = userToUpdate.programIds ? userToUpdate.programIds.filter((id: number) => id !== programToDelete.id) : [];
+        userToUpdate.losIds = userToUpdate.losIds ? userToUpdate.losIds.filter((id: number) => !programToDelete.losIds?.includes(id)) : [];
+        userToUpdate.pitchIds = userToUpdate.pitchIds ? userToUpdate.pitchIds.filter((id: number) => id !== programToDelete.pitchId) : [];
+       
+        // Save the updated user data
+        await userToUpdate.save({ transaction: t });
+
+        // Delete the program
+        await programToDelete.destroy({ transaction: t });
+
+        // Commit the transaction
+        await t.commit();
+
+        res.status(204).end();
     } catch (error) {
+        // Rollback the transaction in case of error
+        await t.rollback();
+
         next(error);
     }
 });
+
 
 export default router;
 

@@ -53,17 +53,17 @@ router.post('/', sessionValidator, async (req, res, next) => {
             res.status(404).json({ error: 'Program not found.' });
             return
         }
-        programToUpdate.losIds?.push(los.id);
 
         const userToUpdate = await UserModel.findByPk(userId);
         if (!userToUpdate) {
             res.status(404).json({ error: 'User not found.' });
             return
         }
-        userToUpdate.losIds?.push(los.id);
+        userToUpdate.losIds = [...(userToUpdate.losIds || []), los.id];
+        programToUpdate.losIds = [...(programToUpdate.losIds || []), los.id];
 
-        await programToUpdate.save();
         await userToUpdate.save();
+        await programToUpdate.save();
 
         res.status(201).json(los);
         return

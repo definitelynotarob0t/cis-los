@@ -5,9 +5,9 @@ import tokenService from './tokenService'
 
 const pitchUrl = `${apiBaseUrl}/pitches`
 
-const token = tokenService.getToken();
 
 const getPitches = async () => {
+  const token = tokenService.getToken();
 
   const config = {
     headers: { Authorization: token }
@@ -18,6 +18,7 @@ const getPitches = async () => {
 
 
 const getUserPitches = async (userId: number) => {
+
   try {
     const allPitches = await getPitches();
     // Filter pitches by userId
@@ -29,6 +30,8 @@ const getUserPitches = async (userId: number) => {
 
 
 const getPitch = async (id: number) => {
+  const token = tokenService.getToken();
+
   const config = {
     headers: { Authorization: token }
   };
@@ -38,6 +41,8 @@ const getPitch = async (id: number) => {
 
 
 const updatePitch = async (pitch: Pitch) => {
+  const token = tokenService.getToken();
+
   const config = {
     headers: { Authorization: token }
   };

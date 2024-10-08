@@ -5,9 +5,10 @@ import tokenService from './tokenService';
 
 const programUrl = `${apiBaseUrl}/programs`;
 
-const token = tokenService.getToken();
 
 const getPrograms = async () => {
+  const token = tokenService.getToken();
+
   const config = {
     headers: { Authorization: token }
   };
@@ -29,6 +30,8 @@ const getUserPrograms = async (userId: number) => {
 
 
 const createProgram = async () => {
+  const token = tokenService.getToken();
+
   const config = {
     headers: { Authorization: token }
   };
@@ -42,6 +45,8 @@ const createProgram = async () => {
 };
 
 const deleteProgram = async (id: number) => {
+  const token = tokenService.getToken();
+
   const config = {
     headers: { Authorization: token }
   };
