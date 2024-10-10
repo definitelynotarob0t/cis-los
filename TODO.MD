@@ -1,22 +1,17 @@
 
-1. Write a README file
-2. ESlint
-3. Build
-4. Deploy ** ensure API is not publicly accessible / ensure user emails are secure
-
-
-post CIS meeting
-- separate outcomes and impacts?
-- hover mouse over input headers to see explanation 
-
-
+- [ ] Write a README file
+- [ ] hover mouse over input headers to see explanation  
+- [ ] ESlint  
+- [ ] Build  
+- [ ] Deploy ** ensure API is not publicly accessible / ensure user emails are secure  
 
 
 TBD: 
-    - Email for inactive accounts warning them that their data will be lost if they remain inactive
-    - Login spiel
-    - Who has access to create an account
-    - Placeholder text to be used in the elevator pitch page
+- [ ] separate outcomes and impacts?  
+- [ ] Email for inactive accounts warning them that their data will be lost if they remain inactive  
+- [ ] Login spiel  
+- [ ] sWho has access to create an account  
+- [ ] Placeholder text to be used in the elevator pitch page  
 
 
 

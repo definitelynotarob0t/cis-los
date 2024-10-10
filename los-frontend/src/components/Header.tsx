@@ -118,10 +118,11 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
         <>
             <Navbar>
                 <div className='header-contents'>
-                    <a href="https://consultingis.com.au/"><img
+                    <a href="https://consultingis.com.au/" target="_blank" ><img
                         src={logo}
                         alt="CIS Logo"
                         className="navbar-logo"
+                        
                     /></a>
                     <>
                         {currentPath !== '/login' && (
