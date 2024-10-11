@@ -1,39 +1,10 @@
-/* styles.css */
-
-/* Fonts  */
+/* General */
 
 @font-face {
-    font-family: 'RuckSack Book';
-    src: url('fonts/RuckSack/RuckSack-Book.woff2') format('woff2'),
-        url('fonts/RuckSack/RuckSack-Book.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'RuckSack Black';
-    src: url('fonts/RuckSack/RuckSack-Black.woff2') format('woff2'),
-        url('fonts/RuckSack/RuckSack-Black.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'RuckSack Medium';
-    src: url('fonts/RuckSack/RuckSack-Medium.woff2') format('woff2'),
-        url('fonts/RuckSack/RuckSack-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'RuckSack Bold';
-    src: url('fonts/RuckSack/RuckSack-Bold.woff2') format('woff2'),
-        url('fonts/RuckSack/RuckSack-Bold.woff') format('woff');
-    font-weight: bold;
+    font-family: 'RuckSack Light';
+    src: url('fonts/RuckSack/RuckSack-Light.woff2') format('woff2'),
+        url('fonts/RuckSack/RuckSack-Light.woff') format('woff');
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
 }
@@ -47,24 +18,21 @@
     font-display: swap;
 }
 
-@font-face {
-    font-family: 'RuckSack Light';
-    src: url('fonts/RuckSack/RuckSack-Light.woff2') format('woff2'),
-        url('fonts/RuckSack/RuckSack-Light.woff') format('woff');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-}
 
-/* General */
 
-body {
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-x:hidden;
     font-family: 'Rucksack Light', system-ui;
     font-weight: 400;
 }
 
 h1 {
-    font-family: 'Rucksack Light', system-ui;
     font-weight: 600;
 }
 
@@ -80,15 +48,6 @@ strong {
     font-family: 'RuckSack Demi'
 }
 
-html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-x:hidden;
-  }
 
 .content {
     flex: 1;
@@ -302,6 +261,18 @@ button[data-tooltip]:hover::after {
     height: 100vh;
     max-width: 70%;
     object-fit: cover;
+}
+
+.login-text-overlay {
+    position: absolute;
+    bottom: 1%; 
+    right: 1%;
+    color: white;
+    font-size: 14px;
+    width: 68%;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    background-color: rgba(0, 0, 0, 0.395);
+    padding: 5px;
 }
 
 .login-button {
@@ -586,6 +557,12 @@ button[data-tooltip]:hover::after {
     break-inside: avoid;
 }
 
+.input-contenteditable.placeholder:empty:before {
+    content: attr(data-placeholder);
+    color: #999;
+    pointer-events: none;
+}
+
 
 .add-input-button {
     border: 0;
@@ -625,6 +602,18 @@ button[data-tooltip]:hover::after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+/* NOT FOUND PAGE */
+.not-found-page {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    text-align: center;
+    gap: 20px
 }
 
 
@@ -672,6 +661,10 @@ button[data-tooltip]:hover::after {
 
     .road-image {
         display: none; 
+    }
+
+    .login-text-overlay {
+        display: none;
     }
 
     /* Buttons */

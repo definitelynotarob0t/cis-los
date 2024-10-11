@@ -77,11 +77,11 @@ router.post('/', async (req, res, next) => {
 
     // Create a blank LoS to associate with new user
     const blankLos = await LosModel.create({
-        inputs: [],
-        activities: [],
-        outputs: [],
-        usages: [],
-        outcomes: [],
+        inputs: [''],
+        activities: [''],
+        outputs: [''],
+        usages: [''],
+        outcomes: [''],
         userId: null, // Will be assigned after user creation
         programId: null // Will be assigned after user creation
     })

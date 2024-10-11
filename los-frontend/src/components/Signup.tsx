@@ -205,7 +205,15 @@ const SignupForm = () => {
                 src={road}
                 alt="Hilly road" 
                 className="road-image"
+                
             />
+             <div className="login-text-overlay">
+                The line of sight is a beneficial tool when designing new initiatives. 
+                It prompts teams to start mapping planned activities and outputs, and their outcomes and impacts. 
+                As your initiative progresses, the line of sight can be refined. 
+                This online tool is most effective during the early design stages, especially in a collaborative workshop. 
+                As it becomes more detailed and sophisticated, switching to a collaborative online document may be more beneficial. 
+             </div>
         </div>
         </div>
     )

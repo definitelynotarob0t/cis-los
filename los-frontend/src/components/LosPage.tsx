@@ -11,23 +11,40 @@ import { Los, Pitch } from "../types";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useParams } from "react-router-dom";
+import DOMPurify from 'dompurify';
 
 // Reusable InputSection component
-const InputSection = ({ title, fields, setFields, addField }: 
-    { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void }) => {
+const InputSection = ({ title, fields, setFields, addField, isFirstProgram }: 
+    { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void, isFirstProgram: Boolean}) => {
 
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
     const handleInputBlur = (index: number, event: React.FocusEvent<HTMLDivElement>) => {
         const updatedFields = [...fields];
-        updatedFields[index] = event.currentTarget.innerText;
+
+        const sanitizedContent = DOMPurify.sanitize(event.currentTarget.textContent || '',  {
+            ALLOWED_TAGS: [], // No HTML tags allowed
+            ALLOWED_ATTR: [], // No attributes allowed
+          }); // Strict sanitising : only plain text allowed
+
+    
+        updatedFields[index] = sanitizedContent;
+        // updatedFields[index] = event.currentTarget.innerText;
         setFields(updatedFields);
-        setFocusedIndex(null); 
-        
+        setFocusedIndex(null);
     };
 
     const handleInputFocus = (index: number) => {
         setFocusedIndex(index); 
+    };
+
+    // Handle paste event to strip out formatting and allow only plain text
+    const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+        event.preventDefault();
+
+        // Get plain text from clipboard and insert it
+        const text = event.clipboardData.getData('text/plain');
+        document.execCommand('insertText', false, text);
     };
 
     const getTooltip = (title: string) => {
@@ -45,6 +62,22 @@ const InputSection = ({ title, fields, setFields, addField }:
         }
     };
 
+    const getPlaceholderText = (title: string) => {
+        switch (title) {
+          case "Activities":
+            return "Conduct a review to identify aligned med tech supply vulnerabilities with Australian med tech capabilities and implement pilot projects between hospitals and med tech companies to address procurement, adoption and product challenges.";
+          case "Outputs":
+            return "Established partnerships between med tech companies and hospitals, with med tech products tailored to meet specific hospital requirements.";
+          case "Usages":
+            return "Hospitals support local procurement and integrate med tech products into operations.";
+          case "Outcomes and Impacts":
+            return "Enhanced patient outcomes due to timely and appropriate health interventions, and a X% increase in Australia’s global market share for med tech.";
+          default:
+            return "";
+        }
+      };
+    
+
     return (
         <Container>
             <div 
@@ -61,9 +94,17 @@ const InputSection = ({ title, fields, setFields, addField }:
                             contentEditable
                             onBlur={(e) => handleInputBlur(index, e)}
                             onFocus={() => handleInputFocus(index)}
+                            onPaste={handlePaste} 
                             suppressContentEditableWarning
-                            className="input-contenteditable"
-                            ref={(el) => { if (el) el.textContent = field }}
+                            className={`input-contenteditable ${
+                                !field ? "placeholder" : ""
+                              }`}
+                            ref={(el) => {
+                            if (el) {
+                                el.textContent = field || ""; // Set text content
+                            }
+                            }}
+                            data-placeholder={isFirstProgram && index === 0 ? getPlaceholderText(title) : ""}
                         />
                         {field === '' && focusedIndex !== index && (
                             <button
@@ -231,7 +272,7 @@ const LosPage = () => {
                         {pitch?.title ? (
                             <div><strong>{pitch?.title}</strong></div>
                         ) :
-                            <div style={{ color: 'gray' }}>Title will appear here</div>
+                            <div style={{ color: 'gray' }}>Med Tech Australia</div>
                         }
                     </Card>
 
@@ -244,7 +285,11 @@ const LosPage = () => {
                                     <span>&nbsp;</span>{pitch?.outcome}
                                 </div>
                             ) :
-                                <div style={{ color: 'lightGray' }}>Elevator pitch will appear here.</div>
+                                <div style={{ color: 'lightGray' }}>
+                                    Australia’s health sector relies on imports for ~95% of its med tech yet faces significant supply chain challenges, highlighting critical vulnerabilities and the urgent need for targeted local manufacturing and improved supply chain resilience.
+                                    Med Tech Australia will identify, design and implement sovereign med tech products, leveraging existing capabilities and addressing specific needs.  
+                                    This will enhance healthcare resilience, ensure reliable access to critical medical supplies, improve patient outcomes, and foster a robust med tech industry that reduces dependency on international supply chains.  
+                                .</div>
                             }
                         </div>
                     </Card>
@@ -280,6 +325,7 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], activities: [...losStates[los.id]?.activities || [], ''] }
                                         }))}
+                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Outputs" 
@@ -297,6 +343,7 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], outputs: [...losStates[los.id]?.outputs || [], ''] }
                                         }))}
+                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Usages" 
@@ -314,6 +361,7 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], usages: [...losStates[los.id]?.usages || [], ''] }
                                         }))}
+                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Outcomes and Impacts" 
@@ -331,6 +379,7 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], outcomes: [...losStates[los.id]?.outcomes || [], ''] }
                                         }))}
+                                        isFirstProgram={index === 0}
                                     />
                                     </div>
                                 </div>

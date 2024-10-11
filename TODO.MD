@@ -1,6 +1,3 @@
-
-- [ ] Ensure that input fields are sanitised and embedded format
-- [ ] Update placeholder texts for line of sight input fields
 - [ ] ESlint  
 - [ ] Build  
 - [ ] Deploy ** ensure API is not publicly accessible / ensure user emails are secure  
@@ -8,7 +5,6 @@
 
 TBD: 
 - [ ] separate outcomes and impacts?  
-- [ ] Login spiel  
 - [ ] Who has access to create an account  
 
 
