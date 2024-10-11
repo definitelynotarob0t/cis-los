@@ -20,19 +20,19 @@ LosModel.init({
     autoIncrement: true
 },
   activities: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.TEXT),
     allowNull: true
   },
   outputs: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.TEXT),
     allowNull: true
   },
   usages: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.TEXT),
     allowNull: true
   },
   outcomes: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.TEXT),
     allowNull: true
   },
   userId: {

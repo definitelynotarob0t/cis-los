@@ -47,6 +47,7 @@ export const fetchPrograms = () => {
       dispatch(setPrograms(programs));
     } catch (error) {
       console.error("Failed to fetch programs", error);
+      throw error;
     }
   };
 };
@@ -59,6 +60,7 @@ export const createNewProgram = () => {
         return newProgram
       } catch (error) {
         console.error('Failed to create program', error);
+        throw error;
       }
     };
   };
@@ -68,10 +70,11 @@ export const createNewProgram = () => {
 export const deleteProgram = (id: number) => {
 return async (dispatch: AppDispatch) => {
     try {
-    await programService.deleteProgram(id);
-    dispatch(removeProgram(id));
+      await programService.deleteProgram(id);
+      dispatch(removeProgram(id));
     } catch (error) {
-    console.error('Failed to delete program', error);
+      console.error('Failed to delete program', error);
+      throw error;
     }
 };
 };

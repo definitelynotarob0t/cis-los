@@ -48,7 +48,7 @@ export const fetchLoses = () => {
       dispatch(setLoses(loses));
     } catch (error) {
       console.error("Failed to fetch line of sights", error);
-
+      throw error;
     }
   }
 }
@@ -60,6 +60,7 @@ export const fetchLos = (id: number) => {
       dispatch(setLoses(los));
     } catch (error) {
       console.error("Failed to fetch line of sight", error);
+      throw error;
     }
   };
 };
@@ -71,7 +72,8 @@ export const editLos = (los: Los) => {
           const editedLos: Los = await losService.updateLos(los);
           dispatch(updateLos(editedLos)); 
       } catch (error) {
-          console.error("Failed to update line of sight", error);
+          console.error("Failed to update line of sight", error); 
+          throw error;
       }
   };
 };
@@ -82,8 +84,10 @@ export const addLos = (newLos: Omit<Los, 'id'>) => {
     try {
       const createdLos = await losService.createLos(newLos);  
       dispatch(addLosToState(createdLos));  
+      return createdLos // to be used in handleAddLos for updating local state of LosPage
     } catch (error) {
       console.error("Failed to create a new line of sight", error);
+      throw error;
     }
   };
 }
@@ -96,6 +100,7 @@ export const removeLos = (losId: number) => {
     }
     catch (error) {
       console.log("Failed to delete line of sight", error);
+      throw error;
     }
   }
 }

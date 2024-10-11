@@ -43,7 +43,9 @@ const updateLos = async (los: Los) => {
   const config = {
     headers: { Authorization: token }
   };
+
   const response = await axios.put(`${losUrl}/${los.id}`, los, config)
+
   return response.data
 }
 

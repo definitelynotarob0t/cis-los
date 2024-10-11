@@ -82,20 +82,8 @@ const ElevatorPitch = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="pitch-input"
+              placeholder="Med Tech Australia"
               rows={1}
-              style={{ resize: "none" }}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label style={{ fontSize: "18px" }}>
-              In one sentence, what is your <strong>main activity?</strong>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              value={mainActivity}
-              onChange={(e) => setMainActivity(e.target.value)}
-              className="pitch-input"
-              rows={2}
               style={{ resize: "none" }}
             />
           </Form.Group>
@@ -109,21 +97,36 @@ const ElevatorPitch = () => {
               value={challenge}
               onChange={(e) => setChallenge(e.target.value)}
               className="pitch-input"
-              rows={2}
+              placeholder="Australia’s health sector relies on imports for ~95% of its med tech, yet faces significant supply chain challenges, highlighting critical vulnerabilities and the urgent need for targeted local manufacturing and improved supply chain resilience."
+              rows={3}
               style={{ resize: "none" }}
             />
           </Form.Group>
           <Form.Group>
             <Form.Label style={{ fontSize: "18px" }}>
-              In one sentence, what is the <strong>outcome</strong> (change) you
-              are trying to achieve?
+              In one sentence, what is your <strong>main activity?</strong>
+            </Form.Label>
+            <Form.Control
+              as="textarea"
+              value={mainActivity}
+              onChange={(e) => setMainActivity(e.target.value)}
+              className="pitch-input"
+              placeholder="Med Tech Australia will identify, design and implement sovereign med tech products, leveraging existing capabilities and addressing specific needs."
+              rows={3}
+              style={{ resize: "none" }}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label style={{ fontSize: "18px" }}>
+              In one sentence, what is the <strong>outcome</strong> (change) you are trying to achieve?
             </Form.Label>
             <Form.Control
               as="textarea"
               value={outcome}
               onChange={(e) => setOutcome(e.target.value)}
               className="pitch-input"
-              rows={2}
+              placeholder="This will enhance healthcare resilience, ensure reliable access to critical medical supplies, improve patient outcomes, and foster a robust med tech industry that reduces dependency on international supply chains."
+              rows={3}
               style={{ resize: "none" }}
             />
           </Form.Group>
@@ -132,9 +135,9 @@ const ElevatorPitch = () => {
         <Card className="pitch-card">
           <h1>{title}</h1>
           <div style={{ display: "inline" }}>
-            {mainActivity}
-            <span>&nbsp;</span>
             {challenge}
+            <span>&nbsp;</span>
+            {mainActivity}
             <span>&nbsp;</span>
             {outcome}
           </div>

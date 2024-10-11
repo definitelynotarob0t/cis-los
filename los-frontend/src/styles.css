@@ -366,7 +366,7 @@ button[data-tooltip]:hover::after {
 .pitch-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
     width: 50%;
     overflow-y: auto;
     padding: 10px
@@ -379,7 +379,7 @@ button[data-tooltip]:hover::after {
     width: 100%;
     white-space: pre-wrap;
     word-wrap: break-word;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     font-size: 18px;
     font-weight: 250;
     border: 1px solid #ccc;
@@ -392,6 +392,7 @@ button[data-tooltip]:hover::after {
     width: 50%;
     overflow-y: auto;
     padding: 20px;
+    margin: 10px 3px;
 }
 
 /* LOS PAGE */
@@ -489,7 +490,38 @@ button[data-tooltip]:hover::after {
     text-align: center;
     font-size: 18px;
     text-transform: uppercase;
+    cursor: default;
+    position: relative;
 }
+/* Tooltip styling */
+.input-titles:hover::after {
+    content: attr(data-tooltip);
+    text-transform: initial;
+    position: absolute;
+    bottom: 120%; /* Position it above the title */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    width: 250px;
+    text-align: center;
+    font-size: 14px;
+    z-index: 1;
+    opacity: 0.9;
+    white-space: normal;
+    transition: opacity 0.3s ease; 
+    display: block;
+}
+
+
+.input-titles[data-tooltip=""]::after,
+.input-titles[data-tooltip=""]::before {
+    display: none; /* Don't show the tooltip for empty or undefined tooltips */
+}
+
+
 .titles-answers-container {
     display: flex;
     flex-wrap: wrap;

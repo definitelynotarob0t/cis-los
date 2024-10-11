@@ -1,6 +1,6 @@
 
-- [ ] Write a README file
-- [ ] hover mouse over input headers to see explanation  
+- [ ] Ensure that input fields are sanitised and embedded format
+- [ ] Update placeholder texts for line of sight input fields
 - [ ] ESlint  
 - [ ] Build  
 - [ ] Deploy ** ensure API is not publicly accessible / ensure user emails are secure  
@@ -8,10 +8,8 @@
 
 TBD: 
 - [ ] separate outcomes and impacts?  
-- [ ] Email for inactive accounts warning them that their data will be lost if they remain inactive  
 - [ ] Login spiel  
-- [ ] sWho has access to create an account  
-- [ ] Placeholder text to be used in the elevator pitch page  
+- [ ] Who has access to create an account  
 
 
 

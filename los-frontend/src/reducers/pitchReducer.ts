@@ -42,6 +42,7 @@ export const fetchPitch = (id: number) => {
       dispatch(setPitches(pitch));
     } catch (error) {
       console.error("Failed to fetch pitch", error);
+      throw error;
     }
   };
 };
@@ -54,6 +55,7 @@ export const editPitch = (pitch: Pitch) => {
           dispatch(updatePitch(editedPitch)); 
       } catch (error) {
           console.error("Failed to update pitch", error);
+          throw error;
       }
   };
 };

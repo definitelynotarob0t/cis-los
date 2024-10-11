@@ -1,4 +1,4 @@
-# Project Planning Tool
+# Project Planning Web Application
 
 ## Overview
 
@@ -8,17 +8,17 @@ This application is designed to ease early-stage project planning, allowing user
 ## Pages
 
 1. **Elevator Pitch Page**:  
-   Provides four prompts that help users craft a clear project pitch. As users type, the full pitch paragraph is dynamically previewed in real-time. 
+    Provides four prompts that help users craft a clear and concise articulation of their program’s core activities, the challenge being addressed and intended outcomes. As users type, the full pitch paragraph is dynamically previewed in real-time. 
 
 2. **Line-of-Sight Page**:  
-   Helps users break down their projects into critical components, including activities, outputs, usages, and outcomes/impacts. Field inputs are customisable, and users have the option to drag and drop pre-filled suggestions or enter their own inputs. Each project can have many lines-of-sight on the same page.
+   Helps users break down their projects into critical components, including activities, outputs, usages, and outcomes/impacts. Users have the option to drag and drop pre-filled suggestive 'answers' or type their own for each of the component fields. Each project can have many lines-of-sight on the same page.
 
-3. **Home Page**: 
+3. **Home Page**:  
     Allows for the display and management of users' projects. Projects are added or deleted from this page.
 
 ## Client Context
 
-This tool was developed for Consulting & Implementation Services (CIS), a mid-tier management consulting firm that regularly assists clients with grant applications and other complex project needs. As the sole developer, I worked closely with CIS to ensure the tool met their specific requirements.
+This tool was developed for [Consulting & Implementation Services](https://consultingis.com.au/) (CIS), a mid-tier management consulting firm that regularly assists clients with grant applications and other complex project needs. As the sole developer, I worked closely with CIS to ensure the tool met their specific requirements. 
 
 ## Why This Tool?
 
@@ -26,7 +26,7 @@ CIS needed a project planning tool that was intuitive, uncluttered and highly cu
 
 ## Technologies Used
 
-This project uses a modern and scalable tech stack. **Node.js** powers the backend, while **React** ensures a responsive, dynamic frontend. **PostgreSQL** was selected for reliable data management, and **AWS** (EC2 and RDS) was implemented to provide a secure, cost-efficient hosting solution. **JWTs** are used to safeguard user authentication, session storage is used to persist user authentication. **Redux** ensures efficient state management across components.
+This project uses a modern and scalable tech stack. **Node.js** powers the backend, while **React** ensures a responsive, dynamic frontend. **PostgreSQL** was selected for reliable data management, and **AWS** (EC2 and RDS) was implemented to provide a secure, cost-efficient hosting solution. **JWTs** are used to safeguard user authentication, session storage is used to persist user authentication. **Nodemailer** and **JWTs** are used for password resetting. **Redux** ensures efficient state management across components.
 
 ## Challenges & Learning Experience
 

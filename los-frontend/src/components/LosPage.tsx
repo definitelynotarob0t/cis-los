@@ -12,7 +12,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useParams } from "react-router-dom";
 
-// Reusable InputSection component (keeps same logic)
+// Reusable InputSection component
 const InputSection = ({ title, fields, setFields, addField }: 
     { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void }) => {
 
@@ -30,9 +30,30 @@ const InputSection = ({ title, fields, setFields, addField }:
         setFocusedIndex(index); 
     };
 
+    const getTooltip = (title: string) => {
+        switch (title) {
+            case 'Activities':
+                return 'Describe what you will do to achieve your outputs, including e.g. R&D methodologies, educational initiatives and commercialisation efforts.';
+            case 'Outputs':
+                return 'Describe the tangible results your project will deliver upon completion.';
+            case 'Usages':
+                return 'Describe who will use the outputs, how they will be used and the types of costs they will incur.';
+            case 'Outcomes and Impacts':
+                return 'Describe the outcomes and how they will drive economic, social and environmental impacts.';
+            default:
+                return '';
+        }
+    };
+
     return (
         <Container>
-            <div className="input-titles">{title}</div>
+            <div 
+            className="input-titles"
+            id={`${title}-title`}
+            data-tooltip={getTooltip(title)} // Conditionally render tooltip content
+            >
+                {title}
+            </div>
             <Card style={{ border: 'none' }}>
                 {fields.map((field, index) => (
                     <div key={index} className="input-section-container">
@@ -87,7 +108,7 @@ const LosPage = () => {
         }
     }, [pitchIdNumber, filteredLoses.length, dispatch]);
 
-    // Initialize state for each LoS when filteredLoses change
+    // Initialise state for each LoS when filteredLoses change
     useEffect(() => {
         const initialStates = filteredLoses.reduce((acc, los) => {
             if (!losStates[los.id]) {
@@ -106,9 +127,11 @@ const LosPage = () => {
         }
     }, [filteredLoses, losStates]);
 
-    // Save logic for each LoS
+  // Save logic for each LoS
     const updateLos = async (event: SyntheticEvent) => {
         event.preventDefault();
+
+        let hasError = false; 
 
         try {
             for (const losId in losStates) {
@@ -124,19 +147,29 @@ const LosPage = () => {
                     programId: programIdNumber
                 };
 
-                await dispatch(editLos(updatedLos));
+                try { // Try to update each LoS individually
+                    await dispatch(editLos(updatedLos));
+                } catch (error) {
+                    hasError = true;
+                    console.error(`Error while saving line-of-sight with ID ${losId}:`, error);
+                }
             }
 
-            dispatch(notifySuccess("Saved"));
+            if (hasError) {
+                dispatch(notifyError("Error saving"));
+            } else {
+                dispatch(notifySuccess("Saved"));
+            }
+
         } catch (error) {
-            dispatch(notifyError("Error saving."));
-            console.error("Error while saving line of sight:", error);
+            dispatch(notifyError("Unexpected error occurred while saving."));
+            console.error("Unexpected error while saving line-of-sight entries:", error);
         }
     };
 
     const handleAddLos = async (event: SyntheticEvent) => {
         event.preventDefault();
-
+    
         try {
             if (userId && pitchIdNumber !== undefined) {
                 const newLos: Omit<Los, 'id'> = {
@@ -147,20 +180,41 @@ const LosPage = () => {
                     userId: userId,
                     programId: programIdNumber
                 };
-
-                await dispatch(addLos(newLos));
+    
+                const addedLos = await dispatch(addLos(newLos));
+                                
+                if (addedLos?.id) {
+                    // Add the newly add LoS to the local state
+                    setLosStates((prevStates) => ({
+                        ...prevStates,
+                        [addedLos.id]: {
+                            activities: addedLos.activities || [''],
+                            outputs: addedLos.outputs || [''],
+                            usages: addedLos.usages || [''],
+                            outcomes: addedLos.outcomes || [''],
+                        },
+                    }));
+                }
             }
         } catch (error) {
-            dispatch(notifyError("Error adding a new line of sight"));
+            dispatch(notifyError("Error adding a new project"));
             console.error("Error while adding a new line of sight:", error);
         }
     };
 
+
     const handleDeleteLos = async (losId: number) => {
         try {
-            await dispatch(removeLos(losId));
+            await dispatch(removeLos(losId));    
+            setLosStates((prevStates) => {
+                const newStates = { ...prevStates };
+                delete newStates[losId]; // Remove the deleted LoS from the state
+                return newStates;
+            });
+
         } catch (error) {
-            dispatch(notifyError("Error deleting project"));
+            dispatch(notifyError("Error deleting line project"));
+            console.error("Error deleting project line-of-sight:", error);
         }
     };
 
@@ -185,8 +239,8 @@ const LosPage = () => {
                         <div style={{ display: 'inline' }}>
                             {pitch?.mainActivity ? (
                                 <div>
-                                    <span>{pitch?.mainActivity}</span>
-                                    <span>&nbsp;</span>{pitch?.challenge}
+                                    <span>{pitch?.challenge}</span>
+                                    <span>&nbsp;</span>{pitch?.mainActivity}
                                     <span>&nbsp;</span>{pitch?.outcome}
                                 </div>
                             ) :
