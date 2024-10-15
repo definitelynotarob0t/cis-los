@@ -30,23 +30,29 @@ app.use(express.json());
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 15, // Limit each IP to 15 requests per windowMs
-  message: 'Too many login attempts from this IP, please try again after 15 minutes',
+  message: 'Too many login attempts from this IP, please try again later.',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+const emailCheckLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
+});
 
 // General API rate limiter
 const apiLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later',
+  max: 80, // Limit each IP to 100 requests per windowMs
+  message: 'Too many requests from this IP, please try again later.',
 });
 
 
 // Routes
 app.use('/api/login', loginLimiter); // Apply the login limiter to the login route
 app.use('/api/login', loginRouter);
+app.use('/api/users/email', emailCheckLimiter);
 
 app.use('/api/', apiLimiter); // Apply the general limiter to all API routes
 app.use('/api/programs', programRouter);

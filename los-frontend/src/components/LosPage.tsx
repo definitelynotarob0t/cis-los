@@ -273,7 +273,7 @@ const LosPage = () => {
                             ) :
                                 <div style={{ color: 'lightGray' }}>
                                     Elevator Pitch will go here.
-                                .</div>
+                                </div>
                             }
                         </div>
                     </Card>

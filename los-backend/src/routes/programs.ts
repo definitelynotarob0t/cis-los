@@ -66,7 +66,6 @@ router.post('/', sessionValidator, async (req, res, next) => {
 
         // Create the associated LoS (using pitchId as losId)
        const newLos =  await LosModel.create({
-            inputs: [''],
             activities: [''],
             outputs: [''],
             usages: [''],
