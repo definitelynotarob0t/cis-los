@@ -1,73 +1,73 @@
-import axios from 'axios'
-import { Los } from '../types'
-import { apiBaseUrl } from '../constants'
-import tokenService from './tokenService'
+import axios from "axios";
+import { Los } from "../types";
+import { apiBaseUrl } from "../constants";
+import tokenService from "./tokenService";
 
-const losUrl = `${apiBaseUrl}/loses`
+const losUrl = `${apiBaseUrl}/loses`;
 
 
 const getLoses = async () => {
-  const token = tokenService.getToken(); 
-  const config = {
-    headers: { Authorization: token }
-  };
-  const response = await axios.get(losUrl, config);
-  return response.data;
-}
+	const token = tokenService.getToken(); 
+	const config = {
+		headers: { Authorization: token }
+	};
+	const response = await axios.get(losUrl, config);
+	return response.data;
+};
 
 
 const getUserLoses = async (userId: number) => {
-  try {
-    const allLoses = await getLoses();
-    // Filter loses by userId
-    return allLoses.filter((los: Los) => los.userId === userId);
-  } catch (error) {
-    console.error('Failed to fetch user loses:', error);
-  }
-}
+	try {
+		const allLoses = await getLoses();
+		// Filter loses by userId
+		return allLoses.filter((los: Los) => los.userId === userId);
+	} catch (error) {
+		console.error("Failed to fetch user loses:", error);
+	}
+};
 
 const getLos = async (id: number) => {
-  const token = tokenService.getToken(); 
+	const token = tokenService.getToken(); 
 
-  const config = {
-    headers: { Authorization: token }
-  };
-  const response = await axios.get(`${losUrl}/${id}`, config);
-  return response.data;
+	const config = {
+		headers: { Authorization: token }
+	};
+	const response = await axios.get(`${losUrl}/${id}`, config);
+	return response.data;
 };
 
 
 const updateLos = async (los: Los) => {
-  const token = tokenService.getToken(); 
+	const token = tokenService.getToken(); 
 
-  const config = {
-    headers: { Authorization: token }
-  };
+	const config = {
+		headers: { Authorization: token }
+	};
 
-  const response = await axios.put(`${losUrl}/${los.id}`, los, config)
+	const response = await axios.put(`${losUrl}/${los.id}`, los, config);
 
-  return response.data
-}
+	return response.data;
+};
 
 
-const createLos = async (newLos: Omit<Los, 'id'>) => {
-  const token = tokenService.getToken(); 
+const createLos = async (newLos: Omit<Los, "id">) => {
+	const token = tokenService.getToken(); 
 
-  const config = {
-    headers: { Authorization: token }
-  };
-  const response = await axios.post(losUrl, newLos, config)
-  return response.data
-}
+	const config = {
+		headers: { Authorization: token }
+	};
+	const response = await axios.post(losUrl, newLos, config);
+	return response.data;
+};
 
 const deleteLos = async (id: number) => {
-  const token = tokenService.getToken(); 
+	const token = tokenService.getToken(); 
 
-  const config = {
-    headers: { Authorization: token }
-  };
-  await axios.delete(`${losUrl}/${id}`, config)
-}
+	const config = {
+		headers: { Authorization: token }
+	};
+	await axios.delete(`${losUrl}/${id}`, config);
+};
 
 
-export default { getLoses, getUserLoses, getLos, updateLos, createLos, deleteLos }
+export default { getLoses, getUserLoses, getLos, updateLos, createLos, deleteLos };

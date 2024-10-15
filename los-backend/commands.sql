@@ -1,1 +1,0 @@
-postgres=# INSERT INTO pitches (title, main_activity, challenge, outcome) VALUES ('Test title', 'Test activity.', 'Test challenge.', 'Test outcome.');

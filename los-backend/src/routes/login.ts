@@ -1,56 +1,56 @@
-import jwt from 'jsonwebtoken'
-import express from 'express';
-import { SECRET } from '../util/config'
-import UserModel from '../models/user';
-import Session from '../models/session';
-import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken";
+import express from "express";
+import { SECRET } from "../util/config";
+import UserModel from "../models/user";
+import Session from "../models/session";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
 // Log-in user, create session (by posting email and password in req.body)
-router.post('/', async (req, res, next) => {
-  const body = req.body
+router.post("/", async (req, res, next) => {
+	const body = req.body;
 
-  try {
-    const user = await UserModel.findOne({
-        where: {
-          email: body.email
-        }
-      })
+	try {
+		const user = await UserModel.findOne({
+			where: {
+				email: body.email
+			}
+		});
     
-    if (!user) {
-        res.status(401).json({ error: 'Email not registered' });
-    }
+		if (!user) {
+			res.status(401).json({ error: "Email not registered" });
+		}
 
-    // Check if user exists and password is correct
-    if (user && await bcrypt.compare(body.password, user.passwordHash)) {
+		// Check if user exists and password is correct
+		if (user && await bcrypt.compare(body.password, user.passwordHash)) {
     
-        // Prepare payload for JWT
-        const userForToken = {
-            email: user.email,
-            id: user.id,
-          }
+			// Prepare payload for JWT
+			const userForToken = {
+				email: user.email,
+				id: user.id,
+			};
         
-          if (!SECRET) {
-            throw new Error('SECRET is not defined in the environment variables');
-          }
+			if (!SECRET) {
+				throw new Error("SECRET is not defined in the environment variables");
+			}
         
-          // Create JWT
-          const token = jwt.sign(userForToken, SECRET)
+			// Create JWT
+			const token = jwt.sign(userForToken, SECRET);
         
-          // Store session
-          await Session.create({
-            userId: user.id,
-            token
-          });
+			// Store session
+			await Session.create({
+				userId: user.id,
+				token
+			});
         
-          // Send response with JWT and user details
-          res.status(200).send({ token, name: user.name, id: user.id, programIds: user.programIds })
+			// Send response with JWT and user details
+			res.status(200).send({ token, name: user.name, id: user.id, programIds: user.programIds });
 
-    }  
-  } catch (error) {
-    next(error)
-  }
+		}  
+	} catch (error) {
+		next(error);
+	}
 });
 
 

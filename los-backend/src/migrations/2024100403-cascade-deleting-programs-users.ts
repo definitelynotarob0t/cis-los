@@ -1,7 +1,7 @@
-import { QueryInterface } from 'sequelize';
+import { QueryInterface } from "sequelize";
 
 export async function up({ context }: { context: QueryInterface }) {
-  await context.sequelize.query(`
+	await context.sequelize.query(`
     ALTER TABLE programs
     DROP CONSTRAINT IF EXISTS programs_user_id_fkey,
     ADD CONSTRAINT programs_user_id_fkey
@@ -12,7 +12,7 @@ export async function up({ context }: { context: QueryInterface }) {
 }
 
 export async function down({ context }: { context: QueryInterface }) {
-  await context.sequelize.query(`
+	await context.sequelize.query(`
     ALTER TABLE programs
     DROP CONSTRAINT IF EXISTS programs_user_id_fkey,
     ADD CONSTRAINT programs_user_id_fkey

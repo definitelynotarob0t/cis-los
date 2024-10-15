@@ -1,57 +1,57 @@
-import { Model, DataTypes } from 'sequelize'
+import { Model, DataTypes } from "sequelize";
 
-import { sequelize } from '../util/db'
+import { sequelize } from "../util/db";
 
 class PitchModel extends Model {
-  id!: number;
-  title!: string | null;
-  mainActivity!: string | null;
-  challenge!: string | null;
-  outcome!: string | null;
-  userId!: number;
-  programId!: number | null;
+	id!: number;
+	title!: string | null;
+	mainActivity!: string | null;
+	challenge!: string | null;
+	outcome!: string | null;
+	userId!: number;
+	programId!: number | null;
 }
 
 
 PitchModel.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  title: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  mainActivity: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  challenge: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  outcome: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: { model: 'users', key: 'id' }
-  },
-  programId: { 
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: { model: 'programs', key: 'id' },
-    onDelete: 'CASCADE'
-  },
+	id: {
+		type: DataTypes.INTEGER,
+		primaryKey: true,
+		autoIncrement: true
+	},
+	title: {
+		type: DataTypes.TEXT,
+		allowNull: true
+	},
+	mainActivity: {
+		type: DataTypes.TEXT,
+		allowNull: true
+	},
+	challenge: {
+		type: DataTypes.TEXT,
+		allowNull: true
+	},
+	outcome: {
+		type: DataTypes.TEXT,
+		allowNull: true
+	},
+	userId: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+		references: { model: "users", key: "id" }
+	},
+	programId: { 
+		type: DataTypes.INTEGER,
+		allowNull: true,
+		references: { model: "programs", key: "id" },
+		onDelete: "CASCADE"
+	},
 }, {
-  sequelize,
-  underscored: true,
-  timestamps: true,
-  modelName: 'Pitch',
-})
+	sequelize,
+	underscored: true,
+	timestamps: true,
+	modelName: "Pitch",
+});
 
-export default PitchModel
+export default PitchModel;
 

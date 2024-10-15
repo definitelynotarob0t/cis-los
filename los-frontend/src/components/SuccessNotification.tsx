@@ -1,19 +1,19 @@
-import { useSelector } from 'react-redux'
-import { RootState } from '../store'
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 const SuccessNotification = () => {
 
-  const notification = useSelector((state: RootState) => state.notification)
+	const notification = useSelector((state: RootState) => state.notification);
 
-  if (notification.notification === null) {
-    return
-  }
+	if (notification.notification === null) {
+		return;
+	}
 
-  return (
-    <div className="notification">
-      <div className="success-notification"><strong>{notification.notification}</strong></div>   
-    </div>
-  )
-}
+	return (
+		<div className="notification">
+			<div className="success-notification"><strong>{notification.notification}</strong></div>   
+		</div>
+	);
+};
 
-export default SuccessNotification
+export default SuccessNotification;

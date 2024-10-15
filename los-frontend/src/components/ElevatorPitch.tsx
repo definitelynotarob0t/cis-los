@@ -14,136 +14,136 @@ import pitchService from "../services/pitchService";
 
 
 const ElevatorPitch = () => {
-  const [title, setTitle] = useState("");
-  const [mainActivity, setMainActivity] = useState("");
-  const [challenge, setChallenge] = useState("");
-  const [outcome, setOutcome] = useState("");
+	const [title, setTitle] = useState("");
+	const [mainActivity, setMainActivity] = useState("");
+	const [challenge, setChallenge] = useState("");
+	const [outcome, setOutcome] = useState("");
 
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const userId = useSelector((state: RootState) => state.user?.user?.id);
+	const userId = useSelector((state: RootState) => state.user?.user?.id);
 
-  const { pitchId, programId } = useParams<{ pitchId: string; programId: string }>(); 
-  let pitchIdNumber = Number(pitchId);
-  let programIdNumber = Number(programId)
+	const { pitchId, programId } = useParams<{ pitchId: string; programId: string }>(); 
+	let pitchIdNumber = Number(pitchId);
+	let programIdNumber = Number(programId);
 
-  useEffect(() => {
-    const fetchProgramPitch = async () => {
-      try {
-        if (pitchIdNumber) {
-          const pitch = await pitchService.getPitch(pitchIdNumber);
+	useEffect(() => {
+		const fetchProgramPitch = async () => {
+			try {
+				if (pitchIdNumber) {
+					const pitch = await pitchService.getPitch(pitchIdNumber);
 
-          // Populate the form with fetched pitch data
-          setTitle(pitch.title || "");
-          setMainActivity(pitch.mainActivity || "");
-          setChallenge(pitch.challenge || "");
-          setOutcome(pitch.outcome || "");
-        }
-      } catch (error) {
-        dispatch(notifyError("Error fetching pitch"));
-      } 
-    };
+					// Populate the form with fetched pitch data
+					setTitle(pitch.title || "");
+					setMainActivity(pitch.mainActivity || "");
+					setChallenge(pitch.challenge || "");
+					setOutcome(pitch.outcome || "");
+				}
+			} catch (error) {
+				dispatch(notifyError("Error fetching pitch"));
+			} 
+		};
 
-    fetchProgramPitch();
-  }, [pitchIdNumber, dispatch]);
+		fetchProgramPitch();
+	}, [pitchIdNumber, dispatch]);
 
-  // Update pitch
-  const updatePitch = async (event: SyntheticEvent) => {
-    event.preventDefault();
+	// Update pitch
+	const updatePitch = async (event: SyntheticEvent) => {
+		event.preventDefault();
 
-    if (userId && pitchIdNumber !== undefined) {
-      const updatedPitch: Pitch = {
-        id: pitchIdNumber,
-        title,
-        mainActivity,
-        challenge,
-        outcome,
-        userId,
-        programId: programIdNumber
-      };
-      dispatch(editPitch(updatedPitch));
-      dispatch(notifySuccess("Saved"));
-    } else {
-      console.error("User ID is not available");
-      dispatch(notifyError("Error updating pitch"));
-    }
-  };
+		if (userId && pitchIdNumber !== undefined) {
+			const updatedPitch: Pitch = {
+				id: pitchIdNumber,
+				title,
+				mainActivity,
+				challenge,
+				outcome,
+				userId,
+				programId: programIdNumber
+			};
+			dispatch(editPitch(updatedPitch));
+			dispatch(notifySuccess("Saved"));
+		} else {
+			console.error("User ID is not available");
+			dispatch(notifyError("Error updating pitch"));
+		}
+	};
 
   
-  return (
-    <div className="content">
-      <Header updateUserInputs={updatePitch} />
-      <div className="pitch-content">
-        <Form className="pitch-form" onSubmit={updatePitch}>
-          <Form.Group>
-            <Form.Label style={{ fontSize: "18px" }}>
-              <strong> Project Title</strong>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}    // No need for sanitising - React handles it for textareas     
-              className="pitch-input"
-              rows={1}
-              style={{ resize: "none" }}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label style={{ fontSize: "18px" }}>
+	return (
+		<div className="content">
+			<Header updateUserInputs={updatePitch} />
+			<div className="pitch-content">
+				<Form className="pitch-form" onSubmit={updatePitch}>
+					<Form.Group>
+						<Form.Label style={{ fontSize: "18px" }}>
+							<strong> Project Title</strong>
+						</Form.Label>
+						<Form.Control
+							as="textarea"
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}    // No need for sanitising - React handles it for textareas     
+							className="pitch-input"
+							rows={1}
+							style={{ resize: "none" }}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label style={{ fontSize: "18px" }}>
               In one sentence, what <strong>challenge</strong> is your program
               addressing?
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              value={challenge}
-              onChange={(e) => setChallenge(e.target.value)}
-              className="pitch-input"
-              rows={3}
-              style={{ resize: "none" }}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label style={{ fontSize: "18px" }}>
+						</Form.Label>
+						<Form.Control
+							as="textarea"
+							value={challenge}
+							onChange={(e) => setChallenge(e.target.value)}
+							className="pitch-input"
+							rows={3}
+							style={{ resize: "none" }}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label style={{ fontSize: "18px" }}>
               In one sentence, what is your <strong>main activity?</strong>
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              value={mainActivity}
-              onChange={(e) => setMainActivity(e.target.value)}
-              className="pitch-input"
-              rows={3}
-              style={{ resize: "none" }}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label style={{ fontSize: "18px" }}>
+						</Form.Label>
+						<Form.Control
+							as="textarea"
+							value={mainActivity}
+							onChange={(e) => setMainActivity(e.target.value)}
+							className="pitch-input"
+							rows={3}
+							style={{ resize: "none" }}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label style={{ fontSize: "18px" }}>
               In one sentence, what is the <strong>outcome</strong> (change) you are trying to achieve?
-            </Form.Label>
-            <Form.Control
-              as="textarea"
-              value={outcome}
-              onChange={(e) => setOutcome(e.target.value)}
-              className="pitch-input"
-              rows={3}
-              style={{ resize: "none" }}
-            />
-          </Form.Group>
-        </Form>
+						</Form.Label>
+						<Form.Control
+							as="textarea"
+							value={outcome}
+							onChange={(e) => setOutcome(e.target.value)}
+							className="pitch-input"
+							rows={3}
+							style={{ resize: "none" }}
+						/>
+					</Form.Group>
+				</Form>
 
-        <Card className="pitch-card">
-          <h1>{title}</h1>
-          <div style={{ display: "inline" }}>
-            {challenge}
-            <span>&nbsp;</span>
-            {mainActivity}
-            <span>&nbsp;</span>
-            {outcome}
-          </div>
-        </Card>
-      </div>
-      <Footer />
-    </div>
-  );
+				<Card className="pitch-card">
+					<h1>{title}</h1>
+					<div style={{ display: "inline" }}>
+						{challenge}
+						<span>&nbsp;</span>
+						{mainActivity}
+						<span>&nbsp;</span>
+						{outcome}
+					</div>
+				</Card>
+			</div>
+			<Footer />
+		</div>
+	);
 };
 
 export default ElevatorPitch;
