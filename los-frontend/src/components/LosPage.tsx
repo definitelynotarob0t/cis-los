@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../hooks";
 import { Card, Container } from "react-bootstrap";
 import { RootState } from "../store";
-import { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import AccordionWidget from "./Accordion";
 import { fetchLoses, editLos, addLos, removeLos } from "../reducers/losReducer";
 import { notifySuccess } from "../reducers/notificationReducer";
@@ -13,10 +13,15 @@ import Footer from "./Footer";
 import { useParams } from "react-router-dom";
 import DOMPurify from 'dompurify';
 
-// Reusable InputSection component
-const InputSection = ({ title, fields, setFields, addField, isFirstProgram }: 
-    { title: string, fields: string[], setFields: React.Dispatch<React.SetStateAction<string[]>>, addField: () => void, isFirstProgram: Boolean}) => {
+interface inputSectionProps {
+    title: string,
+    fields: string[],
+    setFields: React.Dispatch<React.SetStateAction<string[]>>,
+    addField: () => void, 
+}
 
+
+const InputSection: React.FC<inputSectionProps> = ({ title, fields, setFields, addField }) => {
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
     const handleInputBlur = (index: number, event: React.FocusEvent<HTMLDivElement>) => {
@@ -29,7 +34,6 @@ const InputSection = ({ title, fields, setFields, addField, isFirstProgram }:
 
     
         updatedFields[index] = sanitizedContent;
-        // updatedFields[index] = event.currentTarget.innerText;
         setFields(updatedFields);
         setFocusedIndex(null);
     };
@@ -62,21 +66,6 @@ const InputSection = ({ title, fields, setFields, addField, isFirstProgram }:
         }
     };
 
-    const getPlaceholderText = (title: string) => {
-        switch (title) {
-          case "Activities":
-            return "Conduct a review to identify aligned med tech supply vulnerabilities with Australian med tech capabilities and implement pilot projects between hospitals and med tech companies to address procurement, adoption and product challenges.";
-          case "Outputs":
-            return "Established partnerships between med tech companies and hospitals, with med tech products tailored to meet specific hospital requirements.";
-          case "Usages":
-            return "Hospitals support local procurement and integrate med tech products into operations.";
-          case "Outcomes and Impacts":
-            return "Enhanced patient outcomes due to timely and appropriate health interventions, and a X% increase in Australia’s global market share for med tech.";
-          default:
-            return "";
-        }
-      };
-    
 
     return (
         <Container>
@@ -96,15 +85,12 @@ const InputSection = ({ title, fields, setFields, addField, isFirstProgram }:
                             onFocus={() => handleInputFocus(index)}
                             onPaste={handlePaste} 
                             suppressContentEditableWarning
-                            className={`input-contenteditable ${
-                                !field ? "placeholder" : ""
-                              }`}
+                            className="input-contenteditable"
                             ref={(el) => {
                             if (el) {
                                 el.textContent = field || ""; // Set text content
                             }
                             }}
-                            data-placeholder={isFirstProgram && index === 0 ? getPlaceholderText(title) : ""}
                         />
                         {field === '' && focusedIndex !== index && (
                             <button
@@ -272,7 +258,7 @@ const LosPage = () => {
                         {pitch?.title ? (
                             <div><strong>{pitch?.title}</strong></div>
                         ) :
-                            <div style={{ color: 'gray' }}>Med Tech Australia</div>
+                            <div style={{ color: 'gray' }}>Title will go here</div>
                         }
                     </Card>
 
@@ -286,9 +272,7 @@ const LosPage = () => {
                                 </div>
                             ) :
                                 <div style={{ color: 'lightGray' }}>
-                                    Australia’s health sector relies on imports for ~95% of its med tech yet faces significant supply chain challenges, highlighting critical vulnerabilities and the urgent need for targeted local manufacturing and improved supply chain resilience.
-                                    Med Tech Australia will identify, design and implement sovereign med tech products, leveraging existing capabilities and addressing specific needs.  
-                                    This will enhance healthcare resilience, ensure reliable access to critical medical supplies, improve patient outcomes, and foster a robust med tech industry that reduces dependency on international supply chains.  
+                                    Elevator Pitch will go here.
                                 .</div>
                             }
                         </div>
@@ -325,7 +309,6 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], activities: [...losStates[los.id]?.activities || [], ''] }
                                         }))}
-                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Outputs" 
@@ -343,7 +326,6 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], outputs: [...losStates[los.id]?.outputs || [], ''] }
                                         }))}
-                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Usages" 
@@ -361,7 +343,6 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], usages: [...losStates[los.id]?.usages || [], ''] }
                                         }))}
-                                        isFirstProgram={index === 0}
                                     />
                                     <InputSection 
                                         title="Outcomes and Impacts" 
@@ -379,7 +360,6 @@ const LosPage = () => {
                                             ...prevState,
                                             [los.id]: { ...prevState[los.id], outcomes: [...losStates[los.id]?.outcomes || [], ''] }
                                         }))}
-                                        isFirstProgram={index === 0}
                                     />
                                     </div>
                                 </div>

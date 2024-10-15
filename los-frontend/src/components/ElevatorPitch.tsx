@@ -12,6 +12,7 @@ import { Form, Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import pitchService from "../services/pitchService";
 
+
 const ElevatorPitch = () => {
   const [title, setTitle] = useState("");
   const [mainActivity, setMainActivity] = useState("");
@@ -68,6 +69,7 @@ const ElevatorPitch = () => {
     }
   };
 
+  
   return (
     <div className="content">
       <Header updateUserInputs={updatePitch} />
@@ -80,9 +82,8 @@ const ElevatorPitch = () => {
             <Form.Control
               as="textarea"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}    // No need for sanitising - React handles it for textareas     
               className="pitch-input"
-              placeholder="Med Tech Australia"
               rows={1}
               style={{ resize: "none" }}
             />
@@ -97,7 +98,6 @@ const ElevatorPitch = () => {
               value={challenge}
               onChange={(e) => setChallenge(e.target.value)}
               className="pitch-input"
-              placeholder="Australia’s health sector relies on imports for ~95% of its med tech, yet faces significant supply chain challenges, highlighting critical vulnerabilities and the urgent need for targeted local manufacturing and improved supply chain resilience."
               rows={3}
               style={{ resize: "none" }}
             />
@@ -111,7 +111,6 @@ const ElevatorPitch = () => {
               value={mainActivity}
               onChange={(e) => setMainActivity(e.target.value)}
               className="pitch-input"
-              placeholder="Med Tech Australia will identify, design and implement sovereign med tech products, leveraging existing capabilities and addressing specific needs."
               rows={3}
               style={{ resize: "none" }}
             />
@@ -125,7 +124,6 @@ const ElevatorPitch = () => {
               value={outcome}
               onChange={(e) => setOutcome(e.target.value)}
               className="pitch-input"
-              placeholder="This will enhance healthcare resilience, ensure reliable access to critical medical supplies, improve patient outcomes, and foster a robust med tech industry that reduces dependency on international supply chains."
               rows={3}
               style={{ resize: "none" }}
             />

@@ -279,7 +279,7 @@ button[data-tooltip]:hover::after {
     margin-top: 24px;
     margin-bottom: 10px;
     height: 36px;
-    width: 201px;
+    width: 229px;
     background-color: rgb(11, 64, 96);
     border: none;
     }
@@ -557,11 +557,7 @@ button[data-tooltip]:hover::after {
     break-inside: avoid;
 }
 
-.input-contenteditable.placeholder:empty:before {
-    content: attr(data-placeholder);
-    color: #999;
-    pointer-events: none;
-}
+
 
 
 .add-input-button {
