@@ -3,7 +3,7 @@ import { AppDispatch } from "../store"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../reducers/userReducer"
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import logo from "../images/cis_logo_small.png"
+import logo from "../images/cis_logo_large.png"
 import { SyntheticEvent, useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 import { RootState } from "../store";

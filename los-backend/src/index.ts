@@ -22,6 +22,41 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(helmet()); // Automatically sets security headers
+
+// Configure specific security headers
+app.use(
+  helmet.hsts({
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true, // Opt-in to preload list
+  })
+);
+
+app.use(
+  helmet.frameguard({
+    action: 'sameorigin', // Allow iframes on the same origin (the CIS domain)
+  })
+);
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      frameAncestors: ["'self'", "https://consultingis.com.au"], // Restrict iframes to 'self' and CIS webiste
+    },
+  })
+);
+
+
+app.use((_req, res, next) => {
+  res.setHeader(
+    'Permissions-Policy',
+    'geolocation=(self), microphone=(), camera=()'  // Lock down these featuers
+  );
+  next();
+});
+
 app.use(express.json());
 
 

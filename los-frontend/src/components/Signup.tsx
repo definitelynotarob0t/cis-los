@@ -49,8 +49,14 @@ const SignupForm = () => {
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        return emailRegex.test(email.toLowerCase());
     }; 
+
+    const validateName = (name: string) => {
+        const nameRegex = /^[a-zA-Z\s]+$/;
+        return nameRegex.test(name);
+    };
+    
 
     const handleSignUp = async (event: SyntheticEvent) => {
         event.preventDefault()
@@ -62,13 +68,25 @@ const SignupForm = () => {
                 dispatch(notifyError('Please ensure all fields are complete.'));
                 return;
             }
+
+            // Email validation
+            if (!validateEmail(email)) {
+                dispatch(notifyError("Please enter a valid email"))
+                return;
+            }
+
+            // Name validation
+            if (!validateName(name)) {
+                dispatch(notifyError("Name must contain only letters and spaces."));
+                return;
+            }
+
             // Check if  email is already registered
             const registeredEmail = await userService.findUserByEmail(email)
             if (registeredEmail) {
                 dispatch(notifyError("There is already an account registered with this email."))
                 return
             }
-
 
             // Password validation
             if (passwordConfirm !== password) {
@@ -79,16 +97,10 @@ const SignupForm = () => {
                 dispatch(notifyError("Password must be at least 8 characters"));
                 return;
             }
-
-            // Email validation
-            if (!validateEmail(email)) {
-                dispatch(notifyError("Please enter a valid email"))
-                return;
-            }
             
             // Create account
             await userService.createUser({ email, password, name }); // Credentials sent to API, no state update until user logs-in
-            dispatch(notifySuccess("Account created"))
+            dispatch(notifySuccess("Account created."))
  
         } catch (error: any) {  // Catch errors during user creation
             if (axios.isAxiosError(error) && error.response) {
