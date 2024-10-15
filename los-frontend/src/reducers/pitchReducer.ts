@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import pitchService from "../services/pitchService";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Pitch } from "../types";
+import { Pitch } from "../types/types";
 import { AppDispatch } from "../store";
 
 // Define a type for the slice state

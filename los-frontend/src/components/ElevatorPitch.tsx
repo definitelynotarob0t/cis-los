@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useEffect } from "react";
 import { editPitch } from "../reducers/pitchReducer";
 import { useAppDispatch } from "../hooks";
-import { Pitch } from "../types";
+import { Pitch } from "../types/types";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { notifySuccess } from "../reducers/notificationReducer";

@@ -8,7 +8,7 @@ import { AppDispatch } from "../store";
 import { setPrograms } from "./programReducer";
 import { setPitches } from "./pitchReducer";
 import { setLoses } from "./losReducer";
-import { User } from "../types";
+import { User } from "../types/types";
 
 interface UserState {
   user: User | null;

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import programService from "../services/programService";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Program } from "../types";
+import { Program } from "../types/types";
 import { AppDispatch } from "../store";
 
 

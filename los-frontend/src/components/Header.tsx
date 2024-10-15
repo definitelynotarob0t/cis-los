@@ -8,7 +8,7 @@ import { SyntheticEvent, useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 import { RootState } from "../store";
 import { notifyError } from "../reducers/errorReducer";
-import { Pitch } from "../types";
+import { Pitch } from "../types/types";
 
 interface HeaderProps {
     updateUserInputs?: (event: SyntheticEvent) => void;

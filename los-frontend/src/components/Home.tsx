@@ -9,10 +9,10 @@ import { notifySuccess } from "../reducers/notificationReducer";
 import { notifyError } from "../reducers/errorReducer";
 import { useEffect, useState } from "react";
 import programService from "../services/programService";
-import { Program } from "../types";
+import { Program } from "../types/types";
 import { updateUserProgramIds } from "../reducers/userReducer";
 import pitchService from "../services/pitchService";
-import { Pitch } from "../types";
+import { Pitch } from "../types/types";
 import { Modal, Button } from "react-bootstrap";
 
 const Home = () => {

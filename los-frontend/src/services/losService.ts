@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Los } from "../types";
+import { Los } from "../types/types";
 import { apiBaseUrl } from "../constants";
 import tokenService from "./tokenService";
 

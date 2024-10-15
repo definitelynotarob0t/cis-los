@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Pitch } from "../types";
+import { Pitch } from "../types/types";
 import { apiBaseUrl } from "../constants";
 import tokenService from "./tokenService";
 

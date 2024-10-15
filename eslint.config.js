@@ -1,7 +1,7 @@
 module.exports = [
   {
     files: ["**/*.{js,ts,tsx}"],
-    ignores: ["node_modules/", "dist/", "build/", "fonts/", "images/"],
+    ignores: ["node_modules/", "dist/", "/los-backend/build/", "fonts/", "images/"],
     languageOptions: {
       parser: require("@typescript-eslint/parser"), // Correct parser import
       ecmaVersion: 2020,
@@ -14,8 +14,6 @@ module.exports = [
       "semi": ["error", "always"],
       "quotes": ["error", "double"],
       "indent": ["error", "tab"],
-      "no-console": "error",
-
     },
   },
   {

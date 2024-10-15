@@ -7,7 +7,7 @@ import AccordionWidget from "./Accordion";
 import { fetchLoses, editLos, addLos, removeLos } from "../reducers/losReducer";
 import { notifySuccess } from "../reducers/notificationReducer";
 import { notifyError } from "../reducers/errorReducer";
-import { Los, Pitch } from "../types";
+import { Los, Pitch } from "../types/types";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useParams } from "react-router-dom";

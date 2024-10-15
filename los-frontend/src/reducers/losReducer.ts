@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import losService from "../services/losService";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Los } from "../types";
+import { Los } from "../types/types";
 import { AppDispatch } from "../store";
 
 // Define a type for the slice state

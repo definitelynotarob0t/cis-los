@@ -1,6 +1,6 @@
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
-import { Program } from "../types";
+import { Program } from "../types/types";
 import tokenService from "./tokenService";
 
 const programUrl = `${apiBaseUrl}/programs`;
