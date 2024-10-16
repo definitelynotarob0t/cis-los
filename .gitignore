@@ -1,2 +1,3 @@
 node_modules
 los-backend/.env
+los-frontend/src/.env

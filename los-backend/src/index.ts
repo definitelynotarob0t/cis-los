@@ -84,7 +84,15 @@ const apiLimiter = rateLimit({
 });
 
 
+
 // Routes
+// API testing route
+app.get('/', (_req, res) => {
+  res.send('API is running');
+});
+
+
+
 app.use("/api/login", loginLimiter); // Apply the login limiter to the login route
 app.use("/api/login", loginRouter);
 app.use("/api/users/email", emailCheckLimiter);

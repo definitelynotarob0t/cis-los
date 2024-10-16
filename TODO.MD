@@ -1,5 +1,4 @@
 - [ ] Submit for hsts preload list: https://hstspreload.org/
-- [ ] ESlint  
 - [ ] Build  
 - [ ] Deploy ** ensure API is not publicly accessible / ensure user emails are secure  
 - [ ] test app on securityheaders.com (make sure to select 'hide results'!!)
