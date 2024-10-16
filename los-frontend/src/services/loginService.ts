@@ -1,6 +1,6 @@
 import axios from "axios";
-import { apiBaseUrl } from "../constants";
 import tokenService from "./tokenService";
+import { apiBaseUrl } from "../constants";
 
 const loginUrl = `${apiBaseUrl}/login`;
 

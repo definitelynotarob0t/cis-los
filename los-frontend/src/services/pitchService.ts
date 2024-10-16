@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Pitch } from "../types/types";
-import { apiBaseUrl } from "../constants";
 import tokenService from "./tokenService";
+import { apiBaseUrl } from "../constants";
 
 const pitchUrl = `${apiBaseUrl}/pitches`;
 
