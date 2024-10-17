@@ -6,6 +6,7 @@ require("dotenv").config();
 export const database = process.env.DB_NAME || "default_db_name";  // Default for correct typing
 export const username = process.env.DB_USER || "default_username";  
 export const password = process.env.DB_PASSWORD || "default_password"; 
+export const host = process.env.DB_HOST || "default_db_host";
 export const port = process.env.DB_PORT || 5432;  // This is the database port
 export const PORT = process.env.PORT || 3000;  // This is the application port
 export const SECRET = process.env.SECRET;
@@ -19,7 +20,7 @@ export const config = {
 	database, 
 	username,  
 	password, 
-	host: "localhost",  // Because using SSH tunnel
+	host,
 	port: 5432,  // Default PostgreSQL port
 	dialect: "postgres" as Dialect,
 	dialectOptions: {
