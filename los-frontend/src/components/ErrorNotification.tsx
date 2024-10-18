@@ -10,7 +10,7 @@ const ErrorNotification = () => {
 	}
 
 	return (
-		<div className="notification">
+		<div>
 			<div className="error-notification"><strong>{error.error}</strong></div>
 		</div>
 	);

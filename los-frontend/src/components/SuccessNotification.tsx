@@ -10,7 +10,7 @@ const SuccessNotification = () => {
 	}
 
 	return (
-		<div className="notification">
+		<div>
 			<div className="success-notification"><strong>{notification.notification}</strong></div>   
 		</div>
 	);
