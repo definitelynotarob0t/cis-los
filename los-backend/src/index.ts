@@ -6,6 +6,7 @@ import { errorHandler, unknownEndpoint } from "./util/middleware";
 import "./types";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
+import path from "path";
 
 // Import routers
 import programRouter from "./routes/programs";
@@ -60,7 +61,6 @@ app.use((_req, res, next) => {
 app.use(express.json());
 
 
-
 // Limit requests to the login route to avoid brute force attacks
 const loginLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
@@ -103,6 +103,15 @@ app.use("/api/pitches", pitchRouter);
 app.use("/api/users", userRouter);
 app.use("/api/logout", logoutRouter);
 app.use("/api/loses", losRouter);
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../../los-frontend/dist')));
+
+// Catch-all handler to serve React's index.html for any unknown routes
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../../los-frontend/dist', 'index.html'));
+});
+
 
 // Error handling
 app.use(errorHandler);
