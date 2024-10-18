@@ -3,7 +3,7 @@ import express from "express";
 import { SECRET } from "../util/config";
 import UserModel from "../models/user";
 import Session from "../models/session";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const router = express.Router();
 

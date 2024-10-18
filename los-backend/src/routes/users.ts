@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import express from "express";
 import UserModel from "../models/user";
 import PitchModel from "../models/pitch";
