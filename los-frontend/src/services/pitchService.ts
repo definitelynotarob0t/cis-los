@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Pitch } from "../types/types";
 import tokenService from "./tokenService";
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl, apiPassword } from "../constants";
 
 const pitchUrl = `${apiBaseUrl}/pitches`;
 
@@ -10,7 +10,7 @@ const getPitches = async () => {
 	const token = tokenService.getToken();
 
 	const config = {
-		headers: { Authorization: token }
+		headers: { Authorization: token, "x-api-password": apiPassword }
 	};
 	const response = await axios.get(pitchUrl, config);
 	return response.data;
@@ -33,7 +33,7 @@ const getPitch = async (id: number) => {
 	const token = tokenService.getToken();
 
 	const config = {
-		headers: { Authorization: token }
+		headers: { Authorization: token, "x-api-password": apiPassword }
 	};
 	const response = await axios.get(`${pitchUrl}/${id}`, config);
 	return response.data;

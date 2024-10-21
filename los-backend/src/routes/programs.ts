@@ -5,12 +5,13 @@ import { sequelize } from "../util/db";
 import PitchModel from "../models/pitch";
 import LosModel from "../models/los";
 import UserModel from "../models/user";
+import passwordValidator from "../util/passwordValidator";
 
 
 const router = express.Router();
 
 // Fetch all programs
-router.get("/", async (_req, res , next) => {
+router.get("/", passwordValidator, async (_req, res , next) => {
 	try {
 		const programs = await ProgramModel.findAll();
 		res.json(programs);
@@ -23,7 +24,7 @@ router.get("/", async (_req, res , next) => {
 
 
 // Fetch single program by id
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", passwordValidator, async (req, res, next) => {
 	try {
 		const program = await ProgramModel.findByPk(req.params.id);
 		if (!program) {

@@ -3,11 +3,12 @@ import LosModel from "../models/los";
 import sessionValidator from "../util/sessionValidator";
 import ProgramModel from "../models/program";
 import UserModel from "../models/user";
+import passwordValidator from "../util/passwordValidator";
 
 const router = express.Router();
 
 // Fetch all loses
-router.get("/", async (_req, res , next) => {
+router.get("/", passwordValidator, async (_req, res , next) => {
 	try {
 		const loses = await LosModel.findAll();
 		res.json(loses);
@@ -18,7 +19,7 @@ router.get("/", async (_req, res , next) => {
 });
 
 // Fetch single los by id
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", passwordValidator, async (req, res, next) => {
 	try {
 		const los = await LosModel.findByPk(req.params.id);
 		res.json(los);

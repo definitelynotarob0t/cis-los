@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl, apiPassword } from "../constants";
 import { Program } from "../types/types";
 import tokenService from "./tokenService";
 
@@ -10,7 +10,7 @@ const getPrograms = async () => {
 	const token = tokenService.getToken();
 
 	const config = {
-		headers: { Authorization: token }
+		headers: { Authorization: token, "x-api-password": apiPassword }
 	};
 
 	const response = await axios.get(programUrl, config);

@@ -7,11 +7,12 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { Op } from "sequelize";
 import ProgramModel from "../models/program";
+import passwordValidator from "../util/passwordValidator";
 
 const router = express.Router();
 
 // Get all users
-router.get("/", async (_req, res, next) => {
+router.get("/", passwordValidator, async (_req, res, next) => {
 	try {
 		const users = await UserModel.findAll({ 
 			attributes: ["id", "name", "program_ids", "pitch_ids", "los_ids"]
@@ -23,7 +24,7 @@ router.get("/", async (_req, res, next) => {
 }); 
 
 // Get  user by id
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", passwordValidator, async (req, res, next) => {
 	try {
 		const user = await UserModel.findOne({
 			where: { id: req.params.id},
@@ -248,7 +249,7 @@ router.get("/email/:email", async (req, res, next) => {
 
 
 // Remove user
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", passwordValidator, async (req, res, next) => {
 	try {
 		const userToDelete = await UserModel.findByPk(req.params.id);
 		if (userToDelete) {

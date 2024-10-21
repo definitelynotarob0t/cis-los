@@ -1,11 +1,12 @@
 import express from "express";
 import PitchModel from "../models/pitch";
 import sessionValidator from "../util/sessionValidator";
+import passwordValidator from "../util/passwordValidator";
 
 const router = express.Router();
 
 // Fetch all pitches
-router.get("/", async (_req, res , next) => {
+router.get("/", passwordValidator, async (_req, res , next) => {
 	try {
 		const pitches = await PitchModel.findAll();
 		res.json(pitches);
@@ -16,7 +17,7 @@ router.get("/", async (_req, res , next) => {
 });
 
 // Fetch single pitch by id
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", passwordValidator, async (req, res, next) => {
 	try {
 		const pitch = await PitchModel.findByPk(req.params.id);
 		res.json(pitch);
@@ -86,7 +87,7 @@ router.put("/:id", sessionValidator, async (req, res, next) => {
 });
 
 // Delete a pitch
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", passwordValidator, async (req, res, next) => {
 	const pitchToDelete = await PitchModel.findByPk(req.params.id);
 	if (pitchToDelete) {
 		try {

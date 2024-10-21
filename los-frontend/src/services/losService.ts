@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Los } from "../types/types";
 import tokenService from "./tokenService";
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl, apiPassword } from "../constants";
 
 const losUrl = `${apiBaseUrl}/loses`;
 
@@ -9,7 +9,7 @@ const losUrl = `${apiBaseUrl}/loses`;
 const getLoses = async () => {
 	const token = tokenService.getToken(); 
 	const config = {
-		headers: { Authorization: token }
+		headers: { Authorization: token, "x-api-password": apiPassword }
 	};
 	const response = await axios.get(losUrl, config);
 	return response.data;
@@ -30,7 +30,7 @@ const getLos = async (id: number) => {
 	const token = tokenService.getToken(); 
 
 	const config = {
-		headers: { Authorization: token }
+		headers: { Authorization: token, "x-api-password": apiPassword }
 	};
 	const response = await axios.get(`${losUrl}/${id}`, config);
 	return response.data;

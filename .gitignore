@@ -1,4 +1,4 @@
 node_modules
 los-backend/.env
-los-frontend/src/.env
+los-frontend/.env
 TODO.MD
