@@ -8,7 +8,7 @@ This application is designed to ease early-stage project planning, allowing user
 ## Pages
 
 1. **Elevator Pitch Page**:  
-    Provides four prompts that help users craft a clear and concise articulation of their program’s core activities, the challenge being addressed and intended outcomes. As users type, the full pitch paragraph is dynamically previewed in real-time. 
+    Provides four prompts that help users craft a clear and concise articulation of their programs' core activities, the challenge being addressed and intended outcomes. As users type, the full pitch paragraph is dynamically previewed in real-time. 
 
 2. **Line-of-Sight Page**:  
    Helps users break down their projects into critical components, including activities, outputs, usages, and outcomes/impacts. Users have the option to drag and drop pre-filled suggestive 'answers' or type their own for each of the component fields. Each project can have many lines-of-sight on the same page.
@@ -32,23 +32,13 @@ This project uses a modern and scalable tech stack. **Node.js** powers the backe
 
 Building this project involved navigating technical challenges, which helped me grow as a developer taking on my first commercial project:
 
-1. **Data Hosting Migration (AWS)**: I had initially set up the database on Fly.io for development, but due to cost considerations and scalability needs, I migrated it to AWS. Having no prior experience with AWS, the transition presented a steep learning curve, especially in configuring and optimising services like EC2 and RDS, as well as ensuring the security of data. This enhanced my understanding of cloud infrastructure, and I gained valuable experience in setting up secure, scalable, and cost-efficient data hosting solutions.
+1. **Data Hosting Migration and Deployment (AWS)**: I had initially set up the database on Fly.io for development, but due to cost considerations and scalability needs, I migrated it to AWS. Having no prior experience with AWS, the transition presented a steep learning curve, especially in configuring and optimising services like EC2 and RDS, as well as ensuring the security of data. This enhanced my understanding of cloud infrastructure, and I gained valuable experience in setting up secure, scalable, and cost-efficient data hosting solutions.
 
-2. **Managing State with React and Redux**: Integrating React with Redux for managing application state was another challenge. Given the complexity of handling user input across multiple project pages while ensuring consistency and performance, I had to make strategic decisions about state management and optimisation. This challenge sharpened my expertise in using Redux and useState to efficiently manage both local and global state across components, ensuring a smooth user experience.
+2. **The Importance of CI/CD for Efficient Post-Production Changes**: One of the biggest lessons I learned during this project was the importance of having CI/CD pipelines in place. Initially, I didn't foresee the need for such processes and ended up having to make changes directly on the remote EC2 instance after the app had gone live. This approach was tedious, time-consuming, and risky because it left room for manual errors and made testing and deploying changes much more difficult than needed. I now realise that implementing a tool like GitHub Actions during the development phase would have made post-deployment changes far easier to manage.  
 
 
 ## Demo
 
-Login:  
-<!-- GIF of login page -->
-
-Home page:  
-<!-- GIF of home page -->
-
-Elevator Pitch:  
-<!-- GIF of elevator pitch -->
-
-Line-of-Sight:  
-<!-- GIF of line-of-sight -->
+![Watch the demo video](assets/cis-los-demo-ezgif.com-video-to-gif-converter.gif)
 
 

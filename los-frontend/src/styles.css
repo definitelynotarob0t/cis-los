@@ -716,7 +716,7 @@ button[data-tooltip]:hover::after {
 
     .container {
         padding: 1px;
-        width: 25;
+        width: 24%;
     }
 
     /* Notification */
