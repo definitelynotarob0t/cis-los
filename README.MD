@@ -41,4 +41,4 @@ Building this project involved navigating technical challenges, which helped me 
 
 ![Watch the demo video](assets/cis-los-demo-ezgif.com-video-to-gif-converter.gif)
 
-[Visit live site](https://app.consultingis.com.au)
+[Visit live site](https://app.consultingis.com.au/login)
