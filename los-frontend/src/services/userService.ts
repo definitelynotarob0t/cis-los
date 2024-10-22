@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiBaseUrl } from "../constants";
+import { apiBaseUrl, apiPassword } from "../constants";
 
 const userUrl = `${apiBaseUrl}/users`;
 
@@ -35,8 +35,12 @@ const resetPassword = async (data: { token: string | null, email: string | null,
 
 // Check if user with the given email exists
 const findUserByEmail = async (email: string) => {
+	const config = {
+		headers: { "x-api-password": apiPassword }
+	};
+	
 	try {
-		const response = await axios.get(`${userUrl}/email/${email}`);
+		const response = await axios.get(`${userUrl}/email/${email}`, config);
 		if (response.data && response.data.length > 0) {
 			return response.data[0]; // User found
 		}

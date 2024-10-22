@@ -20,6 +20,7 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
 	const location = useLocation();
 	const currentPath = location.pathname;
 	const [showModal, setShowModal] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	const { pitchId, programId } = useParams<{ pitchId: string, programId: string }>(); 
 	let pitchIdNumber = Number(pitchId);
@@ -114,6 +115,10 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
 		setShowModal(false);
 	};
 
+	const toggleMenu = () => {
+		setMenuOpen(!menuOpen);
+	};
+
 	return (
 		<>
 			<Navbar>
@@ -179,11 +184,16 @@ const Header: React.FC<HeaderProps> = ({updateUserInputs}) => {
 									</button>
                                
 								</div>
+								{/* Hamburger Icon */}
+								<div className="hamburger" onClick={toggleMenu}>
+                                    <i className={`bi ${menuOpen ? 'bi-x' : 'bi-list'}`}></i>
+                                </div>
 							</>
 						)}
 					</>
 				</div>
 			</Navbar>
+
 			<Modal show={showModal} onHide={cancelLogout}>
 				<Modal.Header>
 					<Modal.Title>Are you sure you want to log out?</Modal.Title>
