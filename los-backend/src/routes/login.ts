@@ -20,6 +20,7 @@ router.post("/", async (req, res, next) => {
     
 		if (!user) {
 			res.status(401).json({ error: "Email not registered" });
+			return
 		}
 
 		// Check if user exists and password is correct
@@ -48,6 +49,10 @@ router.post("/", async (req, res, next) => {
 			res.status(200).send({ token, name: user.name, id: user.id, programIds: user.programIds });
 
 		}  
+		else {
+			res.status(401).json({ error: "Invalid password" })
+			return
+		}
 	} catch (error) {
 		next(error);
 	}
